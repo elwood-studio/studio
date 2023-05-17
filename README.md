@@ -1,10 +1,14 @@
-<p align="center"><img src="./docs/assets/github-banner.svg" width="100%" alt="Elwood Studio"></p>
+<p align="center"><img src="https://elwood-studio-pub.s3.amazonaws.com/github-banner.svg" width="100%" alt="Elwood Studio"></p>
 
 <p align="center">
-<b>Open Source Creator Framework</b>
+<b>Upload.
+Collaborate.
+Distribute.
+</b>
 <br>
 <small>
 <a href="https://elwood.studio">elwood.studio</a> | 
+<a href="https://discord.gg/ZxWKPeABNG">Discord</a> |
 <a href="mailto:hello@elwood.studio">hello@elwood.studio</a>
 </small>
 </p>
@@ -13,21 +17,13 @@
 
 # What is Elwood Studio
 
-**Elwood Studio** is an open source set of tools to help creators plan, produce & distribute their content.
+**Elwood Studio** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration & sharing. Simple one-click distribution.
 
-- [x] **[Workflow](./packages/workflow/)** <sup>BETA</sup> - Automate your media pipeline
-- [x] **[CLI](./packages/cli)** <sup>BETA</sup> - Command Line Interface
-- [x] **[Storage](./packages/storage/)** <sup>BETA</sup> - Manage your files, anywhere they are
-- [ ] **Content** - Advanced Media Content & Metadata Manager
-- [ ] **Capture** - Record audio and video
-- [ ] **Distribute** - Share your content with the world
-- [ ] **Data** - Collect, Transform & Store media analytics
-
-### Apps
-
-- [x] **[Storage](./apps/storage/)** <sup>BETA</sup> - View, Upload & Download your files on the web
-
-<p><br><hr width="50%"><br></p>
+- [x] **Accelerated Uploads** <br/><small>With accelerated, edge optimized, resumable uploads, you can upload large files and folders in a fraction of the time.</small>
+- [x] **Collaborate** <br/><small>Streamline teamwork and boost productivity with advanced collaboration feature - share, edit and communicate seamlessly with your team all in one secure platform.</small>
+- [x] **Distribute Anywhere** <br/><small>Effortless one click publishing to YouTube, Facebook, Instagram and more. Or build custom workflows to publish to your own website or apps.</small>
+- [x] **All Your Files** <br/><small>Access files from dozens of cloud storage providers. Centralize sharing, audit logs, and collaboration across all your cloud storage providers.</small>
+- [x] [**Custom Workflows**](./packages/workflow/) <br/><small>A powerful workflow engine to automate your file management pipeline. Use our prebuilt workflows and actions, or build your own in Deno, Node or any language you choose.</small>
 
 ## 🚀 Getting Started
 
@@ -54,6 +50,7 @@ Documentation is available at [elwood.studio/docs](https://elwood.studio/docs).
 - [Community Forum](https://github.com/elwood-studio/studio/discussions): Good for developer discussion, help debugging, ask questions. **Not sure, start here**
 - [GitHub Issues](https://github.com/elwood-studio/studio/issues): Good for bugs and errors in running Elwood Studio locally
 - [Email Support](mailto:support@elwood.studio): Good for errors using Elwood Studio Cloud.
+- [Discord](https://discord.gg/ZxWKPeABNG): Join our Discord Server
 
 ## License
 
