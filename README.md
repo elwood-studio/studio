@@ -1,80 +1,64 @@
-# Turborepo starter with Rollup
+<p align="center"><img src="./docs/assets/github-banner.svg" width="100%" alt="Elwood Studio"></p>
 
-This is an official starter Turborepo, showing how Turborepo can be used with Rollup for bundling a `ui` package.
+<p align="center">
+<b>Open Source Creator Framework</b>
+<br>
+<small>
+<a href="https://elwood.studio">elwood.studio</a> | 
+<a href="mailto:hello@elwood.studio">hello@elwood.studio</a>
+</small>
+</p>
 
-## Using this example
+<p>&nbsp;</p>
 
-Run the following command:
+# What is Elwood Studio
 
-```sh
-npx create-turbo@latest -e with-rollup
-```
+**Elwood Studio** is an open source set of tools to help creators plan, produce & distribute their content.
 
-## What's inside?
+- [x] **[Workflow](./packages/workflow/)** <sup>BETA</sup> - Automate your media pipeline
+- [x] **[CLI](./packages/cli)** <sup>BETA</sup> - Command Line Interface
+- [x] **[Storage](./packages/storage/)** <sup>BETA</sup> - Manage your files, anywhere they are
+- [ ] **Content** - Advanced Media Content & Metadata Manager
+- [ ] **Capture** - Record audio and video
+- [ ] **Distribute** - Share your content with the world
+- [ ] **Data** - Collect, Transform & Store media analytics
 
-This Turborepo includes the following packages/apps:
+### Apps
 
-### Apps and Packages
+- [x] **[Storage](./apps/storage/)** <sup>BETA</sup> - View, Upload & Download your files on the web
 
-- `ui`: a React component library used by the `web` application, compiled with Rollup
-- `web`: a [Next.js](https://nextjs.org) app
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+<p><br><hr width="50%"><br></p>
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 🚀 Getting Started
 
 ```
-cd my-turborepo
-pnpm run build
+# npx
+npx elwood-studio init
+
+# curl
+curl -fsSL https://elwood.studio/install.sh | sh
 ```
 
-### Develop
+Get more information about at [elwood.studio/docs/start](https://elwood.studio/docs/start)
 
-To develop all apps and packages, run the following command:
+## ☁️ Platform
 
-```
-cd my-turborepo
-pnpm run dev
-```
+[Elwood Studio Platform](https://elwood.studio) is a hosted deployment of Studio, optimized for the cloud! [Get Started](https://elwood.studio/start)
 
-### Remote Caching
+## 📓 Documentation
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.org/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+Documentation is available at [elwood.studio/docs](https://elwood.studio/docs).
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+## :raised_hand: Support
 
-```
-cd my-turborepo
-npx turbo login
-```
+- [Community Forum](https://github.com/elwood-studio/studio/discussions): Good for developer discussion, help debugging, ask questions. **Not sure, start here**
+- [GitHub Issues](https://github.com/elwood-studio/studio/issues): Good for bugs and errors in running Elwood Studio locally
+- [Email Support](mailto:support@elwood.studio): Good for errors using Elwood Studio Cloud.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## License
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+Distributed under the Apache-2.0 license. See [LICENSE](LICENSE) for more information.
 
-```
-npx turbo link
-```
+## Contact
 
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Pipelines](https://turborepo.org/docs/core-concepts/pipelines)
-- [Caching](https://turborepo.org/docs/core-concepts/caching)
-- [Remote Caching](https://turborepo.org/docs/core-concepts/remote-caching)
-- [Scoped Tasks](https://turborepo.org/docs/core-concepts/scopes)
-- [Configuration Options](https://turborepo.org/docs/reference/configuration)
-- [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
+Elwood Studio - [support@elwood.studio](mailto:support@elwood.studio)

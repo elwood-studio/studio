@@ -1,0 +1,21 @@
+name: "when"
+when: "*"
+jobs:
+  default:
+    steps:
+      - name: "yes"
+        when: true
+        action: "echo"
+        input:
+          message: "You Said: {%= input.message %}"
+      - name: "no"
+        when: false
+        action: "run/bin"
+        input:
+          bin: echo
+          args: "You Said: {%= input.message %}"
+      - name: "maybe"
+        when: "{%= input.should == true %}"
+        action: "echo"
+        input:
+          message: "You Said: {%= input.message %}"

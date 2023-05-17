@@ -1,0 +1,28 @@
+{
+  "name": "elwood-fs",
+  "version": "0.0.0",
+  "main": "./dist/server.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "@types/pg": "^8.6.6",
+    "@vercel/ncc": "^0.36.1",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4",
+    "pkg": "^5.8.1"
+  },
+  "dependencies": {
+    "@fastify/postgres": "^5.2.0",
+    "@fastify/static": "^6.10.1",
+    "@tus/file-store": "^1.0.0-beta.1",
+    "@tus/server": "^1.0.0-beta.5",
+    "fastify": "^4.17.0",
+    "fastify-plugin": "^4.5.0",
+    "pg": "^8.10.0",
+    "ts-invariant": "^0.10.3"
+  }
+}

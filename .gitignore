@@ -5,17 +5,22 @@ node_modules
 .pnp
 .pnp.js
 
+
 # testing
 coverage
 
 # next.js
 .next/
 out/
-build
+build/
+dist/
+packages/**/lib/
 
 # misc
 .DS_Store
 *.pem
+.env
+tmp/
 
 # debug
 npm-debug.log*

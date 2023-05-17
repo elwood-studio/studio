@@ -1,0 +1,9 @@
+{
+  "cSpell.words": ["checkin", "keychain"],
+  "deno.enable": false,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+}

@@ -1,0 +1,28 @@
+name: "input"
+input:
+  defaults:
+    message: "This is the default message"
+  required:
+    - message
+    - messages
+  validate:
+    message:
+      type: string
+    messages:
+      type: array
+      items:
+        type: string
+jobs:
+  message:
+    steps:
+      - name: "message"
+        action: "run/echo"
+        input:
+          message: "You Said: {%= input.message %}"
+  messages:
+    matrix: ${input.messages}
+    steps:
+      - name: "messages"
+        action: "run/echo"
+        input:
+          message: "You Said: {%= job.matrix %}"

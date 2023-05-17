@@ -1,0 +1,19 @@
+#
+# Expected Output:
+# -----------------
+# [default.output.stdout]: You Said: hello
+# [default.output.stdout]: You Said: goodbye
+#
+
+name: "matrix"
+when: "*"
+jobs:
+  default:
+    matrix:
+      - "hello"
+      - "goodbye"
+    steps:
+      - name: "output"
+        action: "echo"
+        input:
+          message: "You Said: {%= job.matrix %}"

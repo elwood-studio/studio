@@ -1,0 +1,13 @@
+{
+  "name": "@elwood-studio/types",
+  "version": "0.0.76",
+  "main": "./lib",
+  "scripts": {
+    "dev": "yarn compile --watch",
+    "build": "tsc -b ./tsconfig.json"
+  },
+  "dependencies": {
+    "ts-essentials": "^9.0.0"
+  },
+  "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"
+}

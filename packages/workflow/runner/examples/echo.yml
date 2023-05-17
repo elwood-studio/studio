@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://x.elwood.studio/s/workflow.json
+
+name: "output"
+when: "*"
+jobs:
+  default:
+    steps:
+      - name: "output"
+        action: "run/echo"
+        input:
+          message: "You Said: {%= input.message %}"
+      - name: "bin"
+        action: "run/bin"
+        input:
+          bin: echo
+          args: "You Said: {%= input.message %}"

@@ -1,0 +1,27 @@
+{
+  "name": "@elwood-studio/common",
+  "version": "0.0.76",
+  "main": "./lib/index.js",
+  "files": [
+    "lib",
+    "schema.json"
+  ],
+  "scripts": {
+    "dev": "yarn compile --watch",
+    "build": "tsc -b ./tsconfig.json",
+    "test": "jest --config=./config/jest.js"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0",
+    "ts-invariant": "^0.10.2",
+    "url-pattern": "^1.0.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@elwood-studio/storage-types": "^0.0.76",
+    "@elwood-studio/types": "^0.0.76",
+    "@types/isomorphic-fetch": "^0.0.36"
+  },
+  "license": "MIT",
+  "gitHead": "23bcd149453dd5f0d9846989444157346e7f26a5"
+}
