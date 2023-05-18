@@ -15,7 +15,7 @@ Distribute.
 
 <p>&nbsp;</p>
 
-# What is Elwood Studio
+# 🚀 What is Elwood Studio
 
 **Elwood Studio** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration & sharing. Simple one-click distribution.
 
