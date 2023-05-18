@@ -25,32 +25,12 @@ Distribute.
 - [x] **All Your Files** <br/><small>Access files from dozens of cloud storage providers. Centralize sharing, audit logs, and collaboration across all your cloud storage providers.</small>
 - [x] [**Custom Workflows**](./packages/workflow/) <br/><small>A powerful workflow engine to automate your file management pipeline. Use our prebuilt workflows and actions, or build your own in Deno, Node or any language you choose.</small>
 
-## 🚀 Getting Started
-
-```
-# npx
-npx elwood-studio init
-
-# curl
-curl -fsSL https://elwood.studio/install.sh | sh
-```
-
-Get more information about at [elwood.studio/docs/start](https://elwood.studio/docs/start)
-
-## ☁️ Platform
-
-[Elwood Studio Platform](https://elwood.studio) is a hosted deployment of Studio, optimized for the cloud! [Get Started](https://elwood.studio/start)
-
-## 📓 Documentation
-
-Documentation is available at [elwood.studio/docs](https://elwood.studio/docs).
-
 ## :raised_hand: Support
 
+- [Discord](https://discord.gg/ZxWKPeABNG): Join our Discord Server
 - [Community Forum](https://github.com/elwood-studio/studio/discussions): Good for developer discussion, help debugging, ask questions. **Not sure, start here**
 - [GitHub Issues](https://github.com/elwood-studio/studio/issues): Good for bugs and errors in running Elwood Studio locally
 - [Email Support](mailto:support@elwood.studio): Good for errors using Elwood Studio Cloud.
-- [Discord](https://discord.gg/ZxWKPeABNG): Join our Discord Server
 
 ## License
 
