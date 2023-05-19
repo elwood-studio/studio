@@ -25,17 +25,9 @@ Distribute.
 - [x] **All Your Files** <br/><small>Access files from dozens of cloud storage providers. Centralize sharing, audit logs, and collaboration across all your cloud storage providers.</small>
 - [x] [**Custom Workflows**](./packages/workflow/) <br/><small>A powerful workflow engine to automate your file management pipeline. Use our prebuilt workflows and actions, or build your own in Deno, Node or any language you choose.</small>
 
-## :raised_hand: Support
-
-- [Discord](https://discord.gg/ZxWKPeABNG): Join our Discord Server
-- [Community Forum](https://github.com/elwood-studio/studio/discussions): Good for developer discussion, help debugging, ask questions. **Not sure, start here**
-- [GitHub Issues](https://github.com/elwood-studio/studio/issues): Good for bugs and errors in running Elwood Studio locally
-- [Email Support](mailto:support@elwood.studio): Good for errors using Elwood Studio Cloud.
-
 ## 💻 Development
 
 ```bash
-
 # Start all services in development mode
 make up
 
@@ -50,8 +42,14 @@ make dev
 
 # Get some information about what you can do with make
 make help
-
 ```
+
+## :raised_hand: Support
+
+- [Discord](https://discord.gg/ZxWKPeABNG): Join our Discord Server
+- [Community Forum](https://github.com/elwood-studio/studio/discussions): Good for developer discussion, help debugging, ask questions. **Not sure, start here**
+- [GitHub Issues](https://github.com/elwood-studio/studio/issues): Good for bugs and errors in running Elwood Studio locally
+- [Email Support](mailto:support@elwood.studio): Good for errors using Elwood Studio Cloud.
 
 ## License
 

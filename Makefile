@@ -5,13 +5,13 @@ prettier := ./node_modules/.bin/prettier
 up: ## bring up docker-compose services
 	@echo "up..."
 	docker-compose --env-file=.env -f ./docker/docker-compose.yml up
-.PHONY up
+.PHONY: up
 
 # DOWN
 down: ## bring up docker-compose services
 	@echo "down..."
 	docker-compose --env-file=.env -f ./docker/docker-compose.yml down
-.PHONY down
+.PHONY: down
 
 # BUILD
 build: ## build an app
