@@ -32,6 +32,27 @@ Distribute.
 - [GitHub Issues](https://github.com/elwood-studio/studio/issues): Good for bugs and errors in running Elwood Studio locally
 - [Email Support](mailto:support@elwood.studio): Good for errors using Elwood Studio Cloud.
 
+## 💻 Development
+
+```bash
+
+# Start all services in development mode
+make up
+
+# Destroy all services in development mode
+make down
+
+# Setup development environment for working with ./packages
+make ready
+
+# Start development watch process
+make dev
+
+# Get some information about what you can do with make
+make help
+
+```
+
 ## License
 
 Distributed under the Apache-2.0 license. See [LICENSE](LICENSE) for more information.

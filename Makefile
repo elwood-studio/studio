@@ -1,6 +1,18 @@
 turbo := ./node_modules/.bin/turbo
 prettier := ./node_modules/.bin/prettier
 
+# UP
+up: ## bring up docker-compose services
+	@echo "up..."
+	docker-compose --env-file=.env -f ./docker/docker-compose.yml up
+.PHONY up
+
+# DOWN
+down: ## bring up docker-compose services
+	@echo "down..."
+	docker-compose --env-file=.env -f ./docker/docker-compose.yml down
+.PHONY down
+
 # BUILD
 build: ## build an app
 	@echo "build..."
