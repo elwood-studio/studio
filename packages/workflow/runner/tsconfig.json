@@ -1,10 +1,15 @@
 {
-  "extends": "../../../config/tsconfig.base.json",
+  "extends": "tsconfig/node.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "./lib"
+    "baseUrl": ".",
+    "outDir": "./lib",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src", "src/**/*.tsx"],
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "examples"],
   "references": [
     {
       "path": "../../types",

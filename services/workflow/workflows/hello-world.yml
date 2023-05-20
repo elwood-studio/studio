@@ -1,0 +1,11 @@
+name: "hello_world"
+when: "*"
+jobs:
+  default:
+    description: "I say 'Hello World'"
+    input:
+      object: "${ input.object }"
+    steps:
+      - action: "run/echo"
+        input:
+          message: "{%= toJson(input.object) %}"

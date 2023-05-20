@@ -21,7 +21,7 @@ export class RuntimeRunJob implements WorkflowRunnerRuntimeRunJob {
   readonly #context = new RuntimeRunContext();
   readonly #steps: Map<string, RuntimeRunStep> = new Map();
   readonly #workingDir: typeof FileSystem;
-  readonly #stageDir: typeof FileSystem;
+  // readonly #stageDir: typeof FileSystem;
   readonly #logDir: typeof FileSystem;
   readonly #timer = new RuntimeTimer();
 
@@ -38,7 +38,7 @@ export class RuntimeRunJob implements WorkflowRunnerRuntimeRunJob {
     public readonly def: WorkflowRunnerJob,
   ) {
     this.#workingDir = run.rootDir.dir(id);
-    this.#stageDir = this.#workingDir.dir('stage');
+    // this.#stageDir = this.#workingDir.dir('stage');
     this.#logDir = this.workingDir.dir('logs');
     this.#log = debug(`runtime:job:${this.id}`);
 

@@ -21,6 +21,7 @@ packages/**/lib/
 *.pem
 .env
 tmp/
+tsconfig.tsbuildinfo
 
 # debug
 npm-debug.log*

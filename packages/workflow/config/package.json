@@ -7,7 +7,7 @@
     "schema.json"
   ],
   "scripts": {
-    "dev": "yarn compile --watch",
+    "dev": "yarn build --watch",
     "test": "jest --config=./config/jest.js",
     "build:tsc": "tsc -b ./tsconfig.json",
     "build": "yarn build:tsc && node ./scripts/generate-json-schema.js"
@@ -27,7 +27,9 @@
     "@elwood-studio/workflow-types": "^0.0.76",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/lodash.set": "^4.3.6",
-    "joi-to-json": "^3.1.1"
+    "@types/uuid": "^9.0.0",
+    "joi-to-json": "^3.1.1",
+    "tsconfig": "workspace:*"
   },
   "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"

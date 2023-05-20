@@ -42,7 +42,6 @@ export async function cli(proc: NodeJS.Process): Promise<void> {
     });
   }
 
-  const cmd = argv._[0] ?? null;
   const name = argv.name || process.env.NAME || 'main';
   const homeDir = join(homedir(), '.elwood-studio/workflow-server');
   const pidFile = join(homeDir, `${name}.pid`);

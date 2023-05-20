@@ -9,7 +9,7 @@
     "workflow-runner": "./bin/cli.js"
   },
   "scripts": {
-    "dev": "yarn compile --watch",
+    "dev": "yarn build --watch",
     "build": "tsc -b ./tsconfig.json",
     "test": "jest --config=./config/jest.js",
     "cli": "./bin/cli-dev.js"
@@ -47,7 +47,9 @@
     "@types/lodash.set": "^4.3.6",
     "@types/uuid": "^9.0.0",
     "@types/which": "^3.0.0",
-    "jest": "^29.0.2"
+    "@types/yargs-parser": "^21.0.0",
+    "jest": "^29.0.2",
+    "tsconfig": "workspace:*"
   },
   "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6",

@@ -4,7 +4,7 @@ prettier := ./node_modules/.bin/prettier
 # UP
 up: ## bring up docker-compose services
 	@echo "up..."
-	docker-compose --env-file=.env -f ./docker/docker-compose.yml up
+	docker-compose --env-file=.env -f ./docker/docker-compose.yml up --build --force-recreate 
 .PHONY: up
 
 # DOWN

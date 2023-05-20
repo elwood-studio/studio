@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "allowJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "CommonJS",
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "es2022"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

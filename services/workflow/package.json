@@ -10,6 +10,7 @@
     "@types/node": "^20.1.4",
     "@vercel/ncc": "^0.36.1",
     "pkg": "^5.8.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
@@ -17,6 +18,8 @@
     "@elwood-studio/workflow-runner": "^0.0.76",
     "@elwood-studio/workflow-secrets": "^0.0.76",
     "dotenv": "^16.0.3",
-    "pg-boss": "8.4.2"
+    "glob": "^10.2.5",
+    "pg-boss": "8.4.2",
+    "ts-invariant": "^0.10.3"
   }
 }

@@ -48,6 +48,10 @@ export class Secret implements WorkflowsSecretsSecret {
     this.#key = key;
   }
 
+  get status() {
+    return this.#status;
+  }
+
   async unseal(value: string) {
     const [name, keyId, encryptedSecretValue] = JSON.parse(value) as [
       string,

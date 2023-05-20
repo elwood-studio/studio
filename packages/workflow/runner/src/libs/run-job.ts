@@ -7,7 +7,6 @@ import { getExpressionValue, isExpressionValueFalseLike } from './expression';
 const log = debug('run:job');
 
 import { runStep } from './run-step';
-import { dirname } from 'path';
 
 export async function runJob(
   job: WorkflowRunnerRuntimeRunJob,

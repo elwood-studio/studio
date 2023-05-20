@@ -1,0 +1,29 @@
+FROM lukechannings/deno
+
+
+
+RUN apt update -y
+RUN apt install -y unzip curl
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs && corepack enable
+
+
+WORKDIR /app
+COPY ./tsconfig.json ./package.json ./entry.sh /app/
+COPY ./src /app/src/
+RUN cd /app \
+    && yarn install --dev
+
+
+COPY ./entry.sh /app/entry.sh
+RUN mkdir -p /var/workflow/data /var/workflow/working-dir
+
+COPY ./workflows /var/workflow/workflows
+
+ENV WORKFLOWS_DIR /var/workflow/workflows
+ENV DATA_DIR /var/workflow/data
+ENV WORKING_DIR /var/workflow/working-dir
+
+
+ENTRYPOINT ["/app/entry.sh"]
+CMD ["/app/node_modules/.bin/ts-node-dev", "--transpile-only", "./src/server.ts"]

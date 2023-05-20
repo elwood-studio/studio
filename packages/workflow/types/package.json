@@ -3,11 +3,14 @@
   "version": "0.0.76",
   "main": "./lib",
   "scripts": {
-    "dev": "yarn compile --watch",
+    "dev": "yarn build --watch",
     "build": "tsc -b ./tsconfig.json"
   },
   "dependencies": {
-    "@elwood-studio/types": "^0.0.76"
+    "@elwood-studio/types": "workspace:*"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
   },
   "files": [
     "lib"

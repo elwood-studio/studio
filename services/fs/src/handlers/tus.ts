@@ -27,7 +27,7 @@ export default fp<TusOptions>(async (app, opts) => {
           `
         UPDATE elwood.object 
         SET 
-          "state" = 'UPLOADED',
+          "state" = 'READY',
           "remote_urn" = $2
         WHERE 
           "id" = $1`,

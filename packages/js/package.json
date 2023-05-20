@@ -1,0 +1,31 @@
+{
+  "name": "@elwood-studio/js",
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint \"**/*.ts*\"",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "@types/jest": "^29.5.0",
+    "dotenv": "^16.0.3",
+    "@elwood-studio/types": "*",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "tsup": "^6.1.3",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.17.0",
+    "@uppy/core": "^3.2.0",
+    "@uppy/tus": "^3.1.0"
+  }
+}
