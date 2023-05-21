@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/workflow-config",
-  "version": "0.0.76",
+  "version": "0.0.77",
   "main": "./lib/index.js",
   "files": [
     "lib",

@@ -1,15 +1,7 @@
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 
-import { invariant } from '../libs/invariant';
-import type {
-  FileSystemListInput,
-  FileSystemListOutput,
-  FileSystemStatInput,
-  FileSystemStatOutput,
-  Fetch,
-} from '../types';
-import { FileSystemOperation } from '../constants';
+import type { Fetch } from '../types';
 
 export type FileSystemClientOptions = {
   url: string;
@@ -51,22 +43,22 @@ export class FileSystemClient {
    * @returns
    * @link https://rclone.org/rc/#operations-list
    */
-  private async _fetch<Response extends any = any>(
-    operation: FileSystemOperation,
-    body?: Record<string, unknown>,
-  ): Promise<Response> {
-    const response = await this.options.fetch(
-      `${this.options.url}/fs/v1/${operation}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Prefer: 'keys=camelcase',
-        },
-        body: JSON.stringify(body),
-      },
-    );
+  // private async _fetch<Response extends any = any>(
+  //   operation: FileSystemOperation,
+  //   body?: Record<string, unknown>,
+  // ): Promise<Response> {
+  //   const response = await this.options.fetch(
+  //     `${this.options.url}/fs/v1/${operation}`,
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Prefer: 'keys=camelcase',
+  //       },
+  //       body: JSON.stringify(body),
+  //     },
+  //   );
 
-    return (await response.json()) as Response;
-  }
+  //   return (await response.json()) as Response;
+  // }
 }

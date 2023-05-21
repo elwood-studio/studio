@@ -1,5 +1,6 @@
 turbo := ./node_modules/.bin/turbo
 prettier := ./node_modules/.bin/prettier
+lerna := ./node_modules/.bin/lerna
 
 # UP
 up: ## bring up docker-compose services
@@ -42,6 +43,11 @@ clean: ## cleanup compile and build artifacts
 	@echo "clean..."
 	git clean -dfqX -- ./node_modules **/node_modules/ apps/**/lib/ packages/**/lib **/dist **/.next packages/**/tsconfig.tsbuildinfo **/*.zip **/*.log **/.DS_Store
 .PHONY: clean
+
+# VERSION
+version: ## version all packages
+	@echo "version..."
+	$(lerna) version
 
 # INSTALL
 install: ## install workspace dependencies
