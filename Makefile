@@ -40,7 +40,7 @@ format: ## run prettier on all apps/* or packages/*
 # CLEAN
 clean: ## cleanup compile and build artifacts
 	@echo "clean..."
-	git clean -dfqX -- ./node_modules **/node_modules/ apps/**/lib/ packages/**/lib **/dist **/.next **/tsconfig.tsbuildinfo **/*.zip **/*.log **/.DS_Store
+	git clean -dfqX -- ./node_modules **/node_modules/ apps/**/lib/ packages/**/lib **/dist **/.next packages/**/tsconfig.tsbuildinfo **/*.zip **/*.log **/.DS_Store
 .PHONY: clean
 
 # INSTALL
