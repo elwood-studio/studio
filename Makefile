@@ -49,6 +49,11 @@ version: ## version all packages
 	@echo "version..."
 	$(lerna) version --no-private
 
+# PUBLISH
+publish: ## publish all packages
+	@echo "publish..."
+	pnpm publish -r --access public --publish-branch main	
+
 # INSTALL
 install: ## install workspace dependencies
 	@echo "installing..."
