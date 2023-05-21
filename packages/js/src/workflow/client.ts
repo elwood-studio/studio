@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import type { JsonObject } from '@elwood-studio/types';
 
 import { invariant } from '../libs/invariant';
@@ -20,7 +21,7 @@ export class WorkflowClient {
    * @returns
    * @link https://rclone.org/rc/#operations-list
    */
-  private async _fetch<Response extends any = any>(
+  private async _fetch<Response extends JsonObject = JsonObject>(
     path: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     body?: Record<string, unknown>,
@@ -39,9 +40,33 @@ export class WorkflowClient {
     return (await response.json()) as Response;
   }
 
-  async submit(workflow: string, input: JsonObject = {}) {
+  async run(
+    workflow: string | JsonObject,
+    input: JsonObject = {},
+    trackingId?: string,
+  ): Promise<{ trackingId: string }> {
     invariant(workflow, 'workflow.submit(): workflow is required');
 
-    return await this._fetch<JsonObject>(``, 'POST', input);
+    return await this._fetch<{ trackingId: string }>(`job`, 'POST', {
+      workflow: await this._getWorkflow(workflow),
+      input,
+      tracking_id: trackingId,
+    });
+  }
+
+  protected async _getWorkflow(
+    workflow: string | JsonObject,
+  ): Promise<string | JsonObject> {
+    if (typeof workflow !== 'string') {
+      return workflow;
+    }
+
+    if (workflow.startsWith('http')) {
+      const response = await fetch(workflow);
+      invariant(response.ok, 'workflow.submit(): workflow not found');
+      return await response.text();
+    }
+
+    return workflow;
   }
 }

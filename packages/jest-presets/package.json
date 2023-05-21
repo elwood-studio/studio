@@ -1,0 +1,11 @@
+{
+  "name": "jest-presets",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "babel-jest": "^29.5.0",
+    "jest-esm-transformer": "^1.0.0",
+    "ts-jest": "^26.5.0"
+  }
+}

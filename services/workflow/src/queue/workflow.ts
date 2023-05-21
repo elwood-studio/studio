@@ -2,7 +2,7 @@ import type { Workflow } from '@elwood-studio/workflow-types';
 import type { JsonObject, Json } from '@elwood-studio/types';
 import { RunnerStatus } from '@elwood-studio/workflow-runner';
 
-import type { QueueRegisterContext } from '../types';
+import type { ServerContext } from '../types';
 
 type WorkflowInput = {
   helloWorld?: boolean;
@@ -10,9 +10,7 @@ type WorkflowInput = {
   input: JsonObject;
 };
 
-export default async function register(
-  context: QueueRegisterContext,
-): Promise<void> {
+export default async function register(context: ServerContext): Promise<void> {
   const { boss, submitWorkflow } = context;
 
   // run a specific workflow

@@ -14,15 +14,28 @@ import { FileSystemOperation } from '../constants';
 export type FileSystemClientOptions = {
   url: string;
   key: string;
+  getAuthenticationToken(): Promise<string | undefined>;
   fetch: Fetch;
 };
 
 export class FileSystemClient {
   protected readonly _uppy = new Uppy();
 
+  protected authToken: string | undefined;
+
   constructor(private readonly options: FileSystemClientOptions) {
     this._uppy.use(Tus, {
       endpoint: `${this.options.url}/fs/v1/tus`,
+      onBeforeRequest: async (req) => {
+        const token = await this.options.getAuthenticationToken();
+
+        if (token) {
+          req.setHeader('Authorization', `Bearer ${token}`);
+        }
+      },
+      headers: {
+        apikey: this.options.key,
+      },
     });
   }
 
@@ -55,50 +68,5 @@ export class FileSystemClient {
     );
 
     return (await response.json()) as Response;
-  }
-
-  /**
-   * List files for a remote & path
-   * @param input
-   * @returns
-   */
-  async list(input: FileSystemListInput): Promise<FileSystemListOutput> {
-    invariant(input.remote, 'fileSystem.list(): remote is required');
-    invariant(input.path !== undefined, 'fileSystem.list(): path is required');
-
-    const result = await this._fetch<FileSystemListOutput>(
-      FileSystemOperation.List,
-      {
-        fs: input.remote,
-        remote: input.path,
-        options: input.options ?? {},
-      },
-    );
-
-    return {
-      ...result,
-      remote: input.remote,
-    };
-  }
-
-  async mkdir() {}
-
-  async delete() {}
-
-  /**
-   *
-   * @param input
-   * @returns
-   * @link https://rclone.org/rc/#operations-stat
-   */
-  async stat(input: FileSystemStatInput): Promise<FileSystemStatOutput> {
-    invariant(input.remote, 'fileSystem.stat(): remote is required');
-    invariant(input.path !== undefined, 'fileSystem.stat(): path is required');
-
-    return await this._fetch<FileSystemStatOutput>(FileSystemOperation.Stat, {
-      fs: input.remote,
-      remote: input.path,
-      options: input.options ?? {},
-    });
   }
 }

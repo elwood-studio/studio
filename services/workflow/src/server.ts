@@ -4,13 +4,15 @@ import PgBoss from 'pg-boss';
 import PgDatabase from 'pg-boss/src/db';
 import { WorkflowRunnerRuntime } from '@elwood-studio/workflow-runner';
 
-import type { QueueRegisterContext } from './types';
+import type { ServerContext } from './types';
 import { createWorkflowRuntime } from './libs/create-runtime';
 import { submitWorkflow } from './libs/submit-workflow';
+import { getConfig } from './libs/get-config';
 
 import registerWorkflowQueue from './queue/workflow';
 import registerEventQueue from './queue/event';
-import { getConfig } from './libs/get-config';
+
+import jobHandlerPlugin from './handlers/job';
 
 let db: PgDatabase | null = null;
 let boss: PgBoss | null = null;
@@ -68,7 +70,7 @@ async function main() {
 
   workflowRuntime = runtime;
 
-  const context: QueueRegisterContext = {
+  const context: ServerContext = {
     boss,
     db,
     submitWorkflow(workflow, input) {
@@ -85,6 +87,11 @@ async function main() {
 
   await registerWorkflowQueue(context);
   await registerEventQueue(context);
+
+  app.register(jobHandlerPlugin, {
+    prefix: '/job',
+    context,
+  });
 
   app.listen(
     {

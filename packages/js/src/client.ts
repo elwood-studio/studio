@@ -1,10 +1,14 @@
-import { SupabaseClient, SupabaseClientOptions } from '@supabase/supabase-js';
+import SupabaseClientPkg, {
+  SupabaseClientOptions,
+} from '@supabase/supabase-js';
 
 type Database = any;
 
 import { invariant } from './libs/invariant';
 import { FileSystemClient } from './file-system';
 import { WorkflowClient } from './workflow';
+
+const { SupabaseClient } = SupabaseClientPkg;
 
 export class Client extends SupabaseClient<Database, 'elwood'> {
   protected readonly _fs: FileSystemClient;
@@ -23,6 +27,7 @@ export class Client extends SupabaseClient<Database, 'elwood'> {
       url,
       key,
       fetch: this.fetch!,
+      getAuthenticationToken: this._getAuthenticationToken,
     });
 
     this._workflow = new WorkflowClient({
@@ -31,6 +36,10 @@ export class Client extends SupabaseClient<Database, 'elwood'> {
       fetch: this.fetch!,
     });
   }
+
+  protected _getAuthenticationToken = async () => {
+    return (await this.auth.getSession()).data.session?.access_token;
+  };
 
   get fileSystem() {
     return this._fs;

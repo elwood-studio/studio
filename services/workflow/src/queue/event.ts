@@ -1,6 +1,6 @@
 import type { Json, JsonObject } from '@elwood-studio/types';
 
-import type { QueueRegisterContext } from '../types';
+import type { ServerContext } from '../types';
 import { findWorkflow } from '../libs/find-workflow';
 
 type EventWorkInput = {
@@ -9,9 +9,7 @@ type EventWorkInput = {
   previousState: string;
 };
 
-export default async function register(
-  context: QueueRegisterContext,
-): Promise<void> {
+export default async function register(context: ServerContext): Promise<void> {
   const { boss, db } = context;
 
   // respond to any event that comes in

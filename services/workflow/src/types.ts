@@ -9,7 +9,7 @@ export type SubmitWorkflowFn = (
   input: JsonObject,
 ) => Promise<WorkflowRunnerRuntimeRun>;
 
-export type QueueRegisterContext = {
+export type ServerContext = {
   boss: PgBoss;
   db: PgDatabase;
   submitWorkflow: SubmitWorkflowFn;
