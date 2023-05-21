@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/workflow-config",
-  "version": "0.0.77",
+  "version": "0.1.1",
   "main": "./lib/index.js",
   "files": [
     "lib",
@@ -23,8 +23,8 @@
     "yaml": "^2.0.0"
   },
   "devDependencies": {
-    "@elwood-studio/types": "^0.0.76",
-    "@elwood-studio/workflow-types": "^0.0.76",
+    "@elwood-studio/types": "^0.1.1",
+    "@elwood-studio/workflow-types": "^0.1.1",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/lodash.set": "^4.3.6",
     "@types/uuid": "^9.0.0",
