@@ -4,11 +4,6 @@
 </p>
 
 <p align="center">
-<b>Upload.
-Collaborate.
-Distribute.
-</b>
-<br>
 <small>
 <a href="https://elwood.studio">elwood.studio</a> | 
 <a href="https://discord.gg/ZxWKPeABNG">Discord</a> |
