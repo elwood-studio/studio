@@ -47,7 +47,7 @@ clean: ## cleanup compile and build artifacts
 # VERSION
 version: ## version all packages
 	@echo "version..."
-	$(lerna) version
+	$(lerna) version --no-private
 
 # INSTALL
 install: ## install workspace dependencies
