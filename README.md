@@ -1,4 +1,7 @@
-<p align="center"><img src="https://elwood-studio-pub.s3.amazonaws.com/github-banner.svg" width="100%" alt="Elwood Studio"></p>
+<p align="center">
+<img src="https://elwood-studio-pub.s3.amazonaws.com/gh-light.png#gh-light-mode-only" width="100%" alt="Elwood Studio">
+<img src="https://elwood-studio-pub.s3.amazonaws.com/gh-dark.png#gh-dark-mode-only" width="100%" alt="Elwood Studio">
+</p>
 
 <p align="center">
 <b>Upload.
