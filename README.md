@@ -5,8 +5,8 @@
 
 <p align="center">
 <small>
-<a href="https://elwood.studio">elwood.studio</a> | 
-<a href="https://discord.gg/ZxWKPeABNG">Discord</a> |
+<a href="https://elwood.studio">elwood.studio</a> &#8226; 
+<a href="https://discord.gg/ZxWKPeABNG">Discord</a> &#8226;
 <a href="mailto:hello@elwood.studio">hello@elwood.studio</a>
 </small>
 </p>
