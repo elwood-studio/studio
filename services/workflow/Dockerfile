@@ -23,8 +23,11 @@ COPY ./entry.sh /app/entry.sh
 RUN chmod 755 /app/entry.sh /app/workflow-server
 RUN mkdir -p /var/workflow/data /var/workflow/working-dir
 
+ENV WORKFLOWS_DIR /var/workflow/workflows
 ENV DATA_DIR /var/workflow/data
 ENV WORKING_DIR /var/workflow/working-dir
+ENV PORT 4000
+ENV HOST 0.0.0.0
 
 ENTRYPOINT ["/app/entry.sh"]
 CMD ["/app/workflow-server"]

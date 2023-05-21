@@ -10,24 +10,17 @@ import type {
   Fetch,
 } from '../types';
 import { FileSystemOperation } from '../constants';
-import { FileSystemAdminApi } from './admin-api';
-import { FileSystemRemote } from './remote';
 
-export type FileSystemOptions = {
+export type FileSystemClientOptions = {
   url: string;
   key: string;
   fetch: Fetch;
 };
 
-export class FileSystem {
-  protected readonly _admin: FileSystemAdminApi;
+export class FileSystemClient {
   protected readonly _uppy = new Uppy();
 
-  constructor(private readonly options: FileSystemOptions) {
-    this._admin = new FileSystemAdminApi({
-      fetch: this._fetch,
-    });
-
+  constructor(private readonly options: FileSystemClientOptions) {
     this._uppy.use(Tus, {
       endpoint: `${this.options.url}/fs/v1/tus`,
     });
@@ -35,14 +28,6 @@ export class FileSystem {
 
   get upload() {
     return this._uppy;
-  }
-
-  get admin(): FileSystemAdminApi {
-    return this._admin;
-  }
-
-  remote(name: string): FileSystemRemote {
-    return new FileSystemRemote(name, this);
   }
 
   /**

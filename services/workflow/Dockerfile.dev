@@ -23,7 +23,8 @@ COPY ./workflows /var/workflow/workflows
 ENV WORKFLOWS_DIR /var/workflow/workflows
 ENV DATA_DIR /var/workflow/data
 ENV WORKING_DIR /var/workflow/working-dir
-
+ENV PORT 4000
+ENV HOST 0.0.0.0
 
 ENTRYPOINT ["/app/entry.sh"]
 CMD ["/app/node_modules/.bin/ts-node-dev", "--transpile-only", "./src/server.ts"]

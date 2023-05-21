@@ -3,10 +3,12 @@ import { SupabaseClient, SupabaseClientOptions } from '@supabase/supabase-js';
 type Database = any;
 
 import { invariant } from './libs/invariant';
-import { FileSystem } from './file-system/client';
+import { FileSystemClient } from './file-system';
+import { WorkflowClient } from './workflow';
 
 export class Client extends SupabaseClient<Database, 'elwood'> {
-  protected readonly _fs: FileSystem;
+  protected readonly _fs: FileSystemClient;
+  protected readonly _workflow: WorkflowClient;
 
   constructor(
     url: string,
@@ -17,7 +19,13 @@ export class Client extends SupabaseClient<Database, 'elwood'> {
     invariant(key, 'Must provide API key');
     super(url, key, { ...opts, db: { schema: 'elwood' } });
 
-    this._fs = new FileSystem({
+    this._fs = new FileSystemClient({
+      url,
+      key,
+      fetch: this.fetch!,
+    });
+
+    this._workflow = new WorkflowClient({
       url,
       key,
       fetch: this.fetch!,
@@ -28,7 +36,7 @@ export class Client extends SupabaseClient<Database, 'elwood'> {
     return this._fs;
   }
 
-  fs(name: string) {
-    return this._fs.remote(name);
+  get workflow() {
+    return this._workflow;
   }
 }

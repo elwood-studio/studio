@@ -47,6 +47,24 @@ services:
     plugins:
       - name: cors
 
+  - name: workflow-v1
+    url: http://$WORKFLOW_HOST:4000/
+    routes:
+      - name: workflow-v1-all
+        strip_path: true
+        paths:
+          - /workflow/v1/
+    plugins:
+      - name: cors
+      - name: key-auth
+        config:
+          hide_credentials: false
+      - name: acl
+        config:
+          hide_groups_header: true
+          allow:
+            - admin
+
   ## Open Auth routes
   - name: auth-v1-open
     url: http://$AUTH_HOST:9999/verify

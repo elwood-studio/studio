@@ -46,6 +46,7 @@ services:
       AUTH_HOST: auth
       REST_HOST: rest
       REALTIME_HOST: realtime
+      WORKFLOW_HOST: workflow
 
   # DATABASE
   db:

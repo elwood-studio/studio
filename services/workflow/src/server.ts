@@ -1,3 +1,4 @@
+import fastify from 'fastify';
 import { stat } from 'node:fs/promises';
 import PgBoss from 'pg-boss';
 import PgDatabase from 'pg-boss/src/db';
@@ -15,13 +16,10 @@ let db: PgDatabase | null = null;
 let boss: PgBoss | null = null;
 let workflowRuntime: WorkflowRunnerRuntime | null = null;
 
-const { dataDir, dbUrl, workingDir } = getConfig();
+const { dataDir, dbUrl, workingDir, host, port } = getConfig();
+const app = fastify({ logger: true });
 
 async function main() {
-  if (boss) {
-    return;
-  }
-
   console.log('checking for dirs...');
 
   // make sure both dirs exist
@@ -33,6 +31,7 @@ async function main() {
   // create our own db connection so we can
   // pass it down to event handlers
   db = new PgDatabase({ connectionString: dbUrl });
+
   await db.open();
 
   // lets get boss going
@@ -86,6 +85,19 @@ async function main() {
 
   await registerWorkflowQueue(context);
   await registerEventQueue(context);
+
+  app.listen(
+    {
+      port,
+      host,
+    },
+    function (err) {
+      if (err) {
+        app.log.error(err);
+        process.exit(1);
+      }
+    },
+  );
 }
 
 main()
@@ -105,6 +117,7 @@ process.on('SIGINT', async () => {
   db && (await db.close());
   boss && (await boss.stop());
   workflowRuntime && (await workflowRuntime.teardown());
+  app && (await app.close());
 
   // null out
   boss = null;
