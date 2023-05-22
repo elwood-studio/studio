@@ -11,7 +11,7 @@
     }
   },
   "bin": {
-    "elwood-studio": "./bin/cli.js"
+    "elwood-studio": "./bin/cli.cjs"
   },
   "files": [
     "dist",
