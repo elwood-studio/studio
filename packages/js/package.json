@@ -4,8 +4,14 @@
   "main": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist"
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/esm/index.js"
+    }
   },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "scripts": {
     "build": "tsup",

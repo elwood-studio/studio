@@ -8,6 +8,7 @@ export default defineConfig((options: Options) => ({
   dts: true,
   minify: true,
   clean: true,
+  legacyOutput: true,
   external: [],
   ...options,
 }));

@@ -2,16 +2,20 @@
   "name": "@elwood-studio/cli",
   "version": "0.1.2",
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/index.ts",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist"
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/esm/index.js"
+    }
   },
   "bin": {
     "elwood-studio": "./bin/cli.js"
   },
   "files": [
-    "lib"
+    "dist",
+    "bin"
   ],
   "scripts": {
     "test": "jest --config=./config/jest.js",
