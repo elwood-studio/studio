@@ -13,6 +13,10 @@
 
 <p>&nbsp;</p>
 
+<p align="center">Elwood Studio is currently in public <strong>BETA</strong>. We are actively developing and improving. If you have any questions, please reach out to us at hello@elwood.studio.</p>
+
+<p>&nbsp;</p>
+
 # 🚀 What is Elwood Studio
 
 **Elwood Studio** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration. Powerful role-based sharing. Simple one-click distribution.
