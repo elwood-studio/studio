@@ -6,10 +6,8 @@ import registerInit from './commands/init.ts';
 import registerWorkflow from './commands/workflow.ts';
 import registerFs from './commands/fs.ts';
 
-import { renderMessage } from './components/message.tsx';
-
 export async function main(argv: string[]) {
-  const rawArgs = hideBin(process.argv);
+  const rawArgs = hideBin(argv);
   const cli = yargs(rawArgs);
 
   cli
@@ -32,10 +30,6 @@ export async function main(argv: string[]) {
 
   cli.fail((msg, err) => {
     console.log(msg, err.stack);
-    renderMessage({
-      type: 'error',
-      text: msg ?? (err as Error).message,
-    });
     process.exit(1);
   });
 
@@ -49,13 +43,3 @@ export async function main(argv: string[]) {
     cli.showHelp();
   }
 }
-
-process.on('unhandledRejection', (err) => {
-  console.log(err);
-  process.exit(1);
-});
-
-process.on('uncaughtException', (err) => {
-  console.log(err);
-  process.exit(1);
-});
