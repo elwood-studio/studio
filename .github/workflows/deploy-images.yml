@@ -10,7 +10,11 @@ env:
 
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-latest
+    runs-on:
+      include:
+        - runner: ubuntu-latest
+          arch: amd64
+
     permissions:
       contents: read
       packages: write
