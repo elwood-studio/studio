@@ -6,7 +6,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
     services: {
       fs: {
         container_name: 'fs',
-        image: 'ghcr.io/elwood-studio/fs:main',
+        image: 'ghcr.io/elwood-studio/fs:latest',
         restart: 'unless-stopped',
         depends_on: ['db'],
         environment: {
@@ -18,7 +18,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       },
       workflow: {
         container_name: 'workflow',
-        image: 'ghcr.io/elwood-studio/workflow:main',
+        image: 'ghcr.io/elwood-studio/workflow:latest',
         volumes: ['../workflows:/var/workflows', '../actions:/var/actions'],
         restart: 'unless-stopped',
         environment: {
@@ -29,7 +29,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       },
       api: {
         container_name: 'api',
-        image: 'ghcr.io/elwood-studio/gateway:main',
+        image: 'ghcr.io/elwood-studio/gateway:latest',
         restart: 'unless-stopped',
         ports: ['${KONG_HTTP_PORT}:8000/tcp'],
         environment: {
@@ -44,7 +44,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       },
       db: {
         container_name: 'db',
-        image: 'ghcr.io/elwood-studio/db:main',
+        image: 'ghcr.io/elwood-studio/db:latest',
         restart: 'unless-stopped',
         ports: ['${POSTGRES_PORT}:${POSTGRES_PORT}'],
         environment: {

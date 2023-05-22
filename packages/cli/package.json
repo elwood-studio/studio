@@ -3,11 +3,21 @@
   "version": "0.1.5",
   "type": "module",
   "main": "./dist/index.ts",
+  "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/esm/index.js"
+      "types": "./dist/index.d.ts",
+      "node": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      }
+    },
+    "./*.js": "./dist/*.js",
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/esm/*"
     }
   },
   "bin": {
@@ -24,13 +34,15 @@
     "dev-cli": "node --loader ts-node/esm --no-warnings ./bin/cli-dev.ts"
   },
   "dependencies": {
+    "@elwood-studio/js": "workspace:*",
     "@iarna/toml": "^2.2.5",
+    "boxen": "^5.1.2",
+    "chalk": "^4.1.2",
     "docker-compose": "^0.24.1",
     "fs-jetpack": "^5.0.0",
-    "ink": "^4.2.0",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.0",
-    "react": "^18.2.0",
+    "stacktracey": "^2.1.8",
     "ts-invariant": "^0.10.2",
     "yaml": "^2.0.0",
     "yargs": "^17.7.2"
@@ -39,7 +51,6 @@
     "@elwood-studio/types": "workspace:*",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/react": "^18.0.25",
     "@types/yargs": "^17.0.24",
     "pkg": "^5.5.1",
     "rimraf": "^5.0.1",

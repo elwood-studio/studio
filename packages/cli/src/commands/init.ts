@@ -2,13 +2,13 @@ import { resolve, join } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { invariant } from 'ts-invariant';
 import { Argv, Arguments } from 'yargs';
-import * as yaml from 'yaml';
 import jwt from 'jsonwebtoken';
 
 import {
   WorkingDirManager,
   workingDirManager,
 } from '../libs/working-dir-manager.ts';
+import { printSuccessMessage } from '../libs/print-message.ts';
 
 export type Options = {
   force?: boolean;
@@ -165,4 +165,6 @@ export async function handler(
       schemas: [],
     },
   });
+
+  printSuccessMessage(`Initialized new project in ${wd.join('')}`);
 }

@@ -1,6 +1,7 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
+import { printErrorMessage } from './libs/print-message.ts';
 import registerServe from './commands/local.ts';
 import registerInit from './commands/init.ts';
 import registerWorkflow from './commands/workflow.ts';
@@ -29,7 +30,7 @@ export async function main(argv: string[]) {
   registerWorkflow(cli);
 
   cli.fail((msg, err) => {
-    console.log(msg, err.stack);
+    printErrorMessage(err ?? msg);
     process.exit(1);
   });
 

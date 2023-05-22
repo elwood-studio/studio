@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=build /app/workflow-server /app/workflow-server
 COPY ./entry.sh /app/entry.sh
 RUN chmod 755 /app/entry.sh /app/workflow-server
-RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow
+RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow /data
 COPY ./workflows /var/system-workflows
 
 ENV ACTIONS_DIR /var/actions
