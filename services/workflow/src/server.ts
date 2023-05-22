@@ -18,7 +18,7 @@ let db: PgDatabase | null = null;
 let boss: PgBoss | null = null;
 let workflowRuntime: WorkflowRunnerRuntime | null = null;
 
-const { dataDir, dbUrl, workingDir, host, port } = getConfig();
+const { dataDir, dbUrl, workingDir, actionsDir, host, port } = getConfig();
 const app = fastify({ logger: true });
 
 async function main() {
@@ -64,6 +64,7 @@ async function main() {
   const [runtime, secretsManager] = await createWorkflowRuntime({
     workingDir,
     dataDir,
+    actionsDir,
   });
 
   console.log('runtime started...');

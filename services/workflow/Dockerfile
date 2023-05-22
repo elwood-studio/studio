@@ -15,17 +15,18 @@ RUN cd /app \
     && ./node_modules/.bin/ncc build ./src/server.ts -o ./dist --external cpu-features --external pg-cloudflare \
     && ./node_modules/.bin/pkg -t node18-linux -o ./workflow-server ./dist/index.js
 
-
 FROM lukechannings/deno
 WORKDIR /app
 COPY --from=build /app/workflow-server /app/workflow-server
 COPY ./entry.sh /app/entry.sh
 RUN chmod 755 /app/entry.sh /app/workflow-server
-RUN mkdir -p /var/workflow/data /var/workflow/working-dir
+RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow
+COPY ./workflows /var/system-workflows
 
-ENV WORKFLOWS_DIR /var/workflow/workflows
-ENV DATA_DIR /var/workflow/data
-ENV WORKING_DIR /var/workflow/working-dir
+ENV ACTIONS_DIR /var/actions
+ENV WORKFLOWS_DIR /var/workflows
+ENV DATA_DIR /data
+ENV WORKING_DIR /var/workflow
 ENV PORT 4000
 ENV HOST 0.0.0.0
 

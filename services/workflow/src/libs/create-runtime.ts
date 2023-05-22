@@ -9,13 +9,14 @@ import {
 
 export type CreateWorkflowRuntimeOptions = {
   workingDir: string;
+  actionsDir: string;
   dataDir: string;
 };
 
 export async function createWorkflowRuntime(
   options: CreateWorkflowRuntimeOptions,
 ): Promise<[WorkflowRunnerRuntime, SecretsManager]> {
-  const { workingDir, dataDir } = options;
+  const { workingDir, actionsDir, dataDir } = options;
 
   const keychainUnlockKey = (await createUnlockKey()).toString('base64');
   const runtime = await createRuntime({
@@ -26,6 +27,7 @@ export async function createWorkflowRuntime(
     context: 'local',
     staticFiles: {
       data: dataDir,
+      actions: actionsDir,
     },
     plugins: [],
   });

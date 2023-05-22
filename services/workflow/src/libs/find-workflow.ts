@@ -16,6 +16,7 @@ export async function findWorkflow(): Promise<
   const workflows = [];
 
   const possibleFolders = [
+    '/var/system-workflows',
     join(dataDir, 'workflows'),
     join(dataDir, '.elwood', 'workflows'),
     join(workflowsDir),

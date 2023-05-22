@@ -16,13 +16,13 @@ RUN cd /app \
 
 
 COPY ./entry.sh /app/entry.sh
-RUN mkdir -p /var/workflow/data /var/workflow/working-dir
+RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow
+COPY ./workflows /var/system-workflows
 
-COPY ./workflows /var/workflow/workflows
-
-ENV WORKFLOWS_DIR /var/workflow/workflows
-ENV DATA_DIR /var/workflow/data
-ENV WORKING_DIR /var/workflow/working-dir
+ENV ACTIONS_DIR /var/actions
+ENV WORKFLOWS_DIR /var/workflows
+ENV DATA_DIR /data
+ENV WORKING_DIR /var/workflow
 ENV PORT 4000
 ENV HOST 0.0.0.0
 

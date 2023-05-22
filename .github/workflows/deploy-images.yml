@@ -6,12 +6,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
@@ -48,6 +46,8 @@ jobs:
         uses: docker/metadata-action@v4.4.0
         with:
           images: ${{ matrix.image }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4.0.0

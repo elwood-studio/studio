@@ -1,6 +1,6 @@
 import { Argv, Arguments } from 'yargs';
 
-import { CliArguments } from '../types';
+import { CliArguments } from '../types.ts';
 
 export default async function register(cli: Argv) {
   cli.command(

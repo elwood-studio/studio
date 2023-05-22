@@ -1,6 +1,11 @@
 {
   "extends": "tsconfig/node.json",
   "compilerOptions": {
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "node16",
+    "module": "Node16",
+    "jsx": "react",
     "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./lib",
@@ -8,14 +13,10 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "references": [
     {
       "path": "../types",
-      "prepend": false
-    },
-    {
-      "path": "../../types",
       "prepend": false
     }
   ]

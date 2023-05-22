@@ -1,4 +1,4 @@
-import { JsonObject } from '@elwood-studio/types/src';
+import type { JsonObject } from '@elwood-studio/types';
 
 export async function buildDockerCompose(): Promise<JsonObject> {
   return {
@@ -6,7 +6,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
     services: {
       fs: {
         container_name: 'fs',
-        image: 'ghcr.io/elwood-studio/fs:latest',
+        image: 'ghcr.io/elwood-studio/fs:main',
         restart: 'unless-stopped',
         depends_on: ['db'],
         environment: {
@@ -18,8 +18,8 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       },
       workflow: {
         container_name: 'workflow',
-        image: 'ghcr.io/elwood-studio/fs:latest',
-        volumes: ['../workflows:/var/workflows'],
+        image: 'ghcr.io/elwood-studio/workflow:main',
+        volumes: ['../workflows:/var/workflows', '../actions:/var/actions'],
         restart: 'unless-stopped',
         environment: {
           JWT_SECRET: '${JWT_SECRET}',
@@ -29,7 +29,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       },
       api: {
         container_name: 'api',
-        image: 'ghcr.io/elwood-studio/gateway:latest',
+        image: 'ghcr.io/elwood-studio/gateway:main',
         restart: 'unless-stopped',
         ports: ['${KONG_HTTP_PORT}:8000/tcp'],
         environment: {
@@ -44,7 +44,7 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       },
       db: {
         container_name: 'db',
-        image: 'ghcr.io/elwood-studio/db:latest',
+        image: 'ghcr.io/elwood-studio/db:main',
         restart: 'unless-stopped',
         ports: ['${POSTGRES_PORT}:${POSTGRES_PORT}'],
         environment: {
