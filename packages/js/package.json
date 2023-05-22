@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -17,7 +17,7 @@
     "preset": "jest-presets/jest/node"
   },
   "devDependencies": {
-    "@elwood-studio/types": "^0.1.1",
+    "@elwood-studio/types": "^0.1.2",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/jest": "^29.5.0",
     "@uppy/core": "^3.2.0",
