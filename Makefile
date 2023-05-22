@@ -5,13 +5,13 @@ lerna := ./node_modules/.bin/lerna
 # UP
 up: ## bring up docker-compose services
 	@echo "up..."
-	docker-compose --env-file=.env -f ./docker/docker-compose.yml up --build --force-recreate 
+	docker-compose --env-file=.env -f ./docker/docker-compose-dev.yml up --build --force-recreate 
 .PHONY: up
 
 # DOWN
 down: ## bring up docker-compose services
 	@echo "down..."
-	docker-compose --env-file=.env -f ./docker/docker-compose.yml down
+	docker-compose --env-file=.env -f ./docker/docker-compose-dev.yml down
 .PHONY: down
 
 # BUILD

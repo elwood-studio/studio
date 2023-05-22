@@ -1,0 +1,58 @@
+name: Create and publish Docker images
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./services/db/Dockerfile
+            image: ghcr.io/elwood-studio/db
+            context: ./services/db
+          - dockerfile: ./services/fs/Dockerfile
+            image: ghcr.io/elwood-studio/fs
+            context: ./services/fs
+          - dockerfile: ./services/gateway/Dockerfile
+            image: ghcr.io/elwood-studio/gateway
+            context: ./services/gateway
+          - dockerfile: ./services/workflow/Dockerfile
+            image: ghcr.io/elwood-studio/workflow
+            context: ./services/workflow
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action
+        with:
+          images: ${{ matrix.image }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
