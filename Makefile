@@ -47,7 +47,7 @@ clean: ## cleanup compile and build artifacts
 # VERSION
 version: ## version all packages
 	@echo "version..."
-	$(lerna) version --no-private
+	$(turbo) run build && $(lerna) version --no-private
 
 # PUBLISH
 publish: ## publish all packages
