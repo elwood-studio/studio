@@ -13,7 +13,7 @@
 
 <p>&nbsp;</p>
 
-<p align="center">Elwood Studio is currently in public <strong>BETA</strong>. We are actively developing and improving. If you have any questions, please reach out to us at hello@elwood.studio.</p>
+<p align="center">Elwood Studio is currently in public <strong>BETA</strong>. We are actively developing and improving the code & documentation. If you have any questions, please reach out to us at <a href="mailto:hello@elwood.studio">hello@elwood.studio</a>.</p>
 
 <p>&nbsp;</p>
 

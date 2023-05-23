@@ -1,8 +1,8 @@
-import { resolve, join } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { invariant } from 'ts-invariant';
 import { Argv, Arguments } from 'yargs';
 import jwt from 'jsonwebtoken';
+import boxen from 'boxen';
 
 import {
   WorkingDirManager,
@@ -47,18 +47,19 @@ export async function handler(
   await wd.ensure('workflows');
   await wd.ensure('actions');
 
-  const ascii = [
-    `███████ ██      ██     ██  ██████   ██████  ██████`,
-    `██      ██      ██     ██ ██    ██ ██    ██ ██   ██`,
-    `█████   ██      ██  █  ██ ██    ██ ██    ██ ██   ██`,
-    `██      ██      ██ ███ ██ ██    ██ ██    ██ ██   ██`,
-    `███████ ███████  ███ ███   ██████   ██████  ██████`,
-  ];
+  const ascii = boxen(
+    [
+      `███████ ██      ██     ██  ██████   ██████  ██████`,
+      `██      ██      ██     ██ ██    ██ ██    ██ ██   ██`,
+      `█████   ██      ██  █  ██ ██    ██ ██    ██ ██   ██`,
+      `██      ██      ██ ███ ██ ██    ██ ██    ██ ██   ██`,
+      `███████ ███████  ███ ███   ██████   ██████  ██████`,
+    ].join('\n'),
+    { padding: 1 },
+  );
 
   await wd.write('workflows/readme.txt', [
-    ...ascii,
-    '',
-    '---------------------------------------------------',
+    ascii,
     '',
     'This directory is for your workflows.',
     'For more information about workflows, visit',
@@ -73,13 +74,11 @@ export async function handler(
   ]);
 
   await wd.write('actions/readme.txt', [
-    ...ascii,
-    '',
-    '---------------------------------------------------',
+    ascii,
     '',
     'This directory is for your workflow actions.',
     'For more information about actions, visit',
-    'https://elwood.studio/docs/actiosn',
+    'https://elwood.studio/docs/actions',
     '',
     'You can also check out our repository of actions at',
     'https://github.com/elwood-studio/actions',

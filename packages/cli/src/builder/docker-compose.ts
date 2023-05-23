@@ -19,7 +19,10 @@ export async function buildDockerCompose(): Promise<JsonObject> {
       workflow: {
         container_name: 'workflow',
         image: 'ghcr.io/elwood-studio/workflow:latest',
-        volumes: ['../workflows:/var/workflows', '../actions:/var/actions'],
+        volumes: [
+          '../../workflows:/var/workflows',
+          '../../actions:/var/actions',
+        ],
         restart: 'unless-stopped',
         environment: {
           JWT_SECRET: '${JWT_SECRET}',
