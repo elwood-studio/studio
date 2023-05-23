@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/workflow-types",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "./lib",
   "scripts": {
     "dev": "yarn build --watch",
