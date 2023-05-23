@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/types",
-  "version": "0.1.2",
+  "version": "0.1.7",
   "main": "./lib",
   "scripts": {
     "dev": "yarn build --watch",
