@@ -130,7 +130,6 @@ process.on('SIGINT', async () => {
   boss = null;
   workflowRuntime = null;
   db = null;
-  app = null;
 
   process.exit();
 });
