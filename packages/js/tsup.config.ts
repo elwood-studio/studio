@@ -6,9 +6,10 @@ export default defineConfig((options: Options) => ({
   entry: ['src/**/*.ts'],
   format: ['esm', 'cjs'],
   dts: true,
-  minify: true,
+  minify: false,
   clean: true,
   legacyOutput: true,
   external: [],
+  platform: 'browser',
   ...options,
 }));

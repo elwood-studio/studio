@@ -1,8 +1,8 @@
 import 'isomorphic-fetch';
 import type { JsonObject } from '@elwood-studio/types';
 
-import { invariant } from '../libs/invariant';
-import type { Fetch } from '../types';
+import { invariant } from '../libs/invariant.ts';
+import type { Fetch } from '../types.ts';
 
 export type WorkflowClientOptions = {
   url: string;
@@ -44,29 +44,17 @@ export class WorkflowClient {
     workflow: string | JsonObject,
     input: JsonObject = {},
     trackingId?: string,
-  ): Promise<{ trackingId: string }> {
+  ): Promise<{ tracking_id: string }> {
     invariant(workflow, 'workflow.submit(): workflow is required');
 
-    return await this._fetch<{ trackingId: string }>(`job`, 'POST', {
-      workflow: await this._getWorkflow(workflow),
+    return await this._fetch<{ tracking_id: string }>(`job`, 'POST', {
+      workflow,
       input,
       tracking_id: trackingId,
     });
   }
 
-  protected async _getWorkflow(
-    workflow: string | JsonObject,
-  ): Promise<string | JsonObject> {
-    if (typeof workflow !== 'string') {
-      return workflow;
-    }
-
-    if (workflow.startsWith('http')) {
-      const response = await fetch(workflow);
-      invariant(response.ok, 'workflow.submit(): workflow not found');
-      return await response.text();
-    }
-
-    return workflow;
+  async report(trackingId: string): Promise<JsonObject> {
+    return await this._fetch<JsonObject>(`job/${trackingId}`, 'GET');
   }
 }

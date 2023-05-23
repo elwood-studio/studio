@@ -1,13 +1,10 @@
 import { randomBytes } from 'node:crypto';
 import { invariant } from 'ts-invariant';
-import { Argv, Arguments } from 'yargs';
+
 import jwt from 'jsonwebtoken';
 import boxen from 'boxen';
 
-import {
-  WorkingDirManager,
-  workingDirManager,
-} from '../libs/working-dir-manager.ts';
+import type { Arguments, Argv, Context } from '../types.ts';
 import { printSuccessMessage } from '../libs/print-message.ts';
 
 export type Options = {
@@ -25,17 +22,16 @@ export default async function register(cli: Argv) {
       });
     },
     async (args: Arguments<Options>) => {
-      await handler(workingDirManager(args), {
+      await handler(args.context!, {
         force: args.force ?? false,
       });
     },
   );
 }
 
-export async function handler(
-  wd: WorkingDirManager,
-  options: Required<Options>,
-) {
+export async function handler(context: Context, options: Required<Options>) {
+  const { workingDir: wd } = context;
+
   if (options.force) {
     await wd.remove();
   }

@@ -5,7 +5,7 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": false,
-    "allowJs": true,
+    "allowJs": false,
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
@@ -16,5 +16,5 @@
     "target": "es2022"
   },
   "include": ["src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "lib"]
 }

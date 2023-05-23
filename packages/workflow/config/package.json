@@ -7,7 +7,7 @@
     "schema.json"
   ],
   "scripts": {
-    "dev": "yarn build --watch",
+    "dev": "tsc -b ./tsconfig.json --watch",
     "test": "jest --config=./config/jest.js",
     "build:tsc": "tsc -b ./tsconfig.json",
     "build": "yarn build:tsc && node ./scripts/generate-json-schema.js"
@@ -29,7 +29,8 @@
     "@types/lodash.set": "^4.3.6",
     "@types/uuid": "^9.0.0",
     "joi-to-json": "^3.1.1",
-    "tsconfig": "workspace:*"
+    "tsconfig": "workspace:*",
+    "typescript": "^5.0.3"
   },
   "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"

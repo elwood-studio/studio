@@ -11,7 +11,16 @@ export const supportedFileExtensions = ['.yml', '.yaml', '.json', '.js'];
 export type ResolveWorkflowInput = string | undefined | Workflow;
 
 export type ResolveWorkflowOptions = {
-  parseAs?: 'yaml' | 'yml' | 'json' | 'js' | 'ts' | 'deno-ts';
+  parseAs?:
+    | 'yaml'
+    | 'yml'
+    | 'json'
+    | 'js'
+    | 'ts'
+    | 'deno-ts'
+    | '.json'
+    | '.yaml'
+    | '.yml';
 };
 
 export async function resolveWorkflow(
@@ -37,6 +46,7 @@ export async function resolveWorkflow(
   // did they tell us what to parse this
   // workflow as, if not we assume YAML
   switch (options.parseAs) {
+    case '.json':
     case 'json':
       return {
         meta: {
@@ -45,6 +55,8 @@ export async function resolveWorkflow(
         ...JSON.parse(value),
       };
 
+    case '.yml':
+    case '.yaml':
     case 'yml':
     case 'yaml':
     default:

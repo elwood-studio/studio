@@ -42,6 +42,7 @@ export async function createCommandServer(
       app.register(require('@fastify/static'), {
         root: dir,
         prefix: `/${prefix}`,
+        decorateReply: false,
       });
     });
   }

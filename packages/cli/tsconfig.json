@@ -18,5 +18,9 @@
   },
   "include": ["**/*.ts", "**/*.tsx", "bin/cli-dev.ts"],
   "ignore": ["bin/*.ts"],
-  "references": []
+  "references": [],
+  "ts-node": {
+    "experimentalResolver": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }

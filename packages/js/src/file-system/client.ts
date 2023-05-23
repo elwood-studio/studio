@@ -1,7 +1,7 @@
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 
-import type { Fetch } from '../types';
+import type { Fetch } from '../types.ts';
 
 export type FileSystemClientOptions = {
   url: string;

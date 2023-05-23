@@ -14,9 +14,9 @@ export type JobHandlerOptions = {
 };
 
 export default fp<JobHandlerOptions>(async (app, opts) => {
-  const { boss } = opts.context;
+  const { boss, db } = opts.context;
 
-  app.post('*', async (req, res) => {
+  app.post('/job', async (req, res) => {
     const { workflow, input, tracking_id } = req.body as {
       workflow: string;
       input: JsonObject;
@@ -25,14 +25,38 @@ export default fp<JobHandlerOptions>(async (app, opts) => {
 
     const trackingId = tracking_id ?? input.tracking_id ?? randomUUID();
 
-    await boss.send('workflow', {
-      input: createWorkflowInput(input, { trackingId }),
-      workflow: await resolveWorkflow(workflow),
-    });
+    await boss.send(
+      'workflow',
+      {
+        input: createWorkflowInput(input, { trackingId }),
+        workflow: await resolveWorkflow(workflow),
+      },
+      { singletonKey: trackingId },
+    );
 
     res.send({
       ok: true,
       tracking_id: trackingId,
     });
+  });
+
+  app.get('/job/:id', async (req, res) => {
+    const { id } = req.params as { id: string };
+
+    const result = await db.executeSql(
+      `SELECT output FROM pgboss.job WHERE singletonKey = $1`,
+      [id],
+    );
+
+    if (result.rowCount === 0) {
+      res.status(404);
+      res.send({
+        ok: false,
+        error: `Unable to find job with tracking id: ${id}`,
+      });
+      return;
+    }
+
+    res.send(result.rows[0].output);
   });
 });

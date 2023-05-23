@@ -1,7 +1,17 @@
 {
   "extends": "tsconfig/base.json",
   "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "node16",
+    "module": "Node16",
+    "jsx": "react",
+    "rootDir": "./src",
     "baseUrl": ".",
+    "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]
     }

@@ -4,9 +4,9 @@ import SupabaseClientPkg, {
 
 type Database = any;
 
-import { invariant } from './libs/invariant';
-import { FileSystemClient } from './file-system';
-import { WorkflowClient } from './workflow';
+import { invariant } from './libs/invariant.ts';
+import { FileSystemClient } from './file-system/index.ts';
+import { WorkflowClient } from './workflow/index.ts';
 
 const { SupabaseClient } = SupabaseClientPkg;
 

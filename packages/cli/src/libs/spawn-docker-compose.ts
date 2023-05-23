@@ -1,29 +1,41 @@
 import { spawn } from 'node:child_process';
-import { type FileHandle } from 'node:fs/promises';
 
-import type { WorkingDirManager } from '../libs/working-dir-manager.ts';
+import type { Context } from '../types.ts';
 
 export type SpawnDockerComposeOptions = {
   command: string;
-  workingDir: WorkingDirManager;
+  env?: string[];
+  files?: string[];
+  context: Context;
   args?: string[];
-  stdout?: FileHandle;
-  stderr?: FileHandle;
+  stdout?: NodeJS.WritableStream;
+  stderr?: NodeJS.WritableStream;
 };
 
 export async function spawnDockerCompose(
   options: SpawnDockerComposeOptions,
 ): Promise<number> {
-  const { workingDir, command, stdout, stderr, args = [] } = options;
+  const {
+    context,
+    command,
+    stdout,
+    stderr,
+    env = [],
+    files = [],
+    args = [],
+  } = options;
+  const { workingDir } = context;
 
   return await new Promise<number>((resolve, reject) => {
     const proc = spawn('docker-compose', [
       '--project-name',
       'elwood',
-      '-f',
-      workingDir.join('local/.build/docker-compose-local.yml'),
-      '--env-file',
-      workingDir.join('local/.build/.env.local'),
+      ...files.reduce((acc, file) => {
+        return ['-f', workingDir.join(file).toString(), ...acc];
+      }, [] as string[]),
+      ...env.reduce((acc, file) => {
+        return ['--env-file', workingDir.join(file).toString(), ...acc];
+      }, [] as string[]),
       command,
       ...args,
     ]);

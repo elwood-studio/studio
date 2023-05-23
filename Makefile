@@ -23,7 +23,7 @@ build: ## build an app
 # DEV
 dev: ## run "dev" on all apps/* or packages/*
 	@echo "dev..."
-	$(turbo) run dev
+	$(turbo) run --concurrency 13 dev
 .PHONY: dev
 
 # LINT

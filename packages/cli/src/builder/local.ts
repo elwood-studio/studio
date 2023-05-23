@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken';
 import { randomBytes } from 'node:crypto';
 
-import type { WorkingDirManager } from '../libs/working-dir-manager.ts';
+import type { Context } from '../types.ts';
 import { buildDockerCompose } from './docker-compose.ts';
 
 export type BuildLocalOptions = {
-  workingDir: WorkingDirManager;
+  context: Context;
 };
 
 export async function buildLocal(options: BuildLocalOptions): Promise<void> {
-  const { workingDir } = options;
+  const { workingDir } = options.context;
 
   await workingDir.ensure('workflows');
   await workingDir.ensure('actions');
@@ -43,7 +43,7 @@ export async function buildLocal(options: BuildLocalOptions): Promise<void> {
     jwtSecret,
   );
 
-  await workingDir.writeEnv('local/.build/.env.local', {
+  await workingDir.writeEnv('local/.build/.env', {
     POSTGRES_PASSWORD: dbPassword,
     JWT_SECRET: jwtSecret,
     ANON_KEY: anonKey,

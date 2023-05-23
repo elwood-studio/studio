@@ -90,7 +90,6 @@ async function main() {
   await registerEventQueue(context);
 
   app.register(jobHandlerPlugin, {
-    prefix: '/job',
     context,
   });
 
@@ -130,6 +129,8 @@ process.on('SIGINT', async () => {
   // null out
   boss = null;
   workflowRuntime = null;
+  db = null;
+  app = null;
 
   process.exit();
 });

@@ -1,7 +1,8 @@
-import { type FileSystemOperation } from './constants';
+import { type FileSystemOperation } from './constants.ts';
 
 import type { UppyFile, FileRemoveReason, UploadResult } from '@uppy/core';
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Upload {
   export type File = UppyFile;
   export type RemoveReason = FileRemoveReason;
@@ -60,7 +61,7 @@ export type FileSystemStatInput = {
 export type FileSystemStatOutput = { item: FileSystemListItem | null };
 
 export type Fetch = typeof fetch;
-export type FileSystemFetch = <Response extends any = any>(
+export type FileSystemFetch = <R = unknown>(
   operation: FileSystemOperation,
   body: Record<string, unknown>,
-) => Promise<Response>;
+) => Promise<R>;

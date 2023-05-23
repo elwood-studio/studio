@@ -4,14 +4,12 @@
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "node": {
-        "import": "./dist/esm/index.js",
-        "require": "./dist/index.js",
-        "types": "./dist/index.d.ts"
-      }
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js"
     },
     "./*.js": "./dist/*.js",
     "./*": {

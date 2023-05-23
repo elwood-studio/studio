@@ -1,14 +1,18 @@
-import { Argv, Arguments } from 'yargs';
 import { invariant } from 'ts-invariant';
+import { Writable } from 'node:stream';
 import ora from 'ora';
 
-import { workingDirManager } from '../libs/working-dir-manager.ts';
+import type { Argv, Arguments } from '../types.ts';
 import { spawnDockerCompose } from '../libs/spawn-docker-compose.ts';
 import { buildLocal } from '../builder/local.ts';
+import { FilePaths } from '../constants.ts';
 
 export type Options = {};
 
 export default async function register(cli: Argv) {
+  const files = [FilePaths.LocalBuildDockerCompose];
+  const env = [FilePaths.LocalDotEnv, FilePaths.LocalBuildDotEnv];
+
   cli.command<Options>(
     'start',
     'start the server using docker-compose',
@@ -16,30 +20,31 @@ export default async function register(cli: Argv) {
     async (args: Arguments<Options>) => {
       const spin = ora('Starting...').start();
 
-      const workingDir = workingDirManager(args);
+      const workingDir = args.context!.workingDir;
       workingDir.require();
 
       spin.text = 'Building local files...';
 
-      await buildLocal({ workingDir });
-
-      spin.text = 'Setting up logging...';
-
-      const stdout = await workingDir.open('local/stdout.log');
-      const stderr = await workingDir.open('local/stderr.log');
+      await buildLocal({ context: args.context! });
 
       spin.text = 'Starting server on docker-compose...';
 
+      class SpinStream extends Writable {
+        _write(chunk: any): void {
+          spin.text = chunk.toString();
+        }
+      }
+
+      const stream = new SpinStream();
       const code = await spawnDockerCompose({
-        workingDir,
+        context: args.context!,
         command: 'up',
         args: ['-d'],
-        stdout,
-        stderr,
+        stdout: stream,
+        stderr: stream,
+        env,
+        files,
       });
-
-      await stdout.close();
-      await stderr.close();
 
       spin.succeed('Server started!');
       spin.stop();
@@ -53,16 +58,17 @@ export default async function register(cli: Argv) {
     'stop the server',
     (y) => {},
     async (args: Arguments<Options>) => {
-      const workingDir = workingDirManager(args);
       const spin = ora('Stopping server...').start();
       const code = await spawnDockerCompose({
-        workingDir,
+        context: args.context!,
         command: 'down',
+        env,
+        files,
       });
 
       spin.text = 'Cleaning build folder...';
 
-      await workingDir.remove('local/.build');
+      await args.context!.workingDir.remove('local/.build');
 
       spin.succeed('Server stopped!');
       spin.stop();

@@ -1,18 +1,25 @@
+import { resolve } from 'node:path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
+import type { Arguments } from './types.ts';
+import { getVersion } from './libs/get-version.ts';
+import { createContext } from './libs/create-context.ts';
 import { printErrorMessage } from './libs/print-message.ts';
 import registerServe from './commands/local.ts';
 import registerInit from './commands/init.ts';
 import registerWorkflow from './commands/workflow.ts';
 import registerFs from './commands/fs.ts';
+import registerCreate from './commands/create.ts';
 
 export async function main(argv: string[]) {
   const rawArgs = hideBin(argv);
   const cli = yargs(rawArgs);
 
   cli
-    .scriptName('elwood-studio')
+    .scriptName('elwood')
+    .version('version', await getVersion())
+    .usage('Usage: $0 <command> [options]')
     .help('help')
     .alias('help', 'h')
     .env('ELWOOD')
@@ -20,27 +27,45 @@ export async function main(argv: string[]) {
       alias: 'r',
       type: 'string',
       describe: 'Change the root directory of the project.',
-      default: process.cwd(),
+      default: '.',
     })
-    .middleware(() => {});
+    .option('local', {
+      alias: 'l',
+      type: 'boolean',
+      describe: 'Run commands against the local instance.',
+      default: false,
+    })
+    .command(
+      '$0',
+      'Show help',
+      () => {},
+      (args) => {
+        if (args._.length === 0) {
+          cli.showHelp();
+          return;
+        }
+
+        printErrorMessage(`Unknown command: ${args._[0]}`);
+      },
+    )
+    .middleware(async (argv: Arguments) => {
+      argv.rootDir = resolve(argv.rootDir ?? '.');
+      argv.context = await createContext(argv);
+    })
+    .fail((msg, err) => {
+      printErrorMessage(err ?? msg);
+      process.exit(1);
+    });
 
   registerServe(cli);
   registerInit(cli);
   registerFs(cli);
   registerWorkflow(cli);
-
-  cli.fail((msg, err) => {
-    printErrorMessage(err ?? msg);
-    process.exit(1);
-  });
+  registerCreate(cli);
 
   try {
     cli.parse();
   } catch (err) {
     console.log('fail');
-  }
-
-  if (rawArgs.length === 0) {
-    cli.showHelp();
   }
 }

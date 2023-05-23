@@ -21,6 +21,7 @@
     }
   },
   "bin": {
+    "elwood": "./bin/cli.mjs",
     "elwood-studio": "./bin/cli.mjs"
   },
   "files": [
@@ -30,19 +31,22 @@
   "scripts": {
     "test": "jest --config=./config/jest.js",
     "build": "rimraf ./dist && tsup",
-    "dev": "tsup --watch",
-    "dev-cli": "node --loader ts-node/esm --no-warnings ./bin/cli-dev.ts"
+    "dev": "tsup --watch"
   },
   "dependencies": {
     "@elwood-studio/js": "workspace:*",
+    "@elwood-studio/workflow-config": "workspace:*",
     "@iarna/toml": "^2.2.5",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
+    "cli-table": "^0.3.11",
     "docker-compose": "^0.24.1",
+    "dotenv": "^16.0.3",
     "fs-jetpack": "^5.0.0",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.0",
     "ora": "^6.3.1",
+    "read-pkg-up": "^9.1.0",
     "stacktracey": "^2.1.8",
     "ts-invariant": "^0.10.2",
     "yaml": "^2.0.0",
@@ -50,6 +54,8 @@
   },
   "devDependencies": {
     "@elwood-studio/types": "workspace:*",
+    "@elwood-studio/workflow-types": "workspace:*",
+    "@types/cli-table": "^0.3.1",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/yargs": "^17.0.24",
