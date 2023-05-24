@@ -1,7 +1,5 @@
-import Uppy from '@uppy/core';
-import Tus from '@uppy/tus';
-
 import type { Fetch } from '../types.ts';
+import { FileSystemUploadClient } from './upload.ts';
 
 export type FileSystemClientOptions = {
   url: string;
@@ -11,28 +9,16 @@ export type FileSystemClientOptions = {
 };
 
 export class FileSystemClient {
-  protected readonly _uppy = new Uppy();
+  private readonly _upload;
 
   protected authToken: string | undefined;
 
   constructor(private readonly options: FileSystemClientOptions) {
-    this._uppy.use(Tus, {
-      endpoint: `${this.options.url}/fs/v1/tus`,
-      onBeforeRequest: async (req) => {
-        const token = await this.options.getAuthenticationToken();
-
-        if (token) {
-          req.setHeader('Authorization', `Bearer ${token}`);
-        }
-      },
-      headers: {
-        apikey: this.options.key,
-      },
-    });
+    this._upload = new FileSystemUploadClient(options);
   }
 
   get upload() {
-    return this._uppy;
+    return this._upload;
   }
 
   /**

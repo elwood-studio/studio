@@ -12,6 +12,7 @@ services:
       - db
     volumes:
       - ../services/fs/src:/app/src
+      - ../tmp:/data
     environment:
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood

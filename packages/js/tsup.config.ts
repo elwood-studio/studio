@@ -10,6 +10,5 @@ export default defineConfig((options: Options) => ({
   clean: true,
   legacyOutput: true,
   external: [],
-  platform: 'browser',
   ...options,
 }));

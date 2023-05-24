@@ -35,6 +35,7 @@ export async function createContext(args: Arguments): Promise<Context> {
   );
 
   return {
+    localEnv,
     localClient: new ElwoodClient(
       `http://0.0.0.0:8000`,
       localEnv.SERVICE_ROLE_KEY,

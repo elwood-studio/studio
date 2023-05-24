@@ -4,6 +4,9 @@ import { FileStore } from '@tus/file-store';
 import { type IncomingMessage } from 'http';
 import { Client } from 'pg';
 
+import { tusBeforeCreate } from '../libs/tus-before-create';
+import { tusAfterCreate } from '../libs/tus-after-create';
+
 export type TusOptions = {
   db: Client;
   externalHost: string;
@@ -16,28 +19,36 @@ export default fp<TusOptions>(async (app, opts) => {
     path: '/tus',
     respectForwardedHeaders: false,
     datastore: new FileStore({ directory: '/data/uploads' }),
-    async onUploadFinish(_req, res, upload) {
-      console.log('upload finished', upload.id);
-
-      // tell the database that this object has been uploaded
-      // and where it is locally.
-      // that should trigger the post upload jobs
+    async onUploadCreate(req, res, upload) {
       try {
-        await db.query(
-          `
-        UPDATE elwood.object 
-        SET 
-          "state" = 'READY',
-          "remote_urn" = $2
-        WHERE 
-          "id" = $1`,
-          [upload.metadata.object_id, ['ern', 'local', `uploads/${upload.id}`]],
-        );
-      } catch (err) {
-        console.log(err);
-      }
+        await tusBeforeCreate({
+          db,
+          authToken: req.headers.authorization,
+          id: upload.id,
+          metadata: upload.metadata,
+        });
 
-      return res;
+        return res;
+      } catch (err) {
+        console.log('Upload Create Failed');
+        console.log(err.message);
+        console.log(err.stack);
+      }
+    },
+    async onUploadFinish(req, res, upload) {
+      try {
+        await tusAfterCreate({
+          db,
+          authToken: req.headers.authorization,
+          id: upload.id,
+        });
+
+        return res;
+      } catch (err) {
+        console.log('Upload Finish Failed');
+        console.log(err.message);
+        console.log(err.stack);
+      }
     },
   });
 

@@ -16,6 +16,7 @@ export type Arguments<Options = JsonObject> = BaseArguments<
 >;
 
 export type Context = {
+  localEnv?: LocalEnv;
   localClient?: ElwoodClient;
   workingDir: ContextWorkingDir;
 };

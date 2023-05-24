@@ -1,14 +1,5 @@
 import { type FileSystemOperation } from './constants.ts';
 
-import type { UppyFile, FileRemoveReason, UploadResult } from '@uppy/core';
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace Upload {
-  export type File = UppyFile;
-  export type RemoveReason = FileRemoveReason;
-  export type Result = UploadResult;
-}
-
 export type FileSystemListItem = {
   hashes: {
     [key: string]: string | undefined;
