@@ -5,6 +5,7 @@ import isGlob from 'is-glob';
 import { invariant } from 'ts-invariant';
 import fs from 'fs-jetpack';
 import mime from 'mime';
+import ora from 'ora';
 
 import type { Argv, Arguments } from '../types.ts';
 
@@ -87,6 +88,9 @@ export async function copy(args: Arguments<CopyOptions>) {
 
   const sources = source.split(',');
   const files: string[] = [];
+  const spin = ora('Sending workflow...').start();
+
+  spin.text = 'Resolving files...';
 
   for (const src of sources) {
     if (isGlob(src)) {
@@ -100,6 +104,8 @@ export async function copy(args: Arguments<CopyOptions>) {
   // filter our our directories
   const finalFiles = files.filter((file) => fs.inspect(file)?.type === 'file');
 
+  spin.text = `Found ${finalFiles.length} files, uploading...`;
+
   for (const file of finalFiles) {
     const stat = statSync(file);
     const name = basename(file);
@@ -107,6 +113,7 @@ export async function copy(args: Arguments<CopyOptions>) {
 
     await context?.localClient?.fileSystem.upload.add(createReadStream(file), {
       metadata: {
+        name,
         display_name: name,
         mime_type: type,
         size: String(stat.size ?? 0),
@@ -115,7 +122,21 @@ export async function copy(args: Arguments<CopyOptions>) {
     });
   }
 
-  console.log(await context?.localClient?.fileSystem.upload.start());
+  spin.text = 'Starting uploads...';
+
+  context?.localClient?.fileSystem.upload.on('progress', (evt) => {
+    spin.text = `Uploaded ${evt.bytesSent} of (${evt.bytesTotal}`;
+  });
+
+  context?.localClient?.fileSystem.upload.on('success', (evt) => {
+    spin.succeed(`Uploaded ${evt.upload.options.metadata?.name} `);
+  });
+
+  context?.localClient?.fileSystem.upload.on('finished', (evt) => {
+    spin.stop();
+  });
+
+  await context?.localClient?.fileSystem.upload.start();
 }
 
 export async function sync(args: Arguments<SyncOptions>) {}

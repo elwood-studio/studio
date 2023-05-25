@@ -13,6 +13,12 @@ import type { Argv, Arguments } from '../types.ts';
 import { printErrorMessage, printMessage } from '../libs/print-message.ts';
 import chalk from 'chalk';
 
+type TopOptions = RunOptions &
+  ReportOptions & {
+    command?: 'run' | 'report';
+    arguments: string[];
+  };
+
 type RunOptions = {
   workflow?: string;
   input?: string[];
@@ -24,6 +30,30 @@ type ReportOptions = {
 };
 
 export default async function register(cli: Argv) {
+  cli.command<TopOptions>(
+    'workflow <command> [...arguments]',
+    false,
+    (y) => {},
+    async (args: Arguments<TopOptions>) => {
+      const commandArguments = args.arguments ?? [];
+
+      switch (args.command) {
+        case 'run': {
+          await run({
+            ...args,
+            workflow: commandArguments[0],
+          });
+        }
+        case 'report': {
+          await report({
+            ...args,
+            trackingId: commandArguments[0],
+          });
+        }
+      }
+    },
+  );
+
   cli.command(
     'workflow:run <workflow>',
     'run a workflow',
@@ -39,51 +69,7 @@ export default async function register(cli: Argv) {
         describe: 'Wait for the workflow to complete and return the result',
       });
     },
-    async (args: Arguments<RunOptions>) => {
-      invariant(args.workflow, 'Workflow is required');
-
-      const spin = ora('Sending workflow...').start();
-
-      try {
-        const input = getInput(args.input ?? []);
-        const workflow = await getWorkflow(
-          args.workflow,
-          args.context!.workingDir.join(''),
-        );
-
-        let result: { tracking_id?: string } = {};
-
-        if (args.local) {
-          result = await args.context!.localClient!.workflow.run(
-            workflow,
-            input,
-          );
-        }
-
-        if (!args.local) {
-          result = { tracking_id: undefined };
-        }
-
-        invariant(result.tracking_id, 'Unable to find Tracking ID in response');
-
-        spin.succeed(`Workflow send complete!`);
-        spin.stop();
-        spin.clear();
-
-        printMessage({
-          type: 'success',
-          title: 'Workflow Sent!',
-          message: `Your workflow has been submitted. Tracking id: ${result.tracking_id}`,
-          body: [
-            'Check the status of the workflow by running:',
-            `elwood-studio workflow:report ${result.tracking_id}`,
-          ],
-        });
-      } catch (e) {
-        spin.stop();
-        printErrorMessage(e as Error);
-      }
-    },
+    run,
   );
 
   cli.command<ReportOptions>(
@@ -98,60 +84,107 @@ export default async function register(cli: Argv) {
         default: 'table',
       });
     },
-    async (args: Arguments<ReportOptions>) => {
-      invariant(args.trackingId, 'Tracking ID is required');
-      const result = await args.context!.localClient!.workflow.report(
-        args.trackingId,
-      );
-
-      invariant(result, 'Unable to find workflow report');
-
-      switch (args.output) {
-        case 'json-pretty': {
-          process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
-          break;
-        }
-        case 'json': {
-          process.stdout.write(JSON.stringify(result));
-          break;
-        }
-        case 'yaml': {
-          process.stdout.write(yaml.stringify(result));
-          break;
-        }
-        default: {
-          for (const job of result.jobs) {
-            process.stdout.write(`${chalk.bold(job.name)}\n`);
-            process.stdout.write(
-              `Result: ${job.status.value} ${job.status.reason}\n`,
-            );
-
-            const tbl = new Table({
-              head: ['Step', 'Status', 'Output'],
-            });
-
-            for (const step of job.steps) {
-              tbl.push([
-                step.name,
-                step.status,
-                JSON.stringify(
-                  {
-                    output: step.output,
-                    stdout: step.stdout,
-                    stderr: step.stderr,
-                  },
-                  null,
-                  2,
-                ) ?? '',
-              ]);
-            }
-
-            console.log(tbl.toString());
-          }
-        }
-      }
-    },
+    report,
   );
+
+  cli.hide('workflow');
+}
+
+export async function run(args: Arguments<RunOptions>) {
+  invariant(args.workflow, 'Workflow is required');
+
+  const spin = ora('Sending workflow...').start();
+
+  try {
+    const input = getInput(args.input ?? []);
+    const workflow = await getWorkflow(
+      args.workflow,
+      args.context!.workingDir.join(''),
+    );
+
+    let result: { tracking_id?: string } = {};
+
+    if (args.local) {
+      result = await args.context!.localClient!.workflow.run(workflow, input);
+    }
+
+    if (!args.local) {
+      result = { tracking_id: undefined };
+    }
+
+    invariant(result.tracking_id, 'Unable to find Tracking ID in response');
+
+    spin.succeed(`Workflow send complete!`);
+    spin.stop();
+    spin.clear();
+
+    printMessage({
+      type: 'success',
+      title: 'Workflow Sent!',
+      message: `Your workflow has been submitted. Tracking id: ${result.tracking_id}`,
+      body: [
+        'Check the status of the workflow by running:',
+        `elwood-studio workflow:report ${result.tracking_id}`,
+      ],
+    });
+  } catch (e) {
+    spin.stop();
+    printErrorMessage(e as Error);
+  }
+}
+
+export async function report(args: Arguments<ReportOptions>) {
+  invariant(args.trackingId, 'Tracking ID is required');
+  const result = await args.context!.localClient!.workflow.report(
+    args.trackingId,
+  );
+
+  invariant(result, 'Unable to find workflow report');
+
+  switch (args.output) {
+    case 'json-pretty': {
+      process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+      break;
+    }
+    case 'json': {
+      process.stdout.write(JSON.stringify(result));
+      break;
+    }
+    case 'yaml': {
+      process.stdout.write(yaml.stringify(result));
+      break;
+    }
+    default: {
+      for (const job of result.jobs) {
+        process.stdout.write(`${chalk.bold(job.name)}\n`);
+        process.stdout.write(
+          `Result: ${job.status.value} ${job.status.reason}\n`,
+        );
+
+        const tbl = new Table({
+          head: ['Step', 'Status', 'Output'],
+        });
+
+        for (const step of job.steps) {
+          tbl.push([
+            step.name,
+            step.status,
+            JSON.stringify(
+              {
+                output: step.output,
+                stdout: step.stdout,
+                stderr: step.stderr,
+              },
+              null,
+              2,
+            ) ?? '',
+          ]);
+        }
+
+        console.log(tbl.toString());
+      }
+    }
+  }
 }
 
 export function getInput(raw: string[]): JsonObject {

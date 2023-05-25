@@ -70,7 +70,7 @@ $$
 DECLARE
     access_row elwood.object_access;
 BEGIN
- 
+
   SELECT * INTO access_row FROM elwood.get_object_access(parent_id);
 
   IF access_row.has_access = false OR access_row.can_write_tree = false THEN
@@ -80,4 +80,4 @@ BEGIN
 
   return true;
 END
-$$ VOLATILE STRICT SECURITY DEFINER;
+$$ VOLATILE SECURITY DEFINER;

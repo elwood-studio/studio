@@ -30,21 +30,20 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
     skip_workflows,
   } = options.metadata;
 
-  console.log('upload create');
-
   invariant(display_name, 'metadata.display_name is required');
   invariant(mime_type, 'metadata.mime_type is required');
-
-  console.log('before sql');
 
   const checkResult = await authExecuteSql({
     client: db,
     token: authToken,
     sql: `SELECT elwood.can_create_object($1) as can_create_object`,
-    params: [parent_id],
+    params: [parent_id ?? null],
   });
 
-  invariant(checkResult.rows[0].can_create_object, 'Can not create object');
+  invariant(
+    checkResult.rows[0].can_create_object === true,
+    'Can not create object',
+  );
 
   const sql = `
     INSERT INTO elwood.object (
@@ -72,11 +71,11 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
       name ?? display_name,
       display_name,
       parent_id,
-      mime_type,
-      size,
       {
         upload_id: id,
       },
+      mime_type,
+      size,
       sidecar_type,
       !!skip_workflows,
       ['ern', 'local', `uploads/${id}`],

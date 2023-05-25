@@ -46,6 +46,7 @@ type Events = {
     upload: Upload;
   };
   started: undefined;
+  finished: undefined;
 };
 
 export class FileSystemUploadClient extends Emittery<Events> {
@@ -106,6 +107,8 @@ export class FileSystemUploadClient extends Emittery<Events> {
       item.upload.start();
       return;
     }
+
+    this.emit('finished');
   }
 
   async add(

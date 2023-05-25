@@ -23,10 +23,8 @@ export async function authExecuteSql(
 
   try {
     await client.query('BEGIN');
-    await client.query(`SELECT set_config('request.jwt', $1, true)`, [
-      {
-        jwt,
-      },
+    await client.query(`SELECT set_config('request.jwt.claims', $1, true)`, [
+      jwt,
     ]);
 
     const result = await client.query(sql, params);

@@ -28,13 +28,12 @@ BEGIN
         true,
         true,
         true,
+        true, 
         true,
-        true,
-        NULL,
-        NULL
+        ARRAY[]::text[],
+        ARRAY[]::text[] 
     );
   END IF;
-
 
   -- start by going down the tree to see if this object is there
   FOR row_id IN (
@@ -114,7 +113,7 @@ BEGIN
   );
 
 END;
-$$ VOLATILE STRICT SECURITY DEFINER;
+$$ VOLATILE SECURITY DEFINER;
 
 
 CREATE OR REPLACE FUNCTION elwood.has_access_to_object(object_id uuid) 
