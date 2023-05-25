@@ -28,7 +28,7 @@ npx elwood-studio create
 ### Node
 
 ```bash
-# as a dev dependency
+# as a global dependency
 yarn global add elwood-studio
 npm install -g elwood-studio
 pnpm add -g elwood-studio
