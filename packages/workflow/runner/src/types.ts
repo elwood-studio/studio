@@ -170,7 +170,7 @@ export interface WorkflowRunnerRuntimeRun {
   hasCommandProvider(name: string): boolean;
   addCommandProvider(...providers: RunnerCommandProvider[]): Promise<void>;
   contextValue(): JsonObject;
-  setup(input: WorkflowRunnerInput, trackingId: string | null): Promise<void>;
+  setup(input: WorkflowRunnerInput, context?: JsonObject): Promise<void>;
   teardown(): Promise<void>;
   start(): Promise<void>;
   complete(status?: string, text?: string): Promise<void>;

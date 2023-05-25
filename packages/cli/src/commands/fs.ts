@@ -10,7 +10,7 @@ import ora from 'ora';
 import type { Argv, Arguments } from '../types.ts';
 
 type TopOptions = {
-  command?: 'copy' | 'sync' | 'share';
+  command?: 'upload' | 'download';
   arguments: string[];
 };
 
@@ -33,14 +33,14 @@ export default async function register(cli: Argv) {
       const commandArguments = args.arguments ?? [];
 
       switch (args.command) {
-        case 'copy': {
+        case 'upload': {
           await copy({
             ...args,
             source: commandArguments[0],
             destination: commandArguments[1],
           });
         }
-        case 'sync': {
+        case 'download': {
           await sync({
             ...args,
             source: commandArguments[0],
@@ -51,8 +51,8 @@ export default async function register(cli: Argv) {
   );
 
   cli.command<CopyOptions>(
-    'fs:copy <source> <destination>',
-    'copy a file to/from the server',
+    'fs:upload <source> <destination>',
+    'upload a file or folder',
     (y) => {
       y.option('recursive', {
         alias: 'r',
@@ -64,8 +64,8 @@ export default async function register(cli: Argv) {
   );
 
   cli.command<SyncOptions>(
-    'fs:sync',
-    'sync a folder to/from the server',
+    'fs:download <source>',
+    'download a file or folder',
     (y) => {},
     sync,
   );
@@ -89,6 +89,9 @@ export async function copy(args: Arguments<CopyOptions>) {
   const sources = source.split(',');
   const files: string[] = [];
   const spin = ora('Sending workflow...').start();
+  const client = context?.localClient;
+
+  invariant(client, 'client is required');
 
   spin.text = 'Resolving files...';
 
@@ -111,7 +114,7 @@ export async function copy(args: Arguments<CopyOptions>) {
     const name = basename(file);
     const type = mime.getType(extname(file)) ?? 'application/octet-stream';
 
-    await context?.localClient?.fileSystem.upload.add(createReadStream(file), {
+    await client.fileSystem.upload.add(createReadStream(file), {
       metadata: {
         name,
         display_name: name,
@@ -124,19 +127,19 @@ export async function copy(args: Arguments<CopyOptions>) {
 
   spin.text = 'Starting uploads...';
 
-  context?.localClient?.fileSystem.upload.on('progress', (evt) => {
+  client.fileSystem.upload.on('progress', (evt) => {
     spin.text = `Uploaded ${evt.bytesSent} of (${evt.bytesTotal}`;
   });
 
-  context?.localClient?.fileSystem.upload.on('success', (evt) => {
+  client.fileSystem.upload.on('success', (evt) => {
     spin.succeed(`Uploaded ${evt.upload.options.metadata?.name} `);
   });
 
-  context?.localClient?.fileSystem.upload.on('finished', (evt) => {
+  client.fileSystem.upload.on('finished', (evt) => {
     spin.stop();
   });
 
-  await context?.localClient?.fileSystem.upload.start();
+  await client.fileSystem.upload.start();
 }
 
 export async function sync(args: Arguments<SyncOptions>) {}

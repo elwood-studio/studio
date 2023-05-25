@@ -2,6 +2,7 @@ import type {
   WorkflowRunnerInstructions,
   WorkflowRunnerInput,
 } from '@elwood-studio/workflow-types';
+import type { JsonObject } from '@elwood-studio/types';
 import { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
 
 import type { WorkflowRunnerRuntime, WorkflowRunnerRuntimeRun } from '../types';
@@ -19,6 +20,7 @@ export type RunWorkflowOptions = {
   runtime: WorkflowRunnerRuntime;
   instructions: WorkflowRunnerInstructions;
   input: WorkflowRunnerInput;
+  context?: JsonObject;
   secretsManager?: WorkflowSecretsManager;
   trackingId?: string | null;
 };
@@ -26,13 +28,7 @@ export type RunWorkflowOptions = {
 export async function runWorkflow(
   opts: RunWorkflowOptions,
 ): Promise<WorkflowRunnerRuntimeRun> {
-  const {
-    runtime,
-    instructions,
-    input,
-    secretsManager,
-    trackingId = null,
-  } = opts;
+  const { runtime, instructions, input, secretsManager, context = {} } = opts;
   const run = runtime.addRun(instructions, secretsManager);
 
   log(`Running workflow with id ${input.eventId}`);
@@ -43,7 +39,8 @@ export async function runWorkflow(
   try {
     log(' running setup');
 
-    await run.setup(input, trackingId);
+    // setup with context
+    await run.setup(input, context);
 
     log(' done setup');
 

@@ -16,12 +16,13 @@ export type RunWorkflowOptions = {
   secretsManager: SecretsManager;
   workflow: Workflow;
   input: JsonObject;
+  context?: JsonObject;
 };
 
 export async function submitWorkflow(
   options: RunWorkflowOptions,
 ): Promise<WorkflowRunnerRuntimeRun> {
-  const { runtime, secretsManager, workflow, input } = options;
+  const { runtime, secretsManager, workflow, input, context = {} } = options;
 
   const run = await runWorkflow({
     runtime,
@@ -31,6 +32,7 @@ export async function submitWorkflow(
       secrets: await secretsManager.sealAllSecrets(),
       keychain: await secretsManager.sealAllKeys(),
     }),
+    context,
   });
 
   return run;

@@ -1,60 +1,45 @@
 import jwt from 'jsonwebtoken';
 import { randomBytes } from 'node:crypto';
+import { invariant } from 'ts-invariant';
 
 import type { Context } from '../types.ts';
 import { buildDockerCompose } from './docker-compose.ts';
+import { FilePaths } from '../constants.ts';
 
 export type BuildLocalOptions = {
   context: Context;
 };
 
 export async function buildLocal(options: BuildLocalOptions): Promise<void> {
-  const { workingDir } = options.context;
+  const { workingDir, localEnv, localConfig } = options.context;
 
-  await workingDir.ensure('workflows');
-  await workingDir.ensure('actions');
-  await workingDir.ensure('local/.build');
+  invariant(localEnv, 'localEnv is required');
+
+  await workingDir.ensure(FilePaths.WorkflowsDir);
+  await workingDir.ensure(FilePaths.ActionsDir);
+  await workingDir.ensure(FilePaths.LocalBuildDir);
 
   await workingDir.writeYaml(
-    'local/.build/docker-compose-local.yml',
-    await buildDockerCompose(),
+    FilePaths.LocalBuildDockerCompose,
+    await buildDockerCompose({
+      context: options.context,
+    }),
   );
 
-  const iat = new Date().getTime() / 1000;
-  const exp = 1799535600;
-  const jwtSecret = randomBytes(62).toString('hex');
-  const dbPassword = randomBytes(12).toString('hex');
-  const anonKey = jwt.sign(
-    {
-      role: 'anon',
-      iss: 'elwood',
-      iat,
-      exp,
-    },
-    jwtSecret,
-  );
-  const serviceKey = jwt.sign(
-    {
-      role: 'service_role',
-      iss: 'elwood',
-      iat,
-      exp,
-    },
-    jwtSecret,
-  );
-
-  await workingDir.writeEnv('local/.build/.env', {
-    POSTGRES_PASSWORD: dbPassword,
-    JWT_SECRET: jwtSecret,
-    ANON_KEY: anonKey,
-    SERVICE_ROLE_KEY: serviceKey,
-    POSTGRES_HOST: 'db',
-    POSTGRES_DB: 'postgres',
-    POSTGRES_USER: 'postgres',
-    POSTGRES_PORT: '5432',
-    KONG_HTTP_PORT: 8000,
+  await workingDir.writeEnv(FilePaths.LocalBuildDotEnv, {
+    POSTGRES_PASSWORD: localEnv.POSTGRES_PASSWORD,
+    JWT_SECRET: localEnv.JWT_SECRET,
+    ANON_KEY: localEnv.ANON_KEY,
+    SERVICE_ROLE_KEY: localEnv.SERVICE_ROLE_KEY,
+    POSTGRES_HOST: localConfig?.db?.host ?? 'db',
+    POSTGRES_DB: localConfig?.db?.name ?? 'postgres',
+    POSTGRES_USER: localConfig?.db?.user ?? 'postgres',
+    POSTGRES_PORT: localConfig?.db?.port ?? '5432',
+    KONG_HTTP_PORT: localConfig?.gateway?.port ?? 8000,
     KONG_HTTPS_PORT: 8443,
-    PGRST_DB_SCHEMAS: 'public,storage,graphql_public,workflow,elwood',
+    PGRST_DB_SCHEMAS:
+      localConfig?.rest?.schemas ??
+      'public,storage,graphql_public,workflow,elwood',
     SITE_URL: 'http://localhost:3000',
     ADDITIONAL_REDIRECT_URLS: '',
     JWT_EXPIRY: 3600,

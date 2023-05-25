@@ -18,10 +18,6 @@ export default async function register(context: ServerContext): Promise<void> {
     console.log('received job', job.data);
     const { data } = job;
 
-    if (data.helloWorld === true) {
-      return data;
-    }
-
     const run = await submitWorkflow(data.workflow, data.input);
 
     if (run.status === RunnerStatus.Error) {

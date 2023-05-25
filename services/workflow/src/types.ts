@@ -7,6 +7,7 @@ import type PgDatabase from 'pg-boss/src/db';
 export type SubmitWorkflowFn = (
   instructions: Workflow,
   input: JsonObject,
+  context?: JsonObject,
 ) => Promise<WorkflowRunnerRuntimeRun>;
 
 export type ServerContext = {

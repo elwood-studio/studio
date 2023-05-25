@@ -74,12 +74,13 @@ async function main() {
   const context: ServerContext = {
     boss,
     db,
-    submitWorkflow(workflow, input) {
+    submitWorkflow(workflow, input, context) {
       return submitWorkflow({
         runtime,
         secretsManager,
         workflow,
         input,
+        context,
       });
     },
   };

@@ -7,17 +7,26 @@ import { spawnDockerCompose } from '../libs/spawn-docker-compose.ts';
 import { buildLocal } from '../builder/local.ts';
 import { FilePaths } from '../constants.ts';
 
-export type Options = {};
+type StartOptions = {
+  dryRun?: boolean;
+};
+
+type StopOptions = {};
 
 export default async function register(cli: Argv) {
   const files = [FilePaths.LocalBuildDockerCompose];
   const env = [FilePaths.LocalDotEnv, FilePaths.LocalBuildDotEnv];
 
-  cli.command<Options>(
+  cli.command<StartOptions>(
     'start',
     'start the server using docker-compose',
-    (y) => {},
-    async (args: Arguments<Options>) => {
+    (y) => {
+      y.option('dry-run', {
+        type: 'boolean',
+        default: false,
+      });
+    },
+    async (args: Arguments<StartOptions>) => {
       const spin = ora('Starting...').start();
 
       const workingDir = args.context!.workingDir;
@@ -26,6 +35,12 @@ export default async function register(cli: Argv) {
       spin.text = 'Building local files...';
 
       await buildLocal({ context: args.context! });
+
+      if (args.dryRun) {
+        spin.succeed('Dry run complete!');
+        spin.stop();
+        return;
+      }
 
       spin.text = 'Starting server on docker-compose...';
 
@@ -53,11 +68,11 @@ export default async function register(cli: Argv) {
     },
   );
 
-  cli.command<Options>(
+  cli.command<StopOptions>(
     'stop',
     'stop the server',
     (y) => {},
-    async (args: Arguments<Options>) => {
+    async (args: Arguments<StopOptions>) => {
       const spin = ora('Stopping server...').start();
       const code = await spawnDockerCompose({
         context: args.context!,

@@ -34,13 +34,30 @@ export async function createContext(args: Arguments): Promise<Context> {
     await readFile(workingDir.join(FilePaths.LocalDotEnv)),
   );
 
+  let localConfig;
+
+  if (fs.exists(workingDir.join(FilePaths.LocalConfig))) {
+    localConfig = toml.parse(
+      (await readFile(workingDir.join(FilePaths.LocalConfig))).toString(),
+    );
+  }
+
+  const localClient = new ElwoodClient(
+    `http://0.0.0.0:8000`,
+    localEnv.SERVICE_ROLE_KEY,
+  );
+  const remoteClient = new ElwoodClient(
+    `http://0.0.0.0:8000`,
+    localEnv.SERVICE_ROLE_KEY,
+  );
+
   return {
+    client: args.local ? localClient : remoteClient,
     localEnv,
-    localClient: new ElwoodClient(
-      `http://0.0.0.0:8000`,
-      localEnv.SERVICE_ROLE_KEY,
-    ),
+    remoteClient,
+    localClient,
     workingDir,
+    localConfig,
   };
 }
 

@@ -1,6 +1,25 @@
 import type { JsonObject } from '@elwood-studio/types';
 
-export async function buildDockerCompose(): Promise<JsonObject> {
+import { Context } from '../types.ts';
+
+export type BuildDockerComposeOptions = {
+  context: Context;
+};
+
+export async function buildDockerCompose(
+  options: BuildDockerComposeOptions,
+): Promise<JsonObject> {
+  const { context } = options;
+
+  function mapMounts(
+    dirs: [(string | undefined)?, (string | undefined)?],
+  ): string {
+    return [
+      dirs[0]!.replace('$root', context.workingDir.join('')),
+      dirs[1]!,
+    ].join(':');
+  }
+
   return {
     version: '3.8',
     services: {
@@ -15,14 +34,12 @@ export async function buildDockerCompose(): Promise<JsonObject> {
             'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood',
           EXTERNAL_HOST: 'localhost:8000',
         },
+        volumes: (context.localConfig?.fs?.mount ?? []).map(mapMounts),
       },
       workflow: {
         container_name: 'workflow',
         image: 'ghcr.io/elwood-studio/workflow:latest',
-        volumes: [
-          '../../workflows:/var/workflows',
-          '../../actions:/var/actions',
-        ],
+        volumes: (context.localConfig?.workflow?.mount ?? []).map(mapMounts),
         restart: 'unless-stopped',
         environment: {
           JWT_SECRET: '${JWT_SECRET}',

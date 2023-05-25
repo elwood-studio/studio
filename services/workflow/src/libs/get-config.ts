@@ -8,6 +8,7 @@ export type Config = {
   workflowsDir?: string;
   port: number;
   host: string;
+  gatewayUrl: string;
 };
 
 export function getConfig(): Config {
@@ -20,6 +21,7 @@ export function getConfig(): Config {
       ACTIONS_DIR,
       PORT,
       HOST,
+      GATEWAY_URL,
     } = process.env ?? {};
 
     invariant(DATABASE_URL, 'DATABASE_URL is required');
@@ -27,6 +29,7 @@ export function getConfig(): Config {
     invariant(DATA_DIR, 'DATA_DIR is required');
     invariant(WORKFLOWS_DIR, 'WORKFLOWS_DIR is required');
     invariant(ACTIONS_DIR, 'ACTIONS_DIR is required');
+    invariant(GATEWAY_URL, 'GATEWAY_URL is required');
 
     const port = parseInt(`${PORT ?? 3000}`, 10);
     const host = HOST ?? '0.0.0.0';
@@ -39,6 +42,7 @@ export function getConfig(): Config {
       actionsDir: ACTIONS_DIR,
       port,
       host,
+      gatewayUrl: GATEWAY_URL,
     };
   } catch (err) {
     console.error(err.message);

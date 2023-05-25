@@ -29,6 +29,7 @@ import debug from '../libs/debug';
 import { RuntimeRunContext } from './context';
 import { RuntimeRunJob } from './job';
 import { RuntimeTimer } from './timer';
+import { JsonObject } from '@elwood-studio/types/src';
 
 export class RuntimeRun implements WorkflowRunnerRuntimeRun {
   readonly #context = new RuntimeRunContext();
@@ -148,8 +149,14 @@ export class RuntimeRun implements WorkflowRunnerRuntimeRun {
     return this.#context.data;
   }
 
-  async setup(input: WorkflowRunnerInput) {
+  async setup(input: WorkflowRunnerInput, context: JsonObject = {}) {
     this.#log('setup');
+
+    if (context && typeof context === 'object') {
+      Object.entries(context).forEach(([key, value]) => {
+        this.#context.set(key, value);
+      });
+    }
 
     const keychain = getWorkflowKeychainFromInput(input);
     const secrets = getWorkflowSecretsFromInput(input);
