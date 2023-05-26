@@ -2,8 +2,6 @@ import fastify from 'fastify';
 import { stat } from 'node:fs/promises';
 import PgBoss from 'pg-boss';
 
-import { WorkflowRunnerRuntime } from '@elwood-studio/workflow-runner';
-
 import PgDatabase from './libs/db';
 import type { ServerContext, WorkflowService } from './types';
 import { createWorkflowRuntime } from './libs/create-runtime';

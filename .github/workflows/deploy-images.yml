@@ -9,6 +9,7 @@ env:
 
 jobs:
   build-and-push-image:
+    name: Image ${{ matrix.name }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,22 +18,31 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./services/db/Dockerfile
+          - name: DB
+            dir: ./services/db
             image: ghcr.io/elwood-studio/db
             context: ./services/db
-          - dockerfile: ./services/fs/Dockerfile
+          - name: FS
+            dir: ./services/fs
             image: ghcr.io/elwood-studio/fs
             context: ./services/fs
-          - dockerfile: ./services/gateway/Dockerfile
+          - name: Gateway
+            dir: ./services/gateway
             image: ghcr.io/elwood-studio/gateway
             context: ./services/gateway
-          - dockerfile: ./services/workflow/Dockerfile
+          - name: Workflow
+            dir: ./services/workflow
             image: ghcr.io/elwood-studio/workflow
             context: ./services/workflow
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v2
+      - run: make ready
+      - run: pnpm --dir=${{ matrix.dir }} dist
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2.1.0
@@ -53,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v4.0.0
         with:
           context: ${{ matrix.context }}
-          file: ${{ matrix.dockerfile }}
+          file: ${{ matrix.dir }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

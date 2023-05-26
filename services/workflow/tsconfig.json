@@ -10,23 +10,23 @@
   "include": ["./src/**/*.ts"],
   "references": [
     {
-      "path": "../../types",
+      "path": "../../packages/types",
       "prepend": false
     },
     {
-      "path": "../types",
+      "path": "../../packages/workflow/types",
       "prepend": false
     },
     {
-      "path": "../config",
+      "path": "../../packages/workflow/config",
       "prepend": false
     },
     {
-      "path": "../runner",
+      "path": "../../packages/workflow/runner",
       "prepend": false
     },
     {
-      "path": "../secrets",
+      "path": "../../packages/workflow/secrets",
       "prepend": false
     }
   ]

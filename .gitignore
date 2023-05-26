@@ -17,6 +17,7 @@ out/
 build/
 dist/
 packages/**/lib/
+services/**/lib/
 
 # misc
 .DS_Store

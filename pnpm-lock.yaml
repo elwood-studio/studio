@@ -427,11 +427,30 @@ importers:
         specifier: workspace:*
         version: link:../../internal/tsconfig
 
-  packages/workflow/service:
+  packages/workflow/types:
     dependencies:
+      '@elwood-studio/types':
+        specifier: workspace:*
+        version: link:../../types
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../internal/tsconfig
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  services/workflow:
+    dependencies:
+      '@vercel/ncc':
+        specifier: ^0.36.1
+        version: 0.36.1
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3
+      fast-json-stringify:
+        specifier: ^5.7.0
+        version: 5.7.0
       fastify:
         specifier: ^4.17.0
         version: 4.17.0
@@ -453,19 +472,19 @@ importers:
     devDependencies:
       '@elwood-studio/types':
         specifier: workspace:*
-        version: link:../../types
+        version: link:../../packages/types
       '@elwood-studio/workflow-config':
         specifier: workspace:*
-        version: link:../config
+        version: link:../../packages/workflow/config
       '@elwood-studio/workflow-runner':
         specifier: workspace:*
-        version: link:../runner
+        version: link:../../packages/workflow/runner
       '@elwood-studio/workflow-secrets':
         specifier: workspace:*
-        version: link:../secrets
+        version: link:../../packages/workflow/secrets
       '@elwood-studio/workflow-types':
         specifier: workspace:*
-        version: link:../types
+        version: link:../../packages/workflow/types
       '@types/node':
         specifier: ^20.2.3
         version: 20.2.3
@@ -477,20 +496,7 @@ importers:
         version: 2.0.0(@types/node@20.2.3)(typescript@5.0.4)
       tsconfig:
         specifier: workspace:*
-        version: link:../../internal/tsconfig
-      typescript:
-        specifier: ^5.0.4
-        version: 5.0.4
-
-  packages/workflow/types:
-    dependencies:
-      '@elwood-studio/types':
-        specifier: workspace:*
-        version: link:../../types
-    devDependencies:
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../internal/tsconfig
+        version: link:../../packages/internal/tsconfig
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -2578,6 +2584,11 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.6
       eslint-visitor-keys: 3.4.1
+    dev: false
+
+  /@vercel/ncc@0.36.1:
+    resolution: {integrity: sha512-S4cL7Taa9yb5qbv+6wLgiKVZ03Qfkc4jGRuiUQMQ8HGBD5pcNRnHeYM33zBvJE4/zJGjJJ8GScB+WmTsn9mORw==}
+    hasBin: true
     dev: false
 
   /@yarnpkg/lockfile@1.1.0:
@@ -5097,7 +5108,7 @@ packages:
       proxy-addr: 2.0.7
       rfdc: 1.3.0
       secure-json-parse: 2.7.0
-      semver: 7.3.8
+      semver: 7.5.1
       tiny-lru: 11.0.1
     transitivePeerDependencies:
       - supports-color
@@ -6948,7 +6959,7 @@ packages:
       jest-pnp-resolver: 1.2.3(jest-resolve@29.5.0)
       jest-util: 29.5.0
       jest-validate: 29.5.0
-      resolve: 1.22.1
+      resolve: 1.22.2
       resolve.exports: 2.0.2
       slash: 3.0.0
     dev: true
@@ -10298,7 +10309,6 @@ packages:
     dependencies:
       buffer-from: 1.1.2
       source-map: 0.6.1
-    dev: false
 
   /source-map-url@0.4.1:
     resolution: {integrity: sha512-cPiFOTLUKvJFIg4SKVScy4ilPPW6rFgMgfuZJPNoDuMs3nC1HbMUycBoJw77xFIp6z1UJQJOfx6C9GMH80DiTw==}
@@ -10884,7 +10894,7 @@ packages:
     resolution: {integrity: sha512-uivwYcQaxAucv1CzRp2n/QdYPo4ILf9VXgH19zEIjFx2EJufV16P0JtJVpYHy89DItG6Kwj2oIUjrcK5au+4tQ==}
     engines: {node: '>=8'}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.5.2
     dev: false
 
   /ts-jest@26.5.0(jest@26.6.3)(typescript@4.9.5):
@@ -10992,11 +11002,11 @@ packages:
     dependencies:
       chokidar: 3.5.3
       dynamic-dedupe: 0.3.0
-      minimist: 1.2.7
+      minimist: 1.2.8
       mkdirp: 1.0.4
-      resolve: 1.22.1
+      resolve: 1.22.2
       rimraf: 2.7.1
-      source-map-support: 0.5.13
+      source-map-support: 0.5.21
       tree-kill: 1.2.2
       ts-node: 10.9.1(@types/node@20.2.3)(typescript@5.0.4)
       tsconfig: 7.0.0
@@ -11099,7 +11109,6 @@ packages:
 
   /tslib@2.5.2:
     resolution: {integrity: sha512-5svOrSA2w3iGFDs1HibEVBGbDrAY82bFQ3HZ3ixB+88nsbsWQoKqDRb5UBYAUPEzbBn6dAp5gRNXglySbx1MlA==}
-    dev: true
 
   /tsup@6.1.3(ts-node@10.7.0)(typescript@5.0.4):
     resolution: {integrity: sha512-eRpBnbfpDFng+EJNTQ90N7QAf4HAGGC7O3buHIjroKWK7D1ibk9/YnR/3cS8HsMU5T+6Oi+cnF+yU5WmCnB//Q==}

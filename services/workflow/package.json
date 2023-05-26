@@ -1,17 +1,38 @@
 {
-  "name": "workflow",
+  "name": "@elwood-studio/workflow-service",
   "version": "0.0.0",
-  "main": "./server.js",
-  "license": "MIT",
-  "scripts": {},
+  "main": "./lib",
+  "scripts": {
+    "build": "tsc -b ./tsconfig.json",
+    "dev": "tsc -b ./tsconfig --watch",
+    "lint": "eslint \"**/*.ts*\"",
+    "test": "jest",
+    "start": "ts-node-dev ./src/server.ts",
+    "dist": "ncc build ./src/server.ts -o ./dist --external cpu-features --external pg-cloudflare"
+  },
+  "files": [
+    "lib"
+  ],
   "devDependencies": {
-    "@types/node": "^20.1.4",
-    "@vercel/ncc": "^0.36.1",
-    "pkg": "^5.8.1",
+    "@elwood-studio/types": "workspace:*",
+    "@elwood-studio/workflow-config": "workspace:*",
+    "@elwood-studio/workflow-runner": "workspace:*",
+    "@elwood-studio/workflow-secrets": "workspace:*",
+    "@elwood-studio/workflow-types": "workspace:*",
+    "@types/node": "^20.2.3",
+    "@types/pg": "^8.10.1",
     "ts-node-dev": "^2.0.0",
+    "tsconfig": "workspace:*",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@elwood-studio/workflow-service": "latest"
+    "@vercel/ncc": "^0.36.1",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.17.0",
+    "fastify-plugin": "^4.5.0",
+    "glob": "^10.2.5",
+    "pg": "^8.11.0",
+    "pg-boss": "8.4.2",
+    "ts-invariant": "^0.10.3"
   }
 }

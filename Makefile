@@ -20,6 +20,12 @@ build: ## build an app
 	$(turbo) run build
 .PHONY: build
 
+# DIST
+dist: ## build an app
+	@echo "dist..."
+	$(turbo) run dist
+.PHONY: dist
+
 # DEV
 dev: ## run "dev" on all apps/* or packages/*
 	@echo "dev..."
