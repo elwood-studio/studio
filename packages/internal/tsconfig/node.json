@@ -8,13 +8,15 @@
     "allowJs": false,
     "declaration": true,
     "declarationMap": true,
+    "esModuleInterop": true,
     "incremental": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "CommonJS",
     "resolveJsonModule": true,
     "strict": true,
-    "target": "es2022"
+    "target": "es2022",
+    "allowImportingTsExtensions": false
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "lib"]
+  "exclude": ["node_modules", "dist", "lib", "tsup.config.ts"]
 }

@@ -2,8 +2,11 @@
   "name": "@elwood-studio/types",
   "version": "0.1.8",
   "main": "./lib",
+  "files": [
+    "./lib"
+  ],
   "scripts": {
-    "dev": "yarn build --watch",
+    "dev": "tsc -b ./tsconfig.json --watch",
     "build": "tsc -b ./tsconfig.json"
   },
   "dependencies": {

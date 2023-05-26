@@ -45,7 +45,7 @@ export function getConfig(): Config {
       gatewayUrl: GATEWAY_URL,
     };
   } catch (err) {
-    console.error(err.message);
+    console.error((err as Error).message);
     process.exit(1);
   }
 }

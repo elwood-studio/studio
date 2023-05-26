@@ -13,7 +13,7 @@ export type JobHandlerOptions = {
   context: ServerContext;
 };
 
-export default fp<JobHandlerOptions>(async (app, opts) => {
+export default fp(async (app, opts): Promise<void> => {
   const { boss, db } = opts.context;
 
   app.post('/job', async (req, res) => {

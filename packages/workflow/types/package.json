@@ -1,19 +1,22 @@
 {
   "name": "@elwood-studio/workflow-types",
   "version": "0.1.8",
-  "main": "./lib",
+  "main": "./lib/index.ts",
+  "types": "./lib/index.d.ts",
   "scripts": {
-    "dev": "yarn build --watch",
-    "build": "tsc -b ./tsconfig.json"
+    "build": "tsc -b ./tsconfig.json",
+    "dev": "tsc -b ./tsconfig --watch",
+    "lint": "eslint \"**/*.ts*\"",
+    "test": "jest"
   },
   "dependencies": {
     "@elwood-studio/types": "workspace:*"
   },
   "devDependencies": {
+    "typescript": "^5.0.4",
     "tsconfig": "workspace:*"
   },
   "files": [
     "lib"
-  ],
-  "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"
+  ]
 }

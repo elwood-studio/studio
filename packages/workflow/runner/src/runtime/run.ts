@@ -29,7 +29,7 @@ import debug from '../libs/debug';
 import { RuntimeRunContext } from './context';
 import { RuntimeRunJob } from './job';
 import { RuntimeTimer } from './timer';
-import { JsonObject } from '@elwood-studio/types/src';
+import { JsonObject } from '@elwood-studio/types';
 
 export class RuntimeRun implements WorkflowRunnerRuntimeRun {
   readonly #context = new RuntimeRunContext();

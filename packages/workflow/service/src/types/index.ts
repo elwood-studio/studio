@@ -15,3 +15,7 @@ export type ServerContext = {
   db: PgDatabase;
   submitWorkflow: SubmitWorkflowFn;
 };
+
+export type WorkflowService = {
+  teardown: () => Promise<void>;
+};

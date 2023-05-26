@@ -2,14 +2,12 @@
   "extends": "tsconfig/node.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "baseUrl": ".",
     "outDir": "./lib",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts"],
-  "exclude": ["bin"],
+  "include": ["./src/**/*.ts"],
   "references": [
     {
       "path": "../../types",
@@ -20,11 +18,11 @@
       "prepend": false
     },
     {
-      "path": "../runner",
+      "path": "../config",
       "prepend": false
     },
     {
-      "path": "../config",
+      "path": "../runner",
       "prepend": false
     },
     {
