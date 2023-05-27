@@ -4,7 +4,7 @@ export type Options = {
   force?: boolean;
 };
 
-export default async function register(cli: Argv) {
+export async function register(cli: Argv) {
   cli.command<Options>(
     'create',
     'create a new project',
@@ -14,6 +14,8 @@ export default async function register(cli: Argv) {
         default: false,
       });
     },
-    async (args: Arguments<Options>) => {},
+    async (_args: Arguments<Options>) => {
+      return;
+    },
   );
 }

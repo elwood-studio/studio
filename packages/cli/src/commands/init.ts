@@ -8,7 +8,7 @@ export type Options = {
   force?: boolean;
 };
 
-export default async function register(cli: Argv) {
+export async function register(cli: Argv) {
   cli.command<Options>(
     'init',
     'initialize a new project in the current directory',
@@ -19,7 +19,8 @@ export default async function register(cli: Argv) {
       });
     },
     async (args: Arguments<Options>) => {
-      const { workingDir: wd } = args.context!;
+      const context = args.context as Context;
+      const { workingDir: wd } = context;
 
       if (args.force) {
         await wd.remove();
@@ -30,7 +31,7 @@ export default async function register(cli: Argv) {
         `Directory ${wd.join('')} already exists.`,
       );
 
-      await buildWorkingDir({ context: args.context! });
+      await buildWorkingDir({ context });
 
       printSuccessMessage(`Initialized new project in ${wd.join('')}`);
     },

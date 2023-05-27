@@ -24,11 +24,13 @@ type SyncOptions = {
   source?: string;
 };
 
-export default async function register(cli: Argv) {
+export async function register(cli: Argv) {
   cli.command<TopOptions>(
     'fs <command> [...arguments]',
     false,
-    (y) => {},
+    () => {
+      return;
+    },
     async (args: Arguments<TopOptions>) => {
       const commandArguments = args.arguments ?? [];
 
@@ -39,12 +41,14 @@ export default async function register(cli: Argv) {
             source: commandArguments[0],
             destination: commandArguments[1],
           });
+          break;
         }
         case 'download': {
           await sync({
             ...args,
             source: commandArguments[0],
           });
+          break;
         }
       }
     },
@@ -66,15 +70,21 @@ export default async function register(cli: Argv) {
   cli.command<SyncOptions>(
     'fs:download <source>',
     'download a file or folder',
-    (y) => {},
+    () => {
+      return;
+    },
     sync,
   );
 
   cli.command(
     'fs:share',
     'share a file',
-    (y) => {},
-    async (args: Arguments) => {},
+    () => {
+      return;
+    },
+    async (_args: Arguments) => {
+      return;
+    },
   );
 
   cli.hide('fs');
@@ -135,11 +145,13 @@ export async function copy(args: Arguments<CopyOptions>) {
     spin.succeed(`Uploaded ${evt.upload.options.metadata?.name} `);
   });
 
-  client.fileSystem.upload.on('finished', (evt) => {
+  client.fileSystem.upload.on('finished', () => {
     spin.stop();
   });
 
   await client.fileSystem.upload.start();
 }
 
-export async function sync(args: Arguments<SyncOptions>) {}
+export async function sync(_args: Arguments<SyncOptions>) {
+  return;
+}

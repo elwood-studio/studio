@@ -17,7 +17,7 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "bin/cli-dev.ts"],
-  "ignore": ["bin/*.ts"],
+  "ignore": ["bin/*.ts", "dist/"],
   "references": [],
   "ts-node": {
     "experimentalResolver": true,

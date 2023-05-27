@@ -4,14 +4,14 @@ import { invariant } from 'ts-invariant';
 import fs from 'fs-jetpack';
 import Table from 'cli-table';
 import * as yaml from 'yaml';
+import chalk from 'chalk';
 
 import type { JsonObject } from '@elwood-studio/types';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import { resolveWorkflow } from '@elwood-studio/workflow-config';
 
-import type { Argv, Arguments } from '../types.ts';
+import type { Argv, Arguments, Context } from '../types.ts';
 import { printErrorMessage, printMessage } from '../libs/print-message.ts';
-import chalk from 'chalk';
 
 type TopOptions = RunOptions &
   ReportOptions & {
@@ -29,11 +29,13 @@ type ReportOptions = {
   output: 'table' | 'json' | 'json-pretty' | 'yaml';
 };
 
-export default async function register(cli: Argv) {
+export async function register(cli: Argv) {
   cli.command<TopOptions>(
     'workflow <command> [...arguments]',
     false,
-    (y) => {},
+    () => {
+      return;
+    },
     async (args: Arguments<TopOptions>) => {
       const commandArguments = args.arguments ?? [];
 
@@ -43,12 +45,14 @@ export default async function register(cli: Argv) {
             ...args,
             workflow: commandArguments[0],
           });
+          break;
         }
         case 'report': {
           await report({
             ...args,
             trackingId: commandArguments[0],
           });
+          break;
         }
       }
     },
@@ -93,19 +97,20 @@ export default async function register(cli: Argv) {
 export async function run(args: Arguments<RunOptions>) {
   invariant(args.workflow, 'Workflow is required');
 
+  const context = args.context as Required<Context>;
   const spin = ora('Sending workflow...').start();
 
   try {
     const input = getInput(args.input ?? []);
     const workflow = await getWorkflow(
       args.workflow,
-      args.context!.workingDir.join(''),
+      context.workingDir.join(''),
     );
 
     let result: { tracking_id?: string } = {};
 
     if (args.local) {
-      result = await args.context!.localClient!.workflow.run(workflow, input);
+      result = await context.localClient.workflow.run(workflow, input);
     }
 
     if (!args.local) {
@@ -135,9 +140,8 @@ export async function run(args: Arguments<RunOptions>) {
 
 export async function report(args: Arguments<ReportOptions>) {
   invariant(args.trackingId, 'Tracking ID is required');
-  const result = await args.context!.localClient!.workflow.report(
-    args.trackingId,
-  );
+  const context = args.context as Required<Context>;
+  const result = await context.localClient.workflow.report(args.trackingId);
 
   invariant(result, 'Unable to find workflow report');
 

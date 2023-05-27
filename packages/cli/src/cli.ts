@@ -6,11 +6,11 @@ import type { Arguments } from './types.ts';
 import { getVersion } from './libs/get-version.ts';
 import { createContext } from './libs/create-context.ts';
 import { printErrorMessage } from './libs/print-message.ts';
-import registerServe from './commands/local.ts';
-import registerInit from './commands/init.ts';
-import registerWorkflow from './commands/workflow.ts';
-import registerFs from './commands/fs.ts';
-import registerCreate from './commands/create.ts';
+import { register as registerServe } from './commands/local.ts';
+import { register as registerInit } from './commands/init.ts';
+import { register as registerWorkflow } from './commands/workflow.ts';
+import { register as registerFs } from './commands/fs.ts';
+import { register as registerCreate } from './commands/create.ts';
 
 export async function main(argv: string[]) {
   const rawArgs = hideBin(argv);
@@ -38,7 +38,9 @@ export async function main(argv: string[]) {
     .command(
       '$0',
       'Show help',
-      () => {},
+      () => {
+        return;
+      },
       (args) => {
         if (args._.length === 0) {
           cli.showHelp();

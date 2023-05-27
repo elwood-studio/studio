@@ -31,7 +31,7 @@
   "scripts": {
     "test": "jest --config=./config/jest.js",
     "dev": "tsup --watch",
-    "build": "tsup"
+    "build": "rimraf ./dist && tsup"
   },
   "dependencies": {
     "@elwood-studio/js": "workspace:*",
