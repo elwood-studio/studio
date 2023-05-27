@@ -10,5 +10,6 @@ export default defineConfig((options: Options) => ({
   clean: true,
   external: [],
   legacyOutput: true,
+  platform: 'node',
   ...options,
 }));

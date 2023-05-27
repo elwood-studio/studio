@@ -43,13 +43,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # only need to run node setup
+      # if the image requires a dist
+      # call before building
       - uses: actions/setup-node@v3
+        if: ${{ matrix.dist }}
       - uses: pnpm/action-setup@v2
+        if: ${{ matrix.dist }}
         with:
           version: 8
       - run: make ready
-      - name: pnpm dist
-        run: pnpm --dir=${{ matrix.dir }} dist
+        if: ${{ matrix.dist }}
+      - run: pnpm --dir=${{ matrix.dir }} dist
         if: ${{ matrix.dist }}
 
       - name: Log in to the Container registry
