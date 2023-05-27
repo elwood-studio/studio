@@ -15,7 +15,7 @@ COPY --from=deps /app/node_modules /app/node_modules
 COPY ./package.json ./tsconfig.json /app/
 COPY ./dist/ /app/dist/
 RUN cd /app \
-    && pkg -t node18-linux -o ./workflow-server ./dist/index.js
+    && pkg -t node18-linux -o ./workflow-server ./dist/server.js
 
 FROM lukechannings/deno
 WORKDIR /app
