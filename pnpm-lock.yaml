@@ -75,9 +75,6 @@ importers:
       ora:
         specifier: ^6.3.1
         version: 6.3.1
-      read-pkg-up:
-        specifier: ^9.1.0
-        version: 9.1.0
       stacktracey:
         specifier: ^2.1.8
         version: 2.1.8
@@ -6996,17 +6993,6 @@ packages:
       locate-path: 6.0.0
       path-exists: 4.0.0
 
-  /find-up@6.3.0:
-    resolution:
-      {
-        integrity: sha512-v2ZsoEuVHYy8ZIlYqwPe/39Cy+cFDzp4dXPaxNvkEuouymu+2Jbz0PxpKarJHYJTmv2HWT3O382qY8l4jMWthw==,
-      }
-    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
-    dependencies:
-      locate-path: 7.2.0
-      path-exists: 5.0.0
-    dev: false
-
   /flat-cache@3.0.4:
     resolution:
       {
@@ -7831,6 +7817,7 @@ packages:
     engines: { node: '>=10' }
     dependencies:
       lru-cache: 6.0.0
+    dev: true
 
   /hosted-git-info@5.2.1:
     resolution:
@@ -10407,16 +10394,6 @@ packages:
     dependencies:
       p-locate: 5.0.0
 
-  /locate-path@7.2.0:
-    resolution:
-      {
-        integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==,
-      }
-    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
-    dependencies:
-      p-locate: 6.0.0
-    dev: false
-
   /lodash._baseiteratee@4.7.0:
     resolution:
       {
@@ -11389,6 +11366,7 @@ packages:
       is-core-module: 2.11.0
       semver: 7.3.8
       validate-npm-package-license: 3.0.4
+    dev: true
 
   /normalize-package-data@4.0.1:
     resolution:
@@ -12033,16 +12011,6 @@ packages:
     dependencies:
       yocto-queue: 0.1.0
 
-  /p-limit@4.0.0:
-    resolution:
-      {
-        integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==,
-      }
-    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
-    dependencies:
-      yocto-queue: 1.0.0
-    dev: false
-
   /p-locate@2.0.0:
     resolution:
       {
@@ -12070,16 +12038,6 @@ packages:
     engines: { node: '>=10' }
     dependencies:
       p-limit: 3.1.0
-
-  /p-locate@6.0.0:
-    resolution:
-      {
-        integrity: sha512-wPrq66Llhl7/4AGC6I+cqxT07LhXvWL08LNXz1fENOw0Ap4sRZZ/gZpTTJ5jpurzzzfS2W/Ge9BY3LgLjCShcw==,
-      }
-    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
-    dependencies:
-      p-limit: 4.0.0
-    dev: false
 
   /p-map-series@2.1.0:
     resolution:
@@ -12289,14 +12247,6 @@ packages:
         integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==,
       }
     engines: { node: '>=8' }
-
-  /path-exists@5.0.0:
-    resolution:
-      {
-        integrity: sha512-RjhtfwJOxzcFmNOi6ltcbcu4Iu+FL3zEj83dk4kAS+fVpTxXLO1b38RvJgT/0QwvV/L3aY9TAnyv0EOqW4GoMQ==,
-      }
-    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
-    dev: false
 
   /path-is-absolute@1.0.1:
     resolution:
@@ -13201,18 +13151,6 @@ packages:
       read-pkg: 5.2.0
       type-fest: 0.8.1
 
-  /read-pkg-up@9.1.0:
-    resolution:
-      {
-        integrity: sha512-vaMRR1AC1nrd5CQM0PhlRsO5oc2AAigqr7cCrZ/MW/Rsaflz4RlgzkpL4qoU/z1F6wrbd85iFv1OQj/y5RdGvg==,
-      }
-    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
-    dependencies:
-      find-up: 6.3.0
-      read-pkg: 7.1.0
-      type-fest: 2.19.0
-    dev: false
-
   /read-pkg@3.0.0:
     resolution:
       {
@@ -13236,19 +13174,6 @@ packages:
       normalize-package-data: 2.5.0
       parse-json: 5.2.0
       type-fest: 0.6.0
-
-  /read-pkg@7.1.0:
-    resolution:
-      {
-        integrity: sha512-5iOehe+WF75IccPc30bWTbpdDQLOCc3Uu8bi3Dte3Eueij81yx1Mrufk8qBx/YAbR4uL1FdUr+7BKXDwEtisXg==,
-      }
-    engines: { node: '>=12.20' }
-    dependencies:
-      '@types/normalize-package-data': 2.4.1
-      normalize-package-data: 3.0.3
-      parse-json: 5.2.0
-      type-fest: 2.19.0
-    dev: false
 
   /read@1.0.7:
     resolution:
@@ -15489,14 +15414,6 @@ packages:
       }
     engines: { node: '>=8' }
 
-  /type-fest@2.19.0:
-    resolution:
-      {
-        integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==,
-      }
-    engines: { node: '>=12.20' }
-    dev: false
-
   /type@1.2.0:
     resolution:
       {
@@ -16431,11 +16348,3 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: '>=10' }
-
-  /yocto-queue@1.0.0:
-    resolution:
-      {
-        integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==,
-      }
-    engines: { node: '>=12.20' }
-    dev: false
