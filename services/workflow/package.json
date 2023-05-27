@@ -8,7 +8,7 @@
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",
     "start": "ts-node-dev ./src/server.ts",
-    "dist": "esbuild lib/server.js --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:fast-json-stringify\""
+    "dist": "esbuild lib/server.js --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\""
   },
   "files": [
     "lib"
