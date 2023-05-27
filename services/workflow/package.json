@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/workflow-service",
-  "version": "0.0.0",
+  "version": "0.1.9",
   "main": "./lib",
   "scripts": {
     "build": "tsc -b ./tsconfig.json",
