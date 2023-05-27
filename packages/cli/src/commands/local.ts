@@ -28,6 +28,9 @@ export async function register(cli: Argv) {
         type: 'boolean',
         default: false,
       });
+      y.option('supabase', {
+        type: 'string',
+      });
     },
     async (args: Arguments<StartOptions>) => {
       const spin = ora('Starting...').start();

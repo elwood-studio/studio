@@ -10,7 +10,7 @@
     "build": "tsc -b ./tsconfig.json"
   },
   "dependencies": {
-    "ts-essentials": "^9.0.0"
+    "ts-essentials": "^9.3.2"
   },
   "devDependencies": {
     "tsconfig": "workspace:*"

@@ -12,6 +12,6 @@
     "@elwood-studio/cli": "workspace:*"
   },
   "scripts": {
-    "build": "cp ../../cli/readme.md ."
+    "build": "cp  ../../packages/cli/readme.md ."
   }
 }

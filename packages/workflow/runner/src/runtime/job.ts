@@ -129,7 +129,7 @@ export class RuntimeRunJob implements WorkflowRunnerRuntimeRunJob {
   async teardown() {
     this.#log('teardown');
     if (this.#executionContainer) {
-      await this.#executionContainer.stop({ force: true });
+      await this.#executionContainer.stop();
       await this.#executionContainer.remove();
     }
 

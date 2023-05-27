@@ -3,18 +3,19 @@ FROM lukechannings/deno
 
 
 RUN apt update -y
-RUN apt install -y unzip curl
+RUN apt install -y unzip curl jq
 
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs && corepack enable
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+  && apt-get install -y nodejs && corepack enable
 
 
 WORKDIR /app
 COPY ./tsconfig.json ./package.json ./entry.sh /app/
-COPY ./src /app/src/
 RUN cd /app \
-    && yarn install --dev
-
-
+    && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
+    && mv package.json.tmp package.json \
+    && npm install --omit=dev --omit=optional
+COPY ./dist /app/dist/
 COPY ./entry.sh /app/entry.sh
 RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow /data
 COPY ./workflows /var/system-workflows
@@ -27,4 +28,4 @@ ENV PORT 4000
 ENV HOST 0.0.0.0
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["/app/node_modules/.bin/ts-node-dev", "--transpile-only", "./src/server.ts"]
+CMD ["node", "./dist/index.js"]

@@ -11,9 +11,7 @@ export async function buildDockerCompose(
 ): Promise<JsonObject> {
   const { context } = options;
 
-  function mapMounts(
-    dirs: [(string | undefined)?, (string | undefined)?],
-  ): string {
+  function mapMounts(dirs: [string, string]): string {
     return [
       dirs[0]!.replace('$root', context.workingDir.join('')),
       dirs[1]!,
@@ -34,12 +32,16 @@ export async function buildDockerCompose(
             'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood',
           EXTERNAL_HOST: 'localhost:8000',
         },
-        volumes: (context.localConfig?.fs?.mount ?? []).map(mapMounts),
+        volumes: (context.localConfig?.fs?.mount ?? []).map((item) => {
+          return item && mapMounts([item[0] as string, item[1] as string]);
+        }),
       },
       workflow: {
         container_name: 'workflow',
         image: 'ghcr.io/elwood-studio/workflow:latest',
-        volumes: (context.localConfig?.workflow?.mount ?? []).map(mapMounts),
+        volumes: (context.localConfig?.workflow?.mount ?? []).map((item) => {
+          return item && mapMounts([item[0] as string, item[1] as string]);
+        }),
         restart: 'unless-stopped',
         environment: {
           JWT_SECRET: '${JWT_SECRET}',

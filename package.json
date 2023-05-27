@@ -8,7 +8,7 @@
   "scripts": {},
   "devDependencies": {
     "@types/jest": "^29.5.1",
-    "@types/node": "^20.2.3",
+    "@types/node": "^20.2.5",
     "eslint": "^8.41.0",
     "eslint-config-custom": "workspace:*",
     "lerna": "^6.6.2",

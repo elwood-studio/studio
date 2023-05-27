@@ -8,7 +8,7 @@
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",
     "start": "ts-node-dev ./src/server.ts",
-    "dist": "ncc build ./src/server.ts -o ./dist --external cpu-features --external pg-cloudflare"
+    "dist": "esbuild lib/server.js --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:fast-json-stringify\""
   },
   "files": [
     "lib"
@@ -19,8 +19,9 @@
     "@elwood-studio/workflow-runner": "workspace:*",
     "@elwood-studio/workflow-secrets": "workspace:*",
     "@elwood-studio/workflow-types": "workspace:*",
-    "@types/node": "^20.2.3",
+    "@types/node": "^20.2.5",
     "@types/pg": "^8.10.1",
+    "esbuild": "^0.17.19",
     "ts-node-dev": "^2.0.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.4"
@@ -28,11 +29,13 @@
   "dependencies": {
     "@vercel/ncc": "^0.36.1",
     "dotenv": "^16.0.3",
+    "fast-json-stringify": "^5.7.0",
     "fastify": "^4.17.0",
     "fastify-plugin": "^4.5.0",
-    "glob": "^10.2.5",
+    "glob": "^10.2.6",
     "pg": "^8.11.0",
     "pg-boss": "8.4.2",
+    "ssh2": "^1.13.0",
     "ts-invariant": "^0.10.3"
   }
 }

@@ -22,10 +22,10 @@ services:
   workflow:
     container_name: workflow
     build:
-      context: ../services/workflow
-      dockerfile: Dockerfile
+      context: ./services/workflow/
+      dockerfile: Dockerfile.dev
     volumes:
-      - ../services/workflow/src:/app/src
+      - ../services/workflow/lib:/app/lib
     restart: unless-stopped
     environment:
       JWT_SECRET: ${JWT_SECRET}

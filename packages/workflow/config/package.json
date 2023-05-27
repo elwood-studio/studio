@@ -13,24 +13,24 @@
     "dist": "node ./scripts/generate-json-schema.js"
   },
   "dependencies": {
-    "ajv": "^8.11.2",
-    "fs-jetpack": "^5.0.0",
+    "ajv": "^8.12.0",
+    "fs-jetpack": "^5.1.0",
     "isomorphic-fetch": "^3.0.0",
-    "joi": "^17.6.0",
+    "joi": "^17.9.2",
     "lodash.set": "^4.3.2",
-    "ts-invariant": "^0.10.2",
+    "ts-invariant": "^0.10.3",
     "uuid": "^9.0.0",
-    "yaml": "^2.0.0"
+    "yaml": "^2.3.1"
   },
   "devDependencies": {
     "@elwood-studio/types": "workspace:*",
     "@elwood-studio/workflow-types": "workspace:*",
     "@types/isomorphic-fetch": "^0.0.36",
-    "@types/lodash.set": "^4.3.6",
-    "@types/uuid": "^9.0.0",
-    "joi-to-json": "^3.1.1",
+    "@types/lodash.set": "^4.3.7",
+    "@types/uuid": "^9.0.1",
+    "joi-to-json": "^3.1.2",
     "tsconfig": "workspace:*",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   },
   "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"
