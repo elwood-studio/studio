@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."access" (
     "can_write_tree" boolean NOT NULL DEFAULT false,
     "can_share" boolean NOT NULL DEFAULT false,
     "can_download" boolean NOT NULL DEFAULT false,
+    "can_preview" boolean NOT NULL DEFAULT false,
     "block_pattern" text[] NULL,
     "allow_pattern" text[] NULL,
     "created_at" timestamptz DEFAULT now(),

@@ -8,6 +8,7 @@ export type TusBeforeCreateOptions = {
   authToken: string;
   id: string;
   metadata: {
+    object_id?: string;
     name?: string;
     parent_id?: string;
     display_name?: string;
@@ -21,6 +22,7 @@ export type TusBeforeCreateOptions = {
 export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
   const { db, id, authToken } = options;
   const {
+    object_id,
     parent_id,
     name,
     display_name,
@@ -29,6 +31,44 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
     sidecar_type,
     skip_workflows,
   } = options.metadata;
+
+  // if there's already an object
+  // we should make sure we can access it
+  // then update with the upload id
+  if (object_id) {
+    const checkResult = await authExecuteSql({
+      client: db,
+      token: authToken,
+      sql: `SELECT has_access FROM elwood.get_object_access($1)`,
+      params: [object_id ?? null],
+    });
+
+    invariant(checkResult.rows[0].has_access === true, 'Can not access object');
+
+    const result = await authExecuteSql({
+      client: db,
+      token: authToken,
+      sql: `
+        UPDATE 
+          elwood.object
+        SET 
+          state = 'PENDING',
+          metadata = $1
+        WHERE 
+          id = $2
+      `,
+      params: [
+        {
+          upload_id: id,
+        },
+        object_id,
+      ],
+    });
+
+    invariant(result.rowCount === 1, 'failed to create object');
+
+    return;
+  }
 
   invariant(display_name, 'metadata.display_name is required');
   invariant(mime_type, 'metadata.mime_type is required');
@@ -55,11 +95,10 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
       mime_type,
       size,
       sidecar_type,
-      skip_workflows,
-      remote_urn
+      skip_workflows
     )
     VALUES (
-      'PENDING', $1, $2, $3, $4, $5, $6, $7, $8, $9
+      'PENDING', $1, $2, $3, $4, $5, $6, $7, $8
     );
   `;
 
@@ -78,11 +117,8 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
       size,
       sidecar_type,
       !!skip_workflows,
-      ['ern', 'local', `uploads/${id}`],
     ],
   });
-
-  console.log('after sql', result);
 
   invariant(result.rowCount === 1, 'failed to create object');
 }

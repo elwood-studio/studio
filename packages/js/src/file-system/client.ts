@@ -1,5 +1,9 @@
 import type { Fetch } from '../types.ts';
-import { FileSystemUploadClient } from './upload.ts';
+import {
+  FileSystemUploadClient,
+  type FileSystemUploadClientFile,
+  type FileSystemUploadClientAddFileOptions,
+} from './upload.ts';
 
 export type FileSystemClientOptions = {
   url: string;
@@ -19,6 +23,13 @@ export class FileSystemClient {
 
   get upload() {
     return this._upload;
+  }
+
+  async addUpload(
+    file: FileSystemUploadClientFile,
+    options?: FileSystemUploadClientAddFileOptions,
+  ) {
+    return await this._upload.add(file, options);
   }
 
   /**

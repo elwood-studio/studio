@@ -7,10 +7,9 @@ import { getConfig } from '../libs/get-config';
 const { gatewayUrl } = getConfig();
 
 type EventWorkInput = {
-  objectId: string;
-  eventType: string;
-  previousState: string;
-  trackingId: string;
+  objectId?: string;
+  previousState?: string;
+  trackingId?: string;
 };
 
 export default async function register(context: ServerContext): Promise<void> {
@@ -25,7 +24,7 @@ export default async function register(context: ServerContext): Promise<void> {
     const input: JsonObject = {};
     const eventType = job.name.replace('event:', '').trim();
     const context: JsonObject = {
-      eventType,
+      event: eventType,
       elwood: {
         sub: '',
         role: '',

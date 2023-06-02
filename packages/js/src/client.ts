@@ -1,6 +1,5 @@
-import SupabaseClientPkg, {
-  SupabaseClientOptions,
-} from '@supabase/supabase-js';
+import * as SupabaseClientPkg from '@supabase/supabase-js';
+import type { SupabaseClientOptions } from '@supabase/supabase-js';
 
 type Database = any;
 

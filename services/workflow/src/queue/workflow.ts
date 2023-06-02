@@ -8,6 +8,7 @@ type WorkflowInput = {
   helloWorld?: boolean;
   workflow: Workflow;
   input: JsonObject;
+  context: JsonObject;
 };
 
 export default async function register(context: ServerContext): Promise<void> {
@@ -18,7 +19,7 @@ export default async function register(context: ServerContext): Promise<void> {
     console.log('received job', job.data);
     const { data } = job;
 
-    const run = await submitWorkflow(data.workflow, data.input);
+    const run = await submitWorkflow(data.workflow, data.input, data.context);
 
     if (run.status === RunnerStatus.Error) {
       throw new Error(run.statusText);

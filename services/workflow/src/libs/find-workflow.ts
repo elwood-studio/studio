@@ -2,11 +2,7 @@ import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { globSync } from 'glob';
 
-import type {
-  Workflow,
-  WorkflowRunnerInstructions,
-} from '@elwood-studio/workflow-types';
-import type { JsonObject } from '@elwood-studio/types';
+import type { Workflow } from '@elwood-studio/workflow-types';
 import { resolveWorkflow } from '@elwood-studio/workflow-config';
 
 import { getConfig } from './get-config';
@@ -20,8 +16,8 @@ export async function findWorkflow(): Promise<Array<Workflow>> {
     '/var/system-workflows',
     join(dataDir, 'workflows'),
     join(dataDir, '.elwood', 'workflows'),
-    join(workflowsDir!),
-  ];
+    workflowsDir,
+  ].filter(Boolean) as string[];
 
   const workflowFiles = possibleFolders.reduce((acc, folder) => {
     return acc.concat(

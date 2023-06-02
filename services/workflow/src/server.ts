@@ -1,7 +1,7 @@
 import { createService } from './create';
 
 createService()
-  .then(() => {
+  .then((_) => {
     return;
   })
   .catch(console.error);

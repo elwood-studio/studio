@@ -11,6 +11,7 @@ import { getConfig } from './libs/get-config';
 import registerWorkflowQueue from './queue/workflow';
 import registerEventQueue from './queue/event';
 import jobHandlerPlugin from './handlers/job';
+import eventHandlerPlugin from './handlers/event';
 
 const { dataDir, dbUrl, workingDir, actionsDir, host, port } = getConfig();
 const app = fastify({ logger: true });
@@ -82,10 +83,11 @@ export async function createService(): Promise<WorkflowService> {
   await registerWorkflowQueue(context);
   await registerEventQueue(context);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-
   app.register(jobHandlerPlugin, {
+    context,
+  });
+
+  app.register(eventHandlerPlugin, {
     context,
   });
 

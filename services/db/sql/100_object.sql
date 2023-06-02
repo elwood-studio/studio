@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."object" (
 
     -- remote info for this object
     -- and where it is stored. not all objects have
-    "remote_id" uuid NULL,
+    "local_urn" text[] NULL,
     "remote_urn" text[] NULL,
 
     -- timestamps for stuff
@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."object" (
     -- should we skip automated workflows for this object
     "skip_workflows" boolean NOT NULL DEFAULT false,
 
+    "content_hash" text NULL,
 
     -- keys and stuff
     CONSTRAINT "object_parent_id" FOREIGN KEY ("parent_id") REFERENCES "elwood"."object"("id"),

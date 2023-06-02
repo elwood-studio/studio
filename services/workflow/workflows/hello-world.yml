@@ -1,5 +1,5 @@
 name: "hello_world"
-when: "*"
+when: "{% event === 'hello-world' %}"
 jobs:
   default:
     description: "I say 'Hello World'"
