@@ -1,8 +1,7 @@
 import * as SupabaseClientPkg from '@supabase/supabase-js';
 import type { SupabaseClientOptions } from '@supabase/supabase-js';
 
-type Database = any;
-
+import type { Database } from './types.ts';
 import { invariant } from './libs/invariant.ts';
 import { FileSystemClient } from './file-system/index.ts';
 import { WorkflowClient } from './workflow/index.ts';

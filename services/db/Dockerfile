@@ -8,7 +8,7 @@ RUN cat /tmp/999999_elwood.sql
 
 FROM supabase/postgres:15.1.0.67
 
-ENV POSTGRES_HOST  /var/run/postgresql
+ENV POSTGRES_HOST /var/run/postgresql
 
 COPY --from=sql /tmp/999999_elwood.sql /docker-entrypoint-initdb.d/migrations/999999_elwood.sql
 
