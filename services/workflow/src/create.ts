@@ -103,6 +103,8 @@ export async function createService(): Promise<WorkflowService> {
           return;
         }
 
+        console.log('server started');
+
         resolve(null);
       },
     );

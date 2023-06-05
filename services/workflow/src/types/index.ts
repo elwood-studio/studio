@@ -1,4 +1,4 @@
-import { WorkflowRunnerRuntimeRun } from '@elwood-studio/workflow-runner';
+import type { WorkflowRunnerRuntimeRun } from '@elwood-studio/workflow-runner';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import type { JsonObject } from '@elwood-studio/types';
 import type PgBoss from 'pg-boss';
@@ -18,4 +18,15 @@ export type ServerContext = {
 
 export type WorkflowService = {
   teardown: () => Promise<void>;
+};
+
+export type WorkflowQueueData = {
+  workflow: Workflow;
+  input: JsonObject;
+  context: JsonObject;
+  tracking_id?: string;
+  source?: 'event';
+  source_id?: string;
+  source_name?: string;
+  source_job_id?: string;
 };

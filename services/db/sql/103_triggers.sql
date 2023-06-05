@@ -13,21 +13,23 @@ BEGIN
 
   IF NEW.state = 'READY' THEN
     INSERT INTO 
-      pgboss.job
+      elwood.event
       (
-        "name",
-        "singletonkey",
-        "data"
+        "type",
+        "payload",
+        "trigger",
+        "trigger_by_user_id"
       ) 
     VALUES
       (
-        'event',
-        NEW.id,
+        ARRAY['object', NEW.type, LOWER(TG_OP)],
         json_build_object(
-          'eventType', 'object:ready',
-          'previousState', OLD.state,
-          'objectId', NEW.id
-        )
+          'object_id', NEW.id,
+          'new', NEW,
+          'old', OLD
+        ),
+        'system',
+        auth.uid()
       )  
     ;
 
