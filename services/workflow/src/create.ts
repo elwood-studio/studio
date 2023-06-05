@@ -12,6 +12,7 @@ import registerWorkflowQueue from './queue/workflow';
 import registerEventQueue from './queue/event';
 import runHandlerPlugin from './handlers/run';
 import eventHandlerPlugin from './handlers/event';
+import configHandlerPlugin from './handlers/config';
 
 const { dataDir, dbUrl, workingDir, actionsDir, host, port } = getConfig();
 const app = fastify({ logger: true });
@@ -88,6 +89,10 @@ export async function createService(): Promise<WorkflowService> {
   });
 
   app.register(eventHandlerPlugin, {
+    context,
+  });
+
+  app.register(configHandlerPlugin, {
     context,
   });
 
