@@ -1,10 +1,14 @@
-import type { JsonObject } from '@elwood-studio/types';
+import {
+  RunnerStatus,
+  type WorkflowRunnerRuntimeRunReport,
+} from '@elwood-studio/workflow-runner';
+
 import type { ServerContext } from '../types';
 
 type CompleteRunOptions = {
   job_id: string;
   state: string;
-  output: JsonObject;
+  output: WorkflowRunnerRuntimeRunReport;
   completed_at: string;
 };
 
@@ -13,7 +17,19 @@ export async function completeRun(
   options: CompleteRunOptions,
 ): Promise<void> {
   const { db } = context;
-  const { job_id, state, output, completed_at } = options;
+  const { job_id, output, completed_at } = options;
+  let state = options.state;
+
+  switch (output.status.value) {
+    case RunnerStatus.Error: {
+      state = 'failed';
+      break;
+    }
+    case RunnerStatus.Skipped: {
+      state = 'skipped';
+      break;
+    }
+  }
 
   await db.executeSql(
     `
