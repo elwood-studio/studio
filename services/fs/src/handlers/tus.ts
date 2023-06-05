@@ -6,6 +6,7 @@ import { Client } from 'pg';
 
 import { tusBeforeCreate } from '../libs/tus-before-create';
 import { tusAfterCreate } from '../libs/tus-after-create';
+import { failUpload } from '../libs/fail-upload';
 
 export type TusOptions = {
   db: Client;
@@ -30,6 +31,13 @@ export default fp<TusOptions>(async (app, opts) => {
 
         return res;
       } catch (err) {
+        await failUpload({
+          db,
+          authToken: req.headers.authorization,
+          upload_id: upload.id,
+          object_id: upload.metadata.object_id,
+        });
+
         console.log('Upload Create Failed');
         console.log(err.message);
         console.log(err.stack);
@@ -45,6 +53,13 @@ export default fp<TusOptions>(async (app, opts) => {
 
         return res;
       } catch (err) {
+        await failUpload({
+          db,
+          authToken: req.headers.authorization,
+          upload_id: upload.id,
+          object_id: upload.metadata.object_id,
+        });
+
         console.log('Upload Finish Failed');
         console.log(err.message);
         console.log(err.stack);

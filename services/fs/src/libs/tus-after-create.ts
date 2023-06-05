@@ -1,31 +1,49 @@
+import { rename, mkdir } from 'fs/promises';
 import { Client } from 'pg';
 import { invariant } from 'ts-invariant';
+import { sync as md5 } from 'md5-file';
 
 import { authExecuteSql } from './auth-execute-sql';
 
-export type TusBeforeCreateOptions = {
+export type TusAfterCreateOptions = {
   db: Client;
   authToken: string;
   id: string;
 };
 
-export async function tusAfterCreate(options: TusBeforeCreateOptions) {
-  const { db, id, authToken } = options;
+export async function tusAfterCreate(options: TusAfterCreateOptions) {
+  const { db, id: uploadId, authToken } = options;
 
+  const { rows } = await authExecuteSql({
+    client: db,
+    token: authToken,
+    params: [uploadId],
+    sql: `SELECT id FROM elwood.object WHERE metadata->>'upload_id' = $1`,
+  });
+
+  const id = rows[0]?.id;
+
+  invariant(id, 'Expected to find an object with the given upload_id');
+
+  const content_hash = md5(`/data/uploads/${uploadId}`);
   const sql = `
     UPDATE elwood.object 
     SET 
-      "state" = 'READY'
+      "state" = 'READY',
+      content_hash = $2
     WHERE 
-      metadata->>'upload_id' = $1
+      id = $1
     `;
 
   const result = await authExecuteSql({
     client: db,
     token: authToken,
     sql,
-    params: [id],
+    params: [id, content_hash],
   });
 
   invariant(result.rowCount === 1, 'Expected exactly one row to be updated');
+
+  await mkdir(`/data/cache`, { recursive: true });
+  await rename(`/data/uploads/${uploadId}`, `/data/cache/${id}`);
 }

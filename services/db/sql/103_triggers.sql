@@ -7,29 +7,35 @@ CREATE OR REPLACE FUNCTION elwood.trigger_after_object()
 $$
 BEGIN
 
-		IF NEW.state = 'READY' THEN
-			INSERT INTO 
-				pgboss.job
-				(
-					"name",
-					"singletonkey",
-					"data"
-				) 
-			VALUES
-				(
-					'event',
-					NEW.id,
-					json_build_object(
-						'eventType', 'object:ready',
-						'previousState', OLD.state,
-						'objectId', NEW.id
-					)
-				)  
-			;
+  IF NEW.type = 'TREE' THEN 
+    NEW.state = 'READY';
+  END IF;
 
-		END IF;
+  IF NEW.state = 'READY' THEN
+    INSERT INTO 
+      elwood.event
+      (
+        "type",
+        "payload",
+        "trigger",
+        "trigger_by_user_id"
+      ) 
+    VALUES
+      (
+        ARRAY['object', NEW.type, LOWER(TG_OP)],
+        json_build_object(
+          'object_id', NEW.id,
+          'new', NEW,
+          'old', OLD
+        ),
+        'system',
+        auth.uid()
+      )  
+    ;
 
-		RETURN NEW;
+  END IF;
+
+  RETURN NEW;
 
 END;
 $$;

@@ -1,19 +1,15 @@
 {
   "name": "@elwood-studio/workspace",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {},
   "devDependencies": {
-    "@types/jest": "^29.5.1",
+    "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
-    "eslint": "^8.41.0",
+    "eslint": "^8.42.0",
     "eslint-config-custom": "workspace:*",
     "lerna": "^6.6.2",
     "prettier": "^2.8.8",
     "turbo": "canary",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.3"
   }
 }

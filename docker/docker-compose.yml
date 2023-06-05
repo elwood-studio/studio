@@ -4,15 +4,10 @@ services:
   # FILE SERVER
   fs:
     container_name: fs
-    build:
-      context: ../services/fs
-      dockerfile: Dockerfile.dev
+    image: ghcr.io/elwood-studio/fs:latest
     restart: unless-stopped
     depends_on:
       - db
-    volumes:
-      - ../services/fs/src:/app/src
-      - ../tmp:/data
     environment:
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood
@@ -21,11 +16,7 @@ services:
   # WORKFLOW MANAGER
   workflow:
     container_name: workflow
-    build:
-      context: ./services/workflow/
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ../services/workflow/dist:/app/dist
+    image: ghcr.io/elwood-studio/workflow:latest
     restart: unless-stopped
     environment:
       JWT_SECRET: ${JWT_SECRET}
@@ -35,9 +26,7 @@ services:
   # GATEWAY API
   api:
     container_name: api
-    build:
-      context: ../services/gateway
-      dockerfile: Dockerfile
+    image: ghcr.io/elwood-studio/gateway:latest
     restart: unless-stopped
     ports:
       - ${KONG_HTTP_PORT}:8000/tcp
@@ -53,9 +42,7 @@ services:
   # DATABASE
   db:
     container_name: db
-    build:
-      context: ../services/db
-      dockerfile: Dockerfile
+    image: ghcr.io/elwood-studio/db:latest
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}

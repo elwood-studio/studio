@@ -1,8 +1,0 @@
-name: "echo-elwood-context"
-when: "*"
-jobs:
-  default:
-    steps:
-      - action: "run/echo"
-        input:
-          message: "{%= toJson(elwood) %}"

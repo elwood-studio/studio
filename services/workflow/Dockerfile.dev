@@ -1,20 +1,18 @@
 FROM lukechannings/deno
 
-
-
 RUN apt update -y
 RUN apt install -y unzip curl jq
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
   && apt-get install -y nodejs && corepack enable
 
-
 WORKDIR /app
 COPY ./tsconfig.json ./package.json ./entry.sh /app/
 RUN cd /app \
     && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
     && mv package.json.tmp package.json \
-    && npm install --omit=dev --omit=optional
+    && npm install --omit=dev --omit=optional \
+    && npm install -g node-dev
 COPY ./dist /app/dist/
 COPY ./entry.sh /app/entry.sh
 RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow /data
@@ -28,4 +26,4 @@ ENV PORT 4000
 ENV HOST 0.0.0.0
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["node", "./dist/index.js"]
+CMD ["node-dev", "./dist/server.js"]

@@ -24,6 +24,7 @@
     "fastify": "^4.17.0",
     "fastify-plugin": "^4.5.0",
     "jsonwebtoken": "^9.0.0",
+    "md5-file": "^5.0.0",
     "pg": "^8.10.0",
     "ts-invariant": "^0.10.3"
   }

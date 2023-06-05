@@ -1,8 +1,14 @@
 import Emittery from 'emittery';
-import tus, { type Upload, type UploadOptions } from 'tus-js-client';
+import * as tus from 'tus-js-client';
+import { type Upload, type UploadOptions } from 'tus-js-client';
 import crypto from 'crypto-js';
 
 import type { Fetch } from '../types.ts';
+
+export type FileSystemUploadClientFile =
+  | Blob
+  | File
+  | Pick<ReadableStreamDefaultReader<any>, 'read'>;
 
 export type FileSystemUploadClientOptions = {
   url: string;
@@ -112,7 +118,7 @@ export class FileSystemUploadClient extends Emittery<Events> {
   }
 
   async add(
-    file: Blob | File | Pick<ReadableStreamDefaultReader<any>, 'read'>,
+    file: FileSystemUploadClientFile,
     options: FileSystemUploadClientAddFileOptions = {},
   ): Promise<string> {
     const headers: Record<string, string> = { apikey: this.options.key };
