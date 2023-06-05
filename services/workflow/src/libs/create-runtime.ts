@@ -27,7 +27,7 @@ export async function createWorkflowRuntime(
     context: 'local',
     staticFiles: {
       data: dataDir,
-      // actions: actionsDir,
+      actions: actionsDir,
     },
     plugins: [],
   });
