@@ -10,7 +10,7 @@ import { getConfig } from './libs/get-config';
 
 import registerWorkflowQueue from './queue/workflow';
 import registerEventQueue from './queue/event';
-import jobHandlerPlugin from './handlers/job';
+import runHandlerPlugin from './handlers/run';
 import eventHandlerPlugin from './handlers/event';
 
 const { dataDir, dbUrl, workingDir, actionsDir, host, port } = getConfig();
@@ -83,7 +83,7 @@ export async function createService(): Promise<WorkflowService> {
   await registerWorkflowQueue(context);
   await registerEventQueue(context);
 
-  app.register(jobHandlerPlugin, {
+  app.register(runHandlerPlugin, {
     context,
   });
 

@@ -54,7 +54,7 @@ jobs:
           version: 8
       - run: make ready
         if: ${{ matrix.dist }}
-      - run: pnpm --dir=${{ matrix.dir }} dist
+      - run: pnpm --dir=${{ matrix.dir }} build
         if: ${{ matrix.dist }}
 
       - name: Log in to the Container registry

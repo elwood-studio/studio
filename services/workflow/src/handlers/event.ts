@@ -1,39 +1,27 @@
-import { randomUUID } from 'node:crypto';
 import fp from 'fastify-plugin';
 
 import type { JsonObject } from '@elwood-studio/types';
-import { createWorkflowInput } from '@elwood-studio/workflow-config';
 
 import { ServerContext } from '../types';
+import { createEvent } from '../libs/create-event';
 
 export type EventHandlerOptions = {
   context: ServerContext;
 };
 
-export default fp(async (app, opts): Promise<void> => {
-  const { boss } = opts.context;
-
+export default fp<EventHandlerOptions>(async (app, opts): Promise<void> => {
   app.post('/event/:type', async (req, res) => {
-    const { type: eventType } = req.params as { type: string };
-    const { input, tracking_id } = req.body as {
-      workflow: string;
-      input: JsonObject;
-      tracking_id?: string;
-    };
+    const { type } = req.params as { type: string };
+    const payload = (req.body as JsonObject) ?? {};
 
-    const trackingId = tracking_id ?? input.tracking_id ?? randomUUID();
-
-    await boss.send(
-      `event:${eventType}`,
-      {
-        input: createWorkflowInput(input, { trackingId }),
-      },
-      { singletonKey: trackingId },
-    );
+    const event_id = await createEvent(opts.context, {
+      type,
+      payload,
+    });
 
     res.send({
       ok: true,
-      tracking_id: trackingId,
+      event_id,
     });
   });
 });
