@@ -1,9 +1,6 @@
 import { randomUUID } from 'crypto';
 import type { Json } from '@elwood-studio/types';
-import {
-  RunnerStatus,
-  type WorkflowRunnerRuntimeRunReport,
-} from '@elwood-studio/workflow-runner';
+import { type WorkflowRunnerRuntimeRunReport } from '@elwood-studio/workflow-runner';
 
 import type { ServerContext, WorkflowQueueData } from '../types';
 import { startRun } from '../libs/start-run';
@@ -30,10 +27,6 @@ export default async function register(context: ServerContext): Promise<void> {
 
     // start the run
     const run = await submitWorkflow(data.workflow, data.input, data.context);
-
-    if (run.status === RunnerStatus.Error) {
-      throw new Error(run.statusText);
-    }
 
     // it's tempting to update the run as complete here
     // but don't do that. wait for the onComplete event

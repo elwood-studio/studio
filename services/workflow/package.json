@@ -7,7 +7,7 @@
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",
     "start": "ts-node-dev ./src/server.ts",
-    "build": "esbuild src/server.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\""
+    "build": "esbuild src/server.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "files": [
     "lib"
