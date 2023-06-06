@@ -12,7 +12,7 @@ services:
       - db
     volumes:
       - ../services/fs/src:/app/src
-      - ../tmp:/data
+      - ../tmp/data:/data
     environment:
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood
@@ -24,10 +24,17 @@ services:
     build:
       context: ./services/workflow/
       dockerfile: Dockerfile.dev
+    ports:
+      - 4001:4001
     volumes:
       - ../services/workflow/dist:/app/dist
+      - ../tmp/data:/data
+      - ../tmp/actions:/var/actions
+      - ../tmp/workflows:/var/workflows
+      - ../tmp/working:/var/workflow
     restart: unless-stopped
     environment:
+      DEBUG: 'runner:*'
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       GATEWAY_URL: http://localhost:8000

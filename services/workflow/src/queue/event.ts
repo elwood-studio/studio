@@ -38,14 +38,12 @@ export default async function register(context: ServerContext): Promise<void> {
       default: {
         const workflows = await findWorkflow();
         const input: JsonObject = payload.input ?? {};
-        const tracking_id = input.tracking_id ?? randomUUID();
         const context: JsonObject = {
           event: eventType,
           elwood: {
             sub: '',
             role: '',
             job_id: job.id,
-            tracking_id,
             gateway_url: gatewayUrl,
             event: {
               id: event_id,
@@ -71,25 +69,34 @@ export default async function register(context: ServerContext): Promise<void> {
           context.elwood.object.uri = `elwood://o/${payload.object_id}`;
         }
 
-        // send a new job for each insert
         await boss.insert(
-          workflows.map((workflow) => ({
-            name: 'workflow',
-            singletonKey: tracking_id,
-            onComplete: true,
-            data: {
-              workflow,
-              input: {
-                ...input,
-                tracking_id,
+          workflows.map((workflow) => {
+            const tracking_id = input.tracking_id ?? randomUUID();
+
+            return {
+              name: 'workflow',
+              singletonKey: randomUUID(),
+              onComplete: true,
+              data: {
+                workflow,
+                input: {
+                  ...input,
+                  tracking_id,
+                },
+                context: {
+                  ...context,
+                  elwood: {
+                    ...context.elwood,
+                    tracking_id,
+                  },
+                },
+                source: 'event',
+                source_id: job.data.event_id,
+                source_name: job.name,
+                source_job_id: job.id,
               },
-              context,
-              source: 'event',
-              source_id: job.data.event_id,
-              source_name: job.name,
-              source_job_id: job.id,
-            },
-          })),
+            };
+          }),
         );
       }
     }

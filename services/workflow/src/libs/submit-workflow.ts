@@ -1,3 +1,4 @@
+import { inspect } from 'util';
 import {
   normalizeWorkflowToInstructions,
   createWorkflowInput,
@@ -23,11 +24,14 @@ export async function submitWorkflow(
   options: RunWorkflowOptions,
 ): Promise<WorkflowRunnerRuntimeRun> {
   const { runtime, secretsManager, workflow, input, context = {} } = options;
+  const instructions = await normalizeWorkflowToInstructions(workflow);
+
+  console.log(inspect(instructions, true, 10));
 
   const run = await runWorkflow({
     runtime,
     secretsManager,
-    instructions: await normalizeWorkflowToInstructions(workflow),
+    instructions,
     input: createWorkflowInput(input, {
       secrets: await secretsManager.sealAllSecrets(),
       keychain: await secretsManager.sealAllKeys(),
