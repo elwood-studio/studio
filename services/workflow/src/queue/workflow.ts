@@ -28,6 +28,9 @@ export default async function register(context: ServerContext): Promise<void> {
     // start the run
     const run = await submitWorkflow(data.workflow, data.input, data.context);
 
+    // teardown
+    // await run.teardown();
+
     // it's tempting to update the run as complete here
     // but don't do that. wait for the onComplete event
     // to handle run updates

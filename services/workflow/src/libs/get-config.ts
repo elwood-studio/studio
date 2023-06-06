@@ -39,7 +39,6 @@ export function getConfig(): Config {
       actionsDir: ACTIONS_DIR,
       port,
       host,
-      gatewayUrl: GATEWAY_URL,
     };
   } catch (err) {
     console.error((err as Error).message);
