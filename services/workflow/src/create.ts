@@ -41,8 +41,11 @@ export async function createService(): Promise<WorkflowService> {
     retentionDays: 7,
     retryBackoff: true,
     retryLimit: 20,
-    expireInHours: 48,
     monitorStateIntervalSeconds: 30,
+  });
+
+  boss.on('stopped', () => {
+    console.error('Workflow watcher stopped');
   });
 
   boss.on('error', (error) => {
