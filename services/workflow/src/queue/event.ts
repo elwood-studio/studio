@@ -16,6 +16,7 @@ type EventWorkInput = {
     new_state?: string;
     previous_state?: string;
   };
+  expireInSeconds?: number;
 };
 
 export default async function register(context: ServerContext): Promise<void> {
@@ -26,7 +27,7 @@ export default async function register(context: ServerContext): Promise<void> {
   await boss.work<EventWorkInput, Json>('event:*', async (job) => {
     console.log('event:*', job.data);
 
-    const { event_id, payload } = job.data;
+    const { event_id, payload,expireInSeconds } = job.data;
     const eventType = job.name.replace('event:', '').trim();
     let result: JsonObject = {};
 
@@ -76,6 +77,7 @@ export default async function register(context: ServerContext): Promise<void> {
             return {
               name: 'workflow',
               singletonKey: randomUUID(),
+              expireInSeconds: expireInSeconds ?? 60 * 60 * 12,  
               onComplete: true,
               data: {
                 workflow,

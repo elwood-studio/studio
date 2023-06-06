@@ -26,8 +26,6 @@ export async function submitWorkflow(
   const { runtime, secretsManager, workflow, input, context = {} } = options;
   const instructions = await normalizeWorkflowToInstructions(workflow);
 
-  console.log(inspect(instructions, true, 10));
-
   const run = await runWorkflow({
     runtime,
     secretsManager,
