@@ -1,5 +1,5 @@
 import { type Client, QueryResult } from 'pg';
-import { decode, verify } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 
 import { getConfig } from './get-config';
 

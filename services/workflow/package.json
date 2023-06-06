@@ -6,7 +6,6 @@
     "dev": "pnpm run build --watch",
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",
-    "start": "ts-node-dev ./src/server.ts",
     "build": "esbuild src/server.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "files": [
@@ -31,7 +30,7 @@
     "fast-json-stringify": "^5.7.0",
     "fastify": "^4.17.0",
     "fastify-plugin": "^4.5.0",
-    "glob": "^10.2.6",
+    "glob": "^10.2.7",
     "pg": "^8.11.0",
     "pg-boss": "8.4.2",
     "ssh2": "^1.13.0",

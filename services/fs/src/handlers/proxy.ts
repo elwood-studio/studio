@@ -4,6 +4,8 @@ import fp from 'fastify-plugin';
 import { Client } from 'pg';
 import staticPlugin from '@fastify/static';
 
+const ignoreHeaders = ['authorization'];
+
 export type ProxyOptions = {
   db: Client;
   rcloneHost: string;
@@ -32,11 +34,14 @@ export default fp<ProxyOptions>(async (app, opts) => {
     });
 
     for (const [key, value] of response.headers.entries()) {
-      res.header(key, value);
+      if (!ignoreHeaders.includes(key.toLocaleLowerCase())) {
+        res.header(key, value);
+      }
     }
 
     res.status(response.status);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await streamPipeline(response.body, res.raw);
   });
