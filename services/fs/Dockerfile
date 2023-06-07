@@ -1,26 +1,28 @@
 FROM node:18-alpine as deps
-RUN apk add --no-cache libc6-compat python3 make g++ make
+RUN apk add --no-cache libc6-compat python3 make g++ make jq
 WORKDIR /app
-COPY package.json /app/
+COPY ./package.json /app/
 RUN cd /app \
-    && yarn install
+    && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
+    && mv package.json.tmp package.json \
+    && npm install --omit=dev --omit=optional
 
 FROM node:18-alpine as build
-RUN apk add --no-cache libc6-compat python3 make g++ make
+RUN apk add --no-cache libc6-compat python3 make g++ make \ 
+      && npm install -g pkg
 WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 COPY ./package.json ./tsconfig.json /app/
-COPY ./src/ /app/src/
+COPY ./dist/ /app/dist/
 RUN cd /app \
-    && ./node_modules/.bin/ncc build ./src/server.ts -o ./dist --external cpu-features --external pg-cloudflare \
-    && ./node_modules/.bin/pkg --transpile-only -t node18-alpine -o ./fs-server ./dist/index.js
+    && pkg -t node18-alpine -o ./fs-server ./dist/server.js
 
-FROM rclone/rclone
+FROM rclone/rclone as rclone
 WORKDIR /app
-COPY --from=build /app/ /app
+COPY --from=build /app/fs-server /usr/local/bin/fs-server
 COPY ./package.json ./entry.sh /app/
-RUN mkdir -p /data/local/uploads \
-    && ls /app
+RUN chmod 755 /app/entry.sh /usr/local/bin/fs-server
+RUN mkdir -p /data/local/uploads
 
 ENV PORT 4000
 ENV HOST 0.0.0.0
@@ -29,4 +31,4 @@ ENV RCLONE_PORT 5001
 ENV RCLONE_ADDR 127.0.0.1:$RCLONE_PORT
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["/app/fs-server"]
+CMD ["fs-server"]
