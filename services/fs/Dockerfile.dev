@@ -2,13 +2,16 @@ FROM rclone/rclone
 
 
 FROM node:18-alpine
-RUN apk add --no-cache libc6-compat python3 make g++ make
+RUN apk add --no-cache libc6-compat python3 make g++ make unzip curl jq
 WORKDIR /app
 COPY ./tsconfig.json ./package.json ./entry.sh /app/
-COPY ./src /app/src/
 RUN cd /app \
-    && yarn install --dev
+    && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
+    && mv package.json.tmp package.json \
+    && npm install --omit=dev --omit=optional \
+    && npm install -g node-dev
 
+COPY ./dist /app/dist/
 COPY --from=0 /usr/local/bin/rclone /usr/local/bin/rclone
 RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
 ENV XDG_CONFIG_HOME=/config
@@ -21,4 +24,4 @@ ENV RCLONE_PORT 5001
 ENV RCLONE_ADDR localhost:$RCLONE_PORT
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["/app/node_modules/.bin/ts-node-dev", "--transpile-only", "./src/server.ts"]
+CMD ["node-dev", "./dist/server.js"]

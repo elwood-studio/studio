@@ -14,7 +14,7 @@ export function connectDb(db: Client, callback: (state: boolean) => void) {
       lock = true;
       callback(true);
     })
-    .catch((err) => {
+    .catch((_err) => {
       callback(false);
     });
 }
