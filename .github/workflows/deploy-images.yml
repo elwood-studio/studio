@@ -28,7 +28,7 @@ jobs:
             image: ghcr.io/elwood-studio/gateway
             context: ./services/gateway
             dist: false
-          - name: FS
+          - name: File System
             dir: ./services/fs
             image: ghcr.io/elwood-studio/fs
             context: ./services/fs
