@@ -10,4 +10,4 @@ mkdir -p $data_dir/local;
 # start rclone damon
 rclone rcd $data_dir --rc-web-gui --rc-addr :$port --rc-no-auth &
 
-exec "$@"
+fs-server

@@ -23,16 +23,16 @@ jobs:
             image: ghcr.io/elwood-studio/db
             context: ./services/db
             dist: false
-          - name: FS
-            dir: ./services/fs
-            image: ghcr.io/elwood-studio/fs
-            context: ./services/fs
-            dist: false
           - name: Gateway
             dir: ./services/gateway
             image: ghcr.io/elwood-studio/gateway
             context: ./services/gateway
             dist: false
+          - name: FS
+            dir: ./services/fs
+            image: ghcr.io/elwood-studio/fs
+            context: ./services/fs
+            dist: true
           - name: Workflow
             dir: ./services/workflow
             image: ghcr.io/elwood-studio/workflow
