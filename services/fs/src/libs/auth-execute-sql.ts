@@ -1,15 +1,14 @@
 import { type Client, QueryResult } from 'pg';
-import { verify } from 'jsonwebtoken';
 
-import { getConfig } from './get-config';
+import type { Json } from '@elwood-studio/types';
 
-const { jwtSecret } = getConfig();
+import { getAuthToken } from './get-auth-token';
 
 export type AuthExecuteSqlOptions = {
   client: Client;
   token: string;
   sql: string;
-  params: any[];
+  params: Json[];
 };
 
 export async function authExecuteSql(
@@ -19,7 +18,7 @@ export async function authExecuteSql(
 
   console.log('authExecuteSql');
 
-  const jwt = verify(token.replace('Bearer ', ''), jwtSecret);
+  const jwt = getAuthToken(token);
 
   try {
     await client.query('BEGIN');

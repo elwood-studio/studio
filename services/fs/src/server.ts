@@ -1,12 +1,15 @@
 import fastify from 'fastify';
 import { Client } from 'pg';
+import {} from 'fastify-boom';
 
 import { getConfig } from './libs/get-config';
 import { connectDb } from './libs/connect-db';
+import { loadRcConfig } from './libs/load-rc-config';
 
 import tusPlugin from './handlers/tus';
 import proxyPlugin from './handlers/proxy';
 import sharePlugin from './handlers/share';
+import errorPlugin from './handlers/error';
 
 // config stuff in one place
 const { port, host, dbUrl, externalHost, rcloneHost } = getConfig();
@@ -15,6 +18,8 @@ const app = fastify({ logger: true });
 const db = new Client({
   connectionString: dbUrl,
 });
+
+app.register(errorPlugin);
 
 // our proxy plugin will connect to the rclone cluster
 app.register(proxyPlugin, { db, rcloneHost, externalHost });
@@ -53,6 +58,11 @@ connectDb(db, function (state) {
         app.log.error(err);
         process.exit(1);
       }
+
+      // load the config
+      loadRcConfig().then();
+
+      console.log('server listening on port', port);
     },
   );
 });

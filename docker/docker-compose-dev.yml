@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ../services/fs/src:/app/src
+      - ../services/fs/dist:/app/dist
       - ../tmp/data:/data
     environment:
       JWT_SECRET: ${JWT_SECRET}

@@ -449,9 +449,18 @@ importers:
       '@tus/server':
         specifier: 1.0.0-beta.5
         version: 1.0.0-beta.5
+      '@types/boom':
+        specifier: ^7.3.2
+        version: 7.3.2
+      boom:
+        specifier: ^7.3.0
+        version: 7.3.0
       fastify:
         specifier: ^4.17.0
         version: 4.17.0
+      fastify-boom:
+        specifier: ^1.0.0
+        version: 1.0.0
       fastify-plugin:
         specifier: ^4.5.0
         version: 4.5.0
@@ -1199,6 +1208,18 @@ packages:
   /@gar/promisify@1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     dev: true
+
+  /@hapi/boom@8.0.1:
+    resolution: {integrity: sha512-SnBM2GzEYEA6AGFKXBqNLWXR3uNBui0bkmklYXX1gYtevVhDTy2uakwkSauxvIWMtlANGRhzChYg95If3FWCwA==}
+    deprecated: This version has been deprecated and is no longer supported or maintained
+    dependencies:
+      '@hapi/hoek': 8.5.1
+    dev: false
+
+  /@hapi/hoek@8.5.1:
+    resolution: {integrity: sha512-yN7kbciD87WzLGc5539Tn0sApjyiGHAJgKvG9W8C7O+6c7qmoQMfVs0W4bX17eqz6C78QJqqFrtgdK5EWf6Qow==}
+    deprecated: This version has been deprecated and is no longer supported or maintained
+    dev: false
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
@@ -2268,6 +2289,10 @@ packages:
     dependencies:
       '@babel/types': 7.22.4
 
+  /@types/boom@7.3.2:
+    resolution: {integrity: sha512-W8+6CANZz/BmgzATboKXvEDtO3SHSj86omcU/2pMCkUQhqhgucB8sgcmdRadXDEvXFRiRhME0rcyj1GIj3LC9w==}
+    dev: false
+
   /@types/cli-table@0.3.1:
     resolution: {integrity: sha512-m3+6WWfSSl6zqoXy8uQQifbgqV7Gt6fsyWnHLgUWVtJQk75+OfUB+edSZ52YDj7leSiZtX7w1/E4w2x/Hb0orA==}
     dev: true
@@ -3022,6 +3047,13 @@ packages:
       buffer: 6.0.3
       inherits: 2.0.4
       readable-stream: 3.6.2
+    dev: false
+
+  /boom@7.3.0:
+    resolution: {integrity: sha512-Swpoyi2t5+GhOEGw8rEsKvTxFLIDiiKoUc2gsoV6Lyr43LHBIzch3k2MvYUs8RTROrIkVJ3Al0TkaOGjnb+B6A==}
+    deprecated: This module has moved and is now available at @hapi/boom. Please update your dependencies as this version is no longer maintained an may contain bugs and security issues.
+    dependencies:
+      hoek: 6.1.3
     dev: false
 
   /boxen@5.1.2:
@@ -4396,6 +4428,19 @@ packages:
     resolution: {integrity: sha512-cIusKBIt/R/oI6z/1nyfe2FvGKVTohVRfvkOhvx0nCEW+xf5NoCXjAHcWp93uOUBchzYcsvPlrapAdX1uW+YGg==}
     dev: false
 
+  /fastify-boom@1.0.0:
+    resolution: {integrity: sha512-alTB/8e9rWUanAk+NDtNSHm7Se9qS84QIbRC5EUgAuKR1VYHx3HTOdd76QJwvN6+wvs5I5MaJDC1fepT5GarJA==}
+    dependencies:
+      '@hapi/boom': 8.0.1
+      fastify-plugin: 0.2.2
+    dev: false
+
+  /fastify-plugin@0.2.2:
+    resolution: {integrity: sha512-oRJdjdudgCkQQUARNeh2rkbxFAmj2OhCJSVBNBLUbhS0orF+IMQ4u/bc661N1jh/wDI2J+YKmXmmHSVFQI4e7A==}
+    dependencies:
+      semver: 5.7.1
+    dev: false
+
   /fastify-plugin@4.5.0:
     resolution: {integrity: sha512-79ak0JxddO0utAXAQ5ccKhvs6vX2MGyHHMMsmZkBANrq3hXc1CHzvNPHOcvTsVMEPl5I+NT+RO4YKMGehOfSIg==}
     dev: false
@@ -4946,6 +4991,11 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+
+  /hoek@6.1.3:
+    resolution: {integrity: sha512-YXXAAhmF9zpQbC7LEcREFtXfGq5K1fmd+4PHkBq8NUqmzW3G+Dq10bI/i0KucLRwss3YYFQ0fSfoxBZYiGUqtQ==}
+    deprecated: This module has moved and is now available at @hapi/hoek. Please update your dependencies as this version is no longer maintained an may contain bugs and security issues.
+    dev: false
 
   /hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
@@ -8221,7 +8271,6 @@ packages:
   /semver@5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
     hasBin: true
-    dev: true
 
   /semver@6.3.0:
     resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
