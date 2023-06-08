@@ -8,7 +8,7 @@ export type Config = {
   dataDir: string;
   jwtSecret: string;
   rcloneHost: string;
-  rcloneConfig: string;
+  configFilePath?: string;
 };
 
 export function getConfig(): Config {
@@ -21,7 +21,7 @@ export function getConfig(): Config {
       JWT_SECRET,
       RCLONE_ADDR,
       DATA_DIR,
-      RCLONE_CONFIG,
+      CONFIG_FILE,
     } = process.env ?? {};
 
     invariant(DATABASE_URL, 'DATABASE_URL is required');
@@ -40,7 +40,7 @@ export function getConfig(): Config {
       rcloneHost: RCLONE_ADDR ?? 'http://rclone:5572',
       jwtSecret: JWT_SECRET,
       dataDir: DATA_DIR ?? '/data',
-      rcloneConfig: RCLONE_CONFIG ?? '',
+      configFilePath: CONFIG_FILE,
     };
   } catch (err) {
     console.error(err.message);

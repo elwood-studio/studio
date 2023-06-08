@@ -1,4 +1,4 @@
-FROM kong:2.1
+FROM kong/kong:arm64-latest
 
 EXPOSE 8000
 

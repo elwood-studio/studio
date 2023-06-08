@@ -7,6 +7,7 @@ import { Client } from 'pg';
 import staticPlugin from '@fastify/static';
 import invariant from 'ts-invariant';
 
+import type { Config } from '../types';
 import { getAuthToken, getAuthTokenFromRequest } from '../libs/get-auth-token';
 import { fetchRclone } from '../libs/fetch-rclone';
 
@@ -16,6 +17,7 @@ export type ProxyOptions = {
   db: Client;
   rcloneHost: string;
   externalHost: string;
+  config: Config;
 };
 
 export default fp<ProxyOptions>(async (app, opts) => {
