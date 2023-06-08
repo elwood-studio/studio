@@ -1,4 +1,4 @@
-name: Create and publish Docker images
+name: Service Docker images
 
 on:
   push:
