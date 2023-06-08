@@ -1,4 +1,4 @@
-import * as SupabaseClientPkg from '@supabase/supabase-js';
+import supa from '@supabase/supabase-js';
 import type { SupabaseClientOptions } from '@supabase/supabase-js';
 
 import type { Database } from './types.ts';
@@ -6,9 +6,9 @@ import { invariant } from './libs/invariant.ts';
 import { FileSystemClient } from './file-system/index.ts';
 import { WorkflowClient } from './workflow/index.ts';
 
-const { SupabaseClient } = SupabaseClientPkg;
+const { SupabaseClient } = supa;
 
-export class Client extends SupabaseClient<Database, 'elwood'> {
+export default class Client extends SupabaseClient<Database, 'elwood'> {
   protected readonly _fs: FileSystemClient;
   protected readonly _workflow: WorkflowClient;
 

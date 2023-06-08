@@ -152,6 +152,12 @@ importers:
       '@types/yargs':
         specifier: ^17.0.24
         version: 17.0.24
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@20.2.5)(ts-node@10.9.1)
+      jest-presets:
+        specifier: workspace:*
+        version: link:../../internal/jest-presets
       pkg:
         specifier: ^5.8.1
         version: 5.8.1
@@ -1524,7 +1530,7 @@ packages:
     resolution: {integrity: sha512-QyKIWEnKQFnYu2ey+SAAm1A5xjzJLJJj3bhIZd3QKyXKKjaJ0hlxam/OsWSltxTNbcyH1jRJjC6Cxv31usv0Ag==}
     engines: {node: ^14.17.0 || >=16.0.0}
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       execa: 5.0.0
       strong-log-transformer: 2.1.0
     dev: true
@@ -6255,7 +6261,7 @@ packages:
     resolution: {integrity: sha512-gUD/epcRms75Cw8RT1pUdHugZYM5ce64ucs2GEISABwkRsOQr0q2wm/MV2TKThycIe5e0ytRweW2RZxclogCdQ==}
     engines: {node: '>=8'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       parse-json: 5.2.0
       strip-bom: 4.0.0
       type-fest: 0.6.0
