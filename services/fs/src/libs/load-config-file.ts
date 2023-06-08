@@ -2,10 +2,10 @@ import { stat, readFile } from 'node:fs/promises';
 
 import type { JsonObject } from '@elwood-studio/types';
 
-import { getConfig } from './get-config';
-import { Config } from '../types';
+import { getEnv } from './get-env';
+import type { Config } from '../types';
 
-const { configFilePath } = getConfig();
+const { configFilePath } = getEnv();
 
 export async function loadConfigFile(): Promise<Config> {
   let config: Config = {};

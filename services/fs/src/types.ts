@@ -1,5 +1,11 @@
 import type { JsonObject } from '@elwood-studio/types';
 
 export type Config = {
-  remotes?: JsonObject;
+  remotes?: Record<
+    string,
+    {
+      type: string;
+      params: JsonObject;
+    }
+  >;
 };
