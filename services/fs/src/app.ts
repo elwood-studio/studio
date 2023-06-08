@@ -2,8 +2,7 @@ import fastify from 'fastify';
 import { Client } from 'pg';
 import {} from 'fastify-boom';
 
-import { getConfig } from './libs/get-config';
-import { connectDb } from './libs/connect-db';
+import { getEnv } from './libs/get-env';
 import { loadConfigFile } from './libs/load-config-file';
 
 import tusPlugin from './handlers/tus';
@@ -12,7 +11,7 @@ import sharePlugin from './handlers/share';
 import errorPlugin from './handlers/error';
 
 // config stuff in one place
-const { port, host, dbUrl, externalHost, rcloneHost } = getConfig();
+const { port, host, dbUrl, externalHost } = getEnv();
 
 export async function createApp(): Promise<Client> {
   const app = fastify({ logger: true });
@@ -25,7 +24,7 @@ export async function createApp(): Promise<Client> {
   app.register(errorPlugin);
 
   // our proxy plugin will connect to the rclone cluster
-  app.register(proxyPlugin, { db, rcloneHost, externalHost });
+  app.register(proxyPlugin, { db, config, externalHost });
 
   // share plugin
   app.register(sharePlugin, {

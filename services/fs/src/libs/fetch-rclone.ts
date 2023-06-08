@@ -1,6 +1,6 @@
-import { getConfig } from './get-config';
+import { getEnv } from './get-env';
 
-const { rcloneHost } = getConfig();
+const { rcloneHost } = getEnv();
 
 export async function fetchRclone(
   url: string,

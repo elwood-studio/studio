@@ -1,10 +1,10 @@
 import { verify } from 'jsonwebtoken';
 import { type FastifyRequest } from 'fastify';
 
-import { getConfig } from './get-config';
+import { getEnv } from './get-env';
 import invariant from 'ts-invariant';
 
-const { jwtSecret } = getConfig();
+const { jwtSecret } = getEnv();
 
 export type AuthToken = {
   sub?: string;

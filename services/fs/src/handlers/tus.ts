@@ -4,6 +4,8 @@ import { FileStore } from '@tus/file-store';
 import { type IncomingMessage } from 'http';
 import { Client } from 'pg';
 
+import type { Json } from '@elwood-studio/types';
+
 import { tusBeforeCreate } from '../libs/tus-before-create';
 import { tusAfterCreate } from '../libs/tus-after-create';
 import { failUpload } from '../libs/fail-upload';
@@ -67,7 +69,7 @@ export default fp<TusOptions>(async (app, opts) => {
     },
   });
 
-  function transformReqUrl(req: any): IncomingMessage {
+  function transformReqUrl(req: Json): IncomingMessage {
     req.headers['host'] = externalHost;
     req.baseUrl = '/fs/v1';
     return req;

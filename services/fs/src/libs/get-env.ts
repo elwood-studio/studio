@@ -1,6 +1,6 @@
 import { invariant } from 'ts-invariant';
 
-export type Config = {
+export type Env = {
   port: number;
   host: string;
   externalHost: string;
@@ -11,7 +11,7 @@ export type Config = {
   configFilePath?: string;
 };
 
-export function getConfig(): Config {
+export function getEnv(): Env {
   try {
     const {
       DATABASE_URL,
