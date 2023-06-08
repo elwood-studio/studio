@@ -1,1 +1,1 @@
-export * from './client.ts';
+export { WorkflowClient, type WorkflowClientOptions } from './client.ts';

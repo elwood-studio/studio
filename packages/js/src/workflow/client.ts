@@ -1,4 +1,3 @@
-import 'isomorphic-fetch';
 import type { JsonObject } from '@elwood-studio/types';
 
 import { invariant } from '../libs/invariant.ts';

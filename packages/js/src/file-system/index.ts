@@ -1,1 +1,1 @@
-export * from './client.ts';
+export { FileSystemClient, type FileSystemClientOptions } from './client.ts';

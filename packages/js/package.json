@@ -25,7 +25,7 @@
     "dev": "tsup --watch",
     "build": "tsup",
     "lint": "eslint \"**/*.ts*\"",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
