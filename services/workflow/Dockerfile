@@ -1,4 +1,4 @@
-FROM node:20-alpine as deps
+FROM node:18-alpine as deps
 RUN apk add --no-cache libc6-compat python3 make g++ make jq
 WORKDIR /app
 COPY ./package.json /app/
@@ -7,7 +7,7 @@ RUN cd /app \
     && mv package.json.tmp package.json \
     && npm install --omit=dev --omit=optional
 
-FROM node:20-alpine as build
+FROM node:18-alpine as build
 RUN apk add --no-cache libc6-compat python3 make g++ make \ 
     && npm install -g pkg
 WORKDIR /app

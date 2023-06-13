@@ -1,3 +1,4 @@
+import { EOL } from 'node:os';
 import { extname, join } from 'node:path';
 import ora from 'ora';
 import { invariant } from 'ts-invariant';
@@ -9,13 +10,14 @@ import chalk from 'chalk';
 import type { JsonObject } from '@elwood-studio/types';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import { resolveWorkflow } from '@elwood-studio/workflow-config';
+import { createUnlockKey } from '@elwood-studio/workflow-secrets';
 
 import type { Argv, Arguments, Context } from '../types.ts';
 import { printErrorMessage, printMessage } from '../libs/print-message.ts';
 
 type TopOptions = RunOptions &
   ReportOptions & {
-    command?: 'run' | 'report';
+    command?: 'run' | 'report' | 'generate-unlock-key';
     arguments: string[];
   };
 
@@ -40,6 +42,10 @@ export async function register(cli: Argv) {
       const commandArguments = args.arguments ?? [];
 
       switch (args.command) {
+        case 'generate-unlock-key': {
+          await generateUnlockKey(args);
+          break;
+        }
         case 'run': {
           await run({
             ...args,
@@ -89,6 +95,15 @@ export async function register(cli: Argv) {
       });
     },
     report,
+  );
+
+  cli.command<JsonObject>(
+    'workflow:generate-unlock-key',
+    'Get the report of a workflow',
+    () => {
+      return;
+    },
+    generateUnlockKey,
   );
 
   cli.hide('workflow');
@@ -226,4 +241,10 @@ export async function getWorkflow(
 
   // assume it's a yaml blob
   return resolveWorkflow(value);
+}
+
+export async function generateUnlockKey(
+  _args: Arguments<JsonObject>,
+): Promise<void> {
+  process.stdout.write((await createUnlockKey()).toString('base64') + EOL);
 }

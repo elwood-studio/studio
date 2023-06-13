@@ -6,7 +6,7 @@ import PgDatabase from './libs/db';
 import type { ServerContext, WorkflowService } from './types';
 import { createWorkflowRuntime } from './libs/create-runtime';
 import { submitWorkflow } from './libs/submit-workflow';
-import { getConfig } from './libs/get-config';
+import { getEnv } from './libs/get-env';
 
 import registerWorkflowQueue from './queue/workflow';
 import registerEventQueue from './queue/event';
@@ -14,10 +14,11 @@ import runHandlerPlugin from './handlers/run';
 import eventHandlerPlugin from './handlers/event';
 import configHandlerPlugin from './handlers/config';
 
-const { dataDir, dbUrl, workingDir, actionsDir, host, port } = getConfig();
+const { dataDir, dbUrl, workingDir, actionsDir, host, port, unlockKey } =
+  getEnv();
 const app = fastify({ logger: true });
 
-export async function createService(): Promise<WorkflowService> {
+export async function createApp(): Promise<WorkflowService> {
   console.log('checking for dirs...');
 
   // make sure both dirs exist
@@ -64,6 +65,7 @@ export async function createService(): Promise<WorkflowService> {
     workingDir,
     dataDir,
     actionsDir,
+    unlockKey,
   });
 
   console.log('runtime started...');

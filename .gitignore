@@ -25,6 +25,7 @@ services/**/lib/
 .env
 tmp/
 tsconfig.tsbuildinfo
+.vscode/
 
 # debug
 npm-debug.log*

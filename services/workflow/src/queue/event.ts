@@ -4,9 +4,9 @@ import type { Json, JsonObject } from '@elwood-studio/types';
 
 import type { ServerContext } from '../types';
 import { findWorkflow } from '../libs/find-workflow';
-import { getConfig } from '../libs/get-config';
+import { getEnv } from '../libs/get-env';
 
-const { gatewayUrl } = getConfig();
+const { gatewayUrl } = getEnv();
 
 type EventWorkInput = {
   event_id: string;

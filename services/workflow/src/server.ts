@@ -1,6 +1,6 @@
-import { createService } from './create';
+import { createApp } from './app';
 
-createService()
+createApp()
   .then((_) => {
     return;
   })

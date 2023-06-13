@@ -42,13 +42,25 @@ export async function createContext(args: Arguments): Promise<Context> {
     );
   }
 
+
+
   const localClient = new ElwoodClient(
     `http://0.0.0.0:8000`,
     localEnv.SERVICE_ROLE_KEY,
+    {
+      auth: {
+        persistSession:false
+      }
+    }
   );
   const remoteClient = new ElwoodClient(
     `http://0.0.0.0:8000`,
     localEnv.SERVICE_ROLE_KEY,
+    {
+      auth: {
+        persistSession: false,
+      },
+    },
   );
 
   return {
