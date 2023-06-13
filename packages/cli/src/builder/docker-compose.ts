@@ -47,6 +47,8 @@ export async function buildDockerCompose(
           JWT_SECRET: '${JWT_SECRET}',
           DATABASE_URL:
             'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}',
+          GATEWAY_URL: 'http://localhost:8000',
+          UNLOCK_KEY: '${UNLOCK_KEY}',
         },
       },
       api: {

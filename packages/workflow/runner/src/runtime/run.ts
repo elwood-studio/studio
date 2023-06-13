@@ -41,7 +41,7 @@ export class RuntimeRun implements WorkflowRunnerRuntimeRun {
   readonly #timer = new RuntimeTimer();
 
   #status: string = RunnerStatus.Pending;
-  #statusText: string = '';
+  #statusText = '';
 
   #log: ReturnType<typeof debug>;
 
