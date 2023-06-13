@@ -3,7 +3,7 @@ FROM lukechannings/deno
 RUN apt update -y
 RUN apt install -y unzip curl jq
 
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
   && apt-get install -y nodejs && corepack enable
 
 WORKDIR /app

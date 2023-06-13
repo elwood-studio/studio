@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -76,6 +76,9 @@ importers:
       '@elwood-studio/workflow-config':
         specifier: workspace:*
         version: link:../workflow/config
+      '@elwood-studio/workflow-secrets':
+        specifier: workspace:*
+        version: link:../workflow/secrets
       '@iarna/toml':
         specifier: ^2.2.5
         version: 2.2.5

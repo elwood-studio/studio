@@ -1,6 +1,6 @@
 import { invariant } from 'ts-invariant';
 
-export type Config = {
+export type Env = {
   dbUrl: string;
   actionsDir: string;
   workingDir: string;
@@ -8,9 +8,10 @@ export type Config = {
   workflowsDir?: string;
   port: number;
   host: string;
+  unlockKey:string;
 };
 
-export function getConfig(): Config {
+export function getEnv(): Env {
   try {
     const {
       DATABASE_URL,
@@ -18,6 +19,7 @@ export function getConfig(): Config {
       DATA_DIR,
       WORKFLOWS_DIR,
       ACTIONS_DIR,
+      UNLOCK_KEY,
       PORT,
       HOST,
     } = process.env ?? {};
@@ -27,6 +29,7 @@ export function getConfig(): Config {
     invariant(DATA_DIR, 'DATA_DIR is required');
     invariant(WORKFLOWS_DIR, 'WORKFLOWS_DIR is required');
     invariant(ACTIONS_DIR, 'ACTIONS_DIR is required');
+    invariant(UNLOCK_KEY, 'UNLOCK_KEY is required')
 
     const port = parseInt(`${PORT ?? 3000}`, 10);
     const host = HOST ?? '0.0.0.0';
@@ -37,6 +40,7 @@ export function getConfig(): Config {
       dataDir: DATA_DIR,
       workflowsDir: WORKFLOWS_DIR,
       actionsDir: ACTIONS_DIR,
+      unlockKey: UNLOCK_KEY,
       port,
       host,
     };

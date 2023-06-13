@@ -1,33 +1,34 @@
-import {
-  SecretsManager,
-  createUnlockKey,
-} from '@elwood-studio/workflow-secrets';
+import invariant from 'ts-invariant';
+import { mkdir } from 'node:fs/promises';
+import path from 'node:path';
+
+import { SecretsManager } from '@elwood-studio/workflow-secrets';
 import {
   WorkflowRunnerRuntime,
   createRuntime,
 } from '@elwood-studio/workflow-runner';
-import { mkdir } from 'fs/promises';
-import path from 'path';
 
 export type CreateWorkflowRuntimeOptions = {
   workingDir: string;
   actionsDir: string;
   dataDir: string;
+  unlockKey: string;
 };
 
 export async function createWorkflowRuntime(
   options: CreateWorkflowRuntimeOptions,
 ): Promise<[WorkflowRunnerRuntime, SecretsManager]> {
-  const { workingDir, actionsDir, dataDir } = options;
+  const { workingDir, actionsDir, dataDir, unlockKey } = options;
   const wd = path.join(workingDir, 'working-dir');
+
+  invariant(unlockKey, 'unlockKey is required');
 
   await mkdir(wd, { recursive: true });
 
-  const keychainUnlockKey = (await createUnlockKey()).toString('base64');
   const runtime = await createRuntime({
     commandServerPort: 4001,
     workingDir: wd,
-    keychainUnlockKey,
+    keychainUnlockKey: unlockKey,
     commandContext: 'local',
     context: 'local',
     staticFiles: {
@@ -36,9 +37,7 @@ export async function createWorkflowRuntime(
     },
     plugins: [],
   });
-  const secretsManager = new SecretsManager(
-    Buffer.from(keychainUnlockKey, 'base64'),
-  );
+  const secretsManager = new SecretsManager(Buffer.from(unlockKey, 'base64'));
 
   return [runtime, secretsManager];
 }

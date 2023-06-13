@@ -1,6 +1,5 @@
 import fastify from 'fastify';
 import { Client } from 'pg';
-import {} from 'fastify-boom';
 
 import { getEnv } from './libs/get-env';
 import { loadConfigFile } from './libs/load-config-file';

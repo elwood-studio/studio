@@ -1,8 +1,8 @@
 import { verify } from 'jsonwebtoken';
 import { type FastifyRequest } from 'fastify';
+import invariant from 'ts-invariant';
 
 import { getEnv } from './get-env';
-import invariant from 'ts-invariant';
 
 const { jwtSecret } = getEnv();
 

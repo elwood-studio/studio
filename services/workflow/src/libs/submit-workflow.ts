@@ -1,8 +1,4 @@
-import { inspect } from 'util';
-import {
-  normalizeWorkflowToInstructions,
-  createWorkflowInput,
-} from '@elwood-studio/workflow-config';
+import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
 import { SecretsManager } from '@elwood-studio/workflow-secrets';
 import {
   WorkflowRunnerRuntime,
@@ -26,16 +22,11 @@ export async function submitWorkflow(
   const { runtime, secretsManager, workflow, input, context = {} } = options;
   const instructions = await normalizeWorkflowToInstructions(workflow);
 
-  const run = await runWorkflow({
+  return await runWorkflow({
     runtime,
     secretsManager,
     instructions,
-    input: createWorkflowInput(input, {
-      secrets: await secretsManager.sealAllSecrets(),
-      keychain: await secretsManager.sealAllKeys(),
-    }),
+    input,
     context,
   });
-
-  return run;
 }
