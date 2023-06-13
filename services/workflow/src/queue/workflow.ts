@@ -5,6 +5,9 @@ import { type WorkflowRunnerRuntimeRunReport } from '@elwood-studio/workflow-run
 import type { ServerContext, WorkflowQueueData } from '../types';
 import { startRun } from '../libs/start-run';
 import { completeRun } from '../libs/complete-run';
+import { getEnv } from '../libs/get-env';
+
+const { skipWorkflowTeardown } = getEnv();
 
 export default async function register(context: ServerContext): Promise<void> {
   const { boss, submitWorkflow } = context;
@@ -28,8 +31,10 @@ export default async function register(context: ServerContext): Promise<void> {
     // start the run
     const run = await submitWorkflow(data.workflow, data.input, data.context);
 
-    // teardown
-    // await run.teardown();
+    // teardown only if they haven't said skip
+    if (skipWorkflowTeardown !== true) {
+      await run.teardown();
+    }
 
     // it's tempting to update the run as complete here
     // but don't do that. wait for the onComplete event

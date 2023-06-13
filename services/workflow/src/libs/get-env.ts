@@ -9,6 +9,7 @@ export type Env = {
   port: number;
   host: string;
   unlockKey:string;
+  skipWorkflowTeardown: boolean;
 };
 
 export function getEnv(): Env {
@@ -22,6 +23,7 @@ export function getEnv(): Env {
       UNLOCK_KEY,
       PORT,
       HOST,
+      SKIP_WORKFLOW_TEARDOWN,
     } = process.env ?? {};
 
     invariant(DATABASE_URL, 'DATABASE_URL is required');
@@ -43,6 +45,7 @@ export function getEnv(): Env {
       unlockKey: UNLOCK_KEY,
       port,
       host,
+      skipWorkflowTeardown: SKIP_WORKFLOW_TEARDOWN === 'true',
     };
   } catch (err) {
     console.error((err as Error).message);
