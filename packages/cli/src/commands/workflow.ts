@@ -10,14 +10,19 @@ import chalk from 'chalk';
 import type { JsonObject } from '@elwood-studio/types';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import { resolveWorkflow } from '@elwood-studio/workflow-config';
-import { createUnlockKey } from '@elwood-studio/workflow-secrets';
+import {
+  createUnlockKey,
+  createKeyPair,
+  SecretsManager,
+} from '@elwood-studio/workflow-secrets';
 
 import type { Argv, Arguments, Context } from '../types.ts';
 import { printErrorMessage, printMessage } from '../libs/print-message.ts';
 
 type TopOptions = RunOptions &
-  ReportOptions & {
-    command?: 'run' | 'report' | 'generate-unlock-key';
+  ReportOptions &
+  SecretOptions & {
+    command?: 'run' | 'report' | 'generate-unlock-key' | 'secret';
     arguments: string[];
   };
 
@@ -29,6 +34,13 @@ type RunOptions = {
 type ReportOptions = {
   trackingId?: string;
   output: 'table' | 'json' | 'json-pretty' | 'yaml';
+};
+
+type SecretOptions = {
+  unlockKey?: string;
+  keyName?:string;
+  name?: string;
+  value?: string;
 };
 
 export async function register(cli: Argv) {
@@ -99,11 +111,30 @@ export async function register(cli: Argv) {
 
   cli.command<JsonObject>(
     'workflow:generate-unlock-key',
-    'Get the report of a workflow',
+    'Generate a Workflow Unlock Key',
     () => {
       return;
     },
     generateUnlockKey,
+  );
+
+  cli.command<SecretOptions>(
+    'workflow:secret <name> [value]',
+    'Seal or unseal a secret',
+    (y) => {
+      y.option('unlock-key', {
+        alias: 'u',
+        type: 'string',
+        describe: 'Unlock key',
+        demandOption: true,
+      });
+      y.option('key-name', {
+        alias: 'n',
+        type: 'string',
+        describe: 'Key Name',
+      });
+    },
+    secret,
   );
 
   cli.hide('workflow');
@@ -247,4 +278,25 @@ export async function generateUnlockKey(
   _args: Arguments<JsonObject>,
 ): Promise<void> {
   process.stdout.write((await createUnlockKey()).toString('base64') + EOL);
+}
+
+export async function secret(args: Arguments<SecretOptions>): Promise<void> {
+  invariant(args.unlockKey, 'Unlock key is required');
+  invariant(args.name, 'Secret name is required')
+
+  const sm = new SecretsManager(Buffer.from(args.unlockKey, 'base64'));
+  const [pub, priv] = await createKeyPair();
+  const key = sm.createKey('root', pub, priv);
+
+
+  if (args.value) {
+    const sealedValue = await sm.createSecret(key, args.name, args.value).seal();
+    const sealedKey = await key.seal();
+
+    return printMessage({
+      type: 'success',
+      message: 'Sealed secret',
+      body: [`Secret: ${sealedValue}`, ` Key: ${sealedKey}`],
+    });
+  }
 }

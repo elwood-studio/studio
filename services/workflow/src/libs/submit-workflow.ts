@@ -27,6 +27,9 @@ export async function submitWorkflow(
     secretsManager,
     instructions,
     input,
-    context,
+    context: {
+      ...context,
+      env: process.env ?? {},
+    },
   });
 }

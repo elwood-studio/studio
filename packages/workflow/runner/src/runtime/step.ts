@@ -115,7 +115,7 @@ export class RuntimeRunStep implements WorkflowRunnerRuntimeRunStep {
     this.#error = err;
   }
 
-  contextValue(_withJob: boolean = true) {
+  contextValue(_withJob = true) {
     const data = {
       input: this.job.run.context.get('input'),
       jobs: Array.from(this.job.run.jobs.values())
@@ -133,6 +133,7 @@ export class RuntimeRunStep implements WorkflowRunnerRuntimeRunStep {
         name: this.def.name,
       },
       output: this.#output,
+      env: this.job.run.context.get('env') ?? {},
     };
 
     return data;

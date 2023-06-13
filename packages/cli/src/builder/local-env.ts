@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import jwt from 'jsonwebtoken';
+import { createUnlockKey } from '@elwood-studio/workflow-secrets';
 
 import type { JsonObject } from '@elwood-studio/types';
 
@@ -32,5 +33,6 @@ export async function buildLocalEnv(): Promise<JsonObject> {
     JWT_SECRET: jwtSecret,
     ANON_KEY: anonKey,
     SERVICE_ROLE_KEY: serviceKey,
+    UNLOCK_KEY: (await createUnlockKey()).toString('base64'),
   };
 }

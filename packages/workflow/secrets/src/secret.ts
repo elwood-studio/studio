@@ -26,22 +26,22 @@ export class Secret implements WorkflowsSecretsSecret {
     return this.#name;
   }
 
+  set name(value: string) {
+    this.#name = value;
+  }
+
   get value() {
     invariant(this.#value, 'Secret value is not set');
     return this.#value;
   }
 
+  set value(value: string) {
+    this.#value = value;
+  }
+
   get key() {
     invariant(this.#key, 'No key');
     return this.#key;
-  }
-
-  set name(value: string) {
-    this.#name = value;
-  }
-
-  set value(value: string) {
-    this.#value = value;
   }
 
   set key(key: WorkflowSecretsKey) {

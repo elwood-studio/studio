@@ -73,7 +73,7 @@ export class Manager implements WorkflowSecretsManager {
 
   async addSecret(
     value: string | WorkflowsSecretsSecret,
-    _sealed: boolean = false,
+    _sealed = false,
   ): Promise<void> {
     if (typeof value === 'string') {
       const secret = new Secret(this);

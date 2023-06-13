@@ -126,7 +126,7 @@ export class Runtime implements WorkflowRunnerRuntime {
     return ref;
   }
 
-  uuid(prefix: string = '') {
+  uuid(prefix = '') {
     return `${prefix}${randomUUID()}${randomBytes(5).toString('hex')}`
       .replace(/-/g, '')
       .toUpperCase()
@@ -214,9 +214,7 @@ export class Runtime implements WorkflowRunnerRuntime {
       : `${this.stdLibUrl}/${name}.ts`;
   }
 
-  async getStdLibRegistry(
-    version: string = 'main',
-  ): Promise<WorkflowActionRegistry> {
+  async getStdLibRegistry(version = 'main'): Promise<WorkflowActionRegistry> {
     if (!this.#actionRegistry[version]) {
       const registryUrl = `${this.registryUrl}/registry.json`;
 
