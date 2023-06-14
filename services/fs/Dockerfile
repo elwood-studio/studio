@@ -24,7 +24,7 @@ COPY ./package.json ./entry.sh /app/
 RUN chmod 755 /app/entry.sh /usr/local/bin/fs-server
 RUN mkdir -p /data/local/uploads
 
-ENV PORT 4000
+ENV PORT 3001
 ENV HOST 0.0.0.0
 ENV DATA_DIR /data
 ENV RCLONE_PORT 5001

@@ -1,6 +1,7 @@
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { config } from 'dotenv';
 
 import type { Arguments } from './types.ts';
 import { getVersion } from './libs/get-version.ts';
@@ -13,6 +14,10 @@ import { register as registerFs } from './commands/fs.ts';
 import { register as registerCreate } from './commands/create.ts';
 
 export async function main(argv: string[]) {
+  config({
+    path: join(process.cwd(), '.env'),
+  });
+
   const rawArgs = hideBin(argv);
   const cli = yargs(rawArgs);
 
