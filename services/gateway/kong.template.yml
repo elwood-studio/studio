@@ -38,7 +38,7 @@ services:
           message: pong
 
   - name: fs-v1
-    url: http://$FS_HOST:4000/
+    url: http://$FS_HOST/
     routes:
       - name: fs-v1-all
         strip_path: true
@@ -48,7 +48,7 @@ services:
       - name: cors
 
   - name: workflow-v1
-    url: http://$WORKFLOW_HOST:4000/
+    url: http://$WORKFLOW_HOST/
     routes:
       - name: workflow-v1-all
         strip_path: true
@@ -67,7 +67,7 @@ services:
 
   ## Open Auth routes
   - name: auth-v1-open
-    url: http://$AUTH_HOST:9999/verify
+    url: http://$AUTH_HOST/verify
     routes:
       - name: auth-v1-open
         strip_path: true
@@ -76,7 +76,7 @@ services:
     plugins:
       - name: cors
   - name: auth-v1-open-callback
-    url: http://$AUTH_HOST:9999/callback
+    url: http://$AUTH_HOST/callback
     routes:
       - name: auth-v1-open-callback
         strip_path: true
@@ -85,7 +85,7 @@ services:
     plugins:
       - name: cors
   - name: auth-v1-open-authorize
-    url: http://$AUTH_HOST:9999/authorize
+    url: http://$AUTH_HOST/authorize
     routes:
       - name: auth-v1-open-authorize
         strip_path: true
@@ -96,8 +96,8 @@ services:
 
   ## Secure Auth routes
   - name: auth-v1
-    _comment: "GoTrue: /auth/v1/* -> http://$AUTH_HOST:9999/*"
-    url: http://$AUTH_HOST:9999/
+    _comment: "GoTrue: /auth/v1/* -> http://$AUTH_HOST/*"
+    url: http://$AUTH_HOST/
     routes:
       - name: auth-v1-all
         strip_path: true
@@ -117,8 +117,8 @@ services:
 
   ## Secure REST routes
   - name: rest-v1
-    _comment: "PostgREST: /rest/v1/* -> http://$REST_HOST:3000/*"
-    url: http://$REST_HOST:3000/
+    _comment: "PostgREST: /rest/v1/* -> http://$REST_HOST/*"
+    url: http://$REST_HOST/
     routes:
       - name: rest-v1-all
         strip_path: true
@@ -138,8 +138,8 @@ services:
 
   ## Secure GraphQL routes
   - name: graphql-v1
-    _comment: "PostgREST: /graphql/v1/* -> http://$REST_HOST:3000/rpc/graphql"
-    url: http://$REST_HOST:3000/rpc/graphql
+    _comment: "PostgREST: /graphql/v1/* -> http://$REST_HOST/rpc/graphql"
+    url: http://$REST_HOST/rpc/graphql
     routes:
       - name: graphql-v1-all
         strip_path: true
@@ -164,8 +164,8 @@ services:
 
   ## Secure Realtime routes
   - name: realtime-v1
-    _comment: "Realtime: /realtime/v1/* -> ws://$REALTIME_HOST:4000/socket/*"
-    url: http://$REALTIME_HOST:4000/socket/
+    _comment: "Realtime: /realtime/v1/* -> ws://$REALTIME_HOST/socket/*"
+    url: http://$REALTIME_HOST/socket/
     routes:
       - name: realtime-v1-all
         strip_path: true

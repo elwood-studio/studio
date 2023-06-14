@@ -24,8 +24,6 @@ services:
     build:
       context: ./services/workflow/
       dockerfile: Dockerfile.dev
-    ports:
-      - 4001:4001
     volumes:
       - ../services/workflow/dist:/app/dist
       - ../tmp/data:/data
@@ -52,11 +50,11 @@ services:
     environment:
       YML_ANON_CRED: ${ANON_KEY}
       YML_SR_KEY: ${SERVICE_ROLE_KEY}
-      FS_HOST: fs
-      AUTH_HOST: auth
-      REST_HOST: rest
-      REALTIME_HOST: realtime-dev
-      WORKFLOW_HOST: workflow
+      FS_HOST: fs:3001
+      AUTH_HOST: auth:9999
+      REST_HOST: rest:3000
+      REALTIME_HOST: realtime-dev:5000
+      WORKFLOW_HOST: workflow:3002
 
   # DATABASE
   db:

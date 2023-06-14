@@ -28,7 +28,7 @@ ENV ACTIONS_DIR /var/actions
 ENV WORKFLOWS_DIR /var/workflows
 ENV DATA_DIR /data
 ENV WORKING_DIR /var/workflow
-ENV PORT 4000
+ENV PORT 3002
 ENV HOST 0.0.0.0
 
 ENTRYPOINT ["/app/entry.sh"]

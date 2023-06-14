@@ -1,6 +1,6 @@
-import type { JsonObject } from '@elwood-studio/types';
+import type { Json, JsonObject } from '@elwood-studio/types';
 
-import { Context } from '../types.ts';
+import type { LocalConfigDocker, Context } from '../types.ts';
 
 export type BuildDockerComposeOptions = {
   context: Context;
@@ -10,20 +10,20 @@ export async function buildDockerCompose(
   options: BuildDockerComposeOptions,
 ): Promise<JsonObject> {
   const { context } = options;
+  const rootDir = context.workingDir.join('');
 
   function mapMounts(dirs: [string, string]): string {
-    return [
-      dirs[0]!.replace('$root', context.workingDir.join('')),
-      dirs[1]!,
-    ].join(':');
+    return [String(dirs[0]), String(dirs[1])].join(':');
   }
 
-  return {
+  const config = context.localConfig ?? {};
+
+  return replaceRootDir(rootDir, {
     version: '3.8',
     services: {
       fs: {
         container_name: 'fs',
-        image: 'ghcr.io/elwood-studio/fs:latest',
+        ...getImageOrBuild(config.fs, 'ghcr.io/elwood-studio/fs:latest'),
         restart: 'unless-stopped',
         depends_on: ['db'],
         environment: {
@@ -32,13 +32,16 @@ export async function buildDockerCompose(
             'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood',
           EXTERNAL_HOST: 'localhost:8000',
         },
-        volumes: (context.localConfig?.fs?.mount ?? []).map((item) => {
+        volumes: (config.fs?.mount ?? []).map((item) => {
           return item && mapMounts([item[0] as string, item[1] as string]);
         }),
       },
       workflow: {
         container_name: 'workflow',
-        image: 'ghcr.io/elwood-studio/workflow:latest',
+        ...getImageOrBuild(
+          config.workflow,
+          'ghcr.io/elwood-studio/workflow:latest',
+        ),
         volumes: (context.localConfig?.workflow?.mount ?? []).map((item) => {
           return item && mapMounts([item[0] as string, item[1] as string]);
         }),
@@ -51,9 +54,12 @@ export async function buildDockerCompose(
           UNLOCK_KEY: '${UNLOCK_KEY}',
         },
       },
-      api: {
+      gateway: {
         container_name: 'api',
-        image: 'ghcr.io/elwood-studio/gateway:latest',
+        ...getImageOrBuild(
+          config.gateway,
+          'ghcr.io/elwood-studio/gateway:latest',
+        ),
         restart: 'unless-stopped',
         ports: ['${KONG_HTTP_PORT}:8000/tcp'],
         environment: {
@@ -68,7 +74,7 @@ export async function buildDockerCompose(
       },
       db: {
         container_name: 'db',
-        image: 'ghcr.io/elwood-studio/db:latest',
+        ...getImageOrBuild(config.db, 'ghcr.io/elwood-studio/db:latest'),
         restart: 'unless-stopped',
         ports: ['${POSTGRES_PORT}:${POSTGRES_PORT}'],
         environment: {
@@ -134,5 +140,40 @@ export async function buildDockerCompose(
         },
       },
     },
+  });
+}
+
+export function replaceRootDir(rootDir: string, obj: Json): any {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => replaceRootDir(rootDir, item));
+  }
+
+  if (typeof obj === 'object') {
+    return Object.fromEntries(
+      Object.entries(obj).map(([key, value]) => {
+        return [key, replaceRootDir(rootDir, value)];
+      }),
+    );
+  }
+
+  if (typeof obj === 'string') {
+    return obj.replace(/\$root/g, rootDir);
+  }
+
+  return obj;
+}
+
+export function getImageOrBuild(
+  config: LocalConfigDocker = {},
+  defaultImage: string,
+): LocalConfigDocker {
+  if (config.build) {
+    return {
+      build: config.build,
+    };
+  }
+
+  return {
+    image: config.image ?? defaultImage,
   };
 }

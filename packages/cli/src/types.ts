@@ -44,20 +44,29 @@ export type LocalEnv = {
   SERVICE_ROLE_KEY: string;
 };
 
+export type LocalConfigDocker = DeepPartial<{
+  image: string;
+  build: {
+    context: string;
+    dockerfile: string;
+  };
+}>;
+
 export type LocalConfig = DeepPartial<{
   version: number;
-  fs: {
+  fs: LocalConfigDocker & {
     mount: Array<[string, string]>;
   };
-  workflow: {
+  workflow: LocalConfigDocker & {
     mount: Array<[string, string]>;
   };
   actions: { mount: Array<[string, string]> };
-  gateway: {
+  gateway: LocalConfigDocker & {
     port: number | string;
+    host: string;
     externalHost: string;
   };
-  db: {
+  db: LocalConfigDocker & {
     host: string;
     name: string;
     user: string;
