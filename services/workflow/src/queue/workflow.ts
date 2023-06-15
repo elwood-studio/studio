@@ -1,16 +1,23 @@
 import { randomUUID } from 'crypto';
 import type { Json } from '@elwood-studio/types';
-import { type WorkflowRunnerRuntimeRunReport } from '@elwood-studio/workflow-runner';
+import {
+  type WorkflowRunnerRuntimeRun,
+  type WorkflowRunnerRuntimeRunReport,
+} from '@elwood-studio/workflow-runner';
 
-import type { ServerContext, WorkflowQueueData } from '../types';
+import type { AppContext, WorkflowQueueData } from '../types';
 import { startRun } from '../libs/start-run';
 import { completeRun } from '../libs/complete-run';
 import { getEnv } from '../libs/get-env';
+import { updateRun } from '../libs/update-run';
+import invariant from 'ts-invariant';
 
-const { skipWorkflowTeardown } = getEnv();
+const { skipTeardown: skipWorkflowTeardown } = getEnv();
 
-export default async function register(context: ServerContext): Promise<void> {
+export default async function register(context: AppContext): Promise<void> {
   const { boss, submitWorkflow } = context;
+
+  invariant(submitWorkflow, 'Must provider submitWorkflow()');
 
   // run a specific workflow
   await boss.work<WorkflowQueueData, Json>('workflow', async (job) => {
@@ -28,8 +35,26 @@ export default async function register(context: ServerContext): Promise<void> {
       data,
     });
 
+    let lockUpdate = false;
+    let run: WorkflowRunnerRuntimeRun | null = null;
+
+    const watcher = setInterval(() => {
+      if (run && lockUpdate === false) {
+        lockUpdate = true;
+
+        updateRun(context, {
+          job_id: job.id,
+          output: run.report,
+        }).finally(() => {
+          lockUpdate = false;
+        });
+      }
+    }, 1000 * 60);
+
     // start the run
-    const run = await submitWorkflow(data.workflow, data.input, data.context);
+    run = await submitWorkflow(data.workflow, data.input, data.context);
+
+    clearInterval(watcher);
 
     // teardown only if they haven't said skip
     if (skipWorkflowTeardown !== true) {

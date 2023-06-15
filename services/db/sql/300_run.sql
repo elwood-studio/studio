@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."run" (
   "event_id" uuid NULL,
   "trigger" elwood.run_trigger NOT NULL DEFAULT 'USER',
   "state" text NOT NULL DEFAULT 'created',
+  "has_failed" boolean NOT NULL DEFAULT false,
   "name" text NOT NULL,
   "description" text NULL,
   "instructions" jsonb NULL DEFAULT '{}',

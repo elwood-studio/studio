@@ -2,12 +2,12 @@ import fp from 'fastify-plugin';
 
 import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
 
-import { ServerContext } from '../types';
+import { AppContext } from '../types';
 import { findWorkflow } from '../libs/find-workflow';
 import invariant from 'ts-invariant';
 
 export type ConfigHandlerOptions = {
-  context: ServerContext;
+  context: AppContext;
 };
 
 export default fp<ConfigHandlerOptions>(async (app): Promise<void> => {

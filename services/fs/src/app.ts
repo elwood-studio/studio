@@ -6,7 +6,7 @@ import { loadConfigFile } from './libs/load-config-file';
 
 import tusPlugin from './handlers/tus';
 import proxyPlugin from './handlers/proxy';
-import sharePlugin from './handlers/share';
+import objectPlugin from './handlers/object/handlers';
 import errorPlugin from './handlers/error';
 
 // config stuff in one place
@@ -26,7 +26,7 @@ export async function createApp(): Promise<Client> {
   app.register(proxyPlugin, { db, config, externalHost });
 
   // share plugin
-  app.register(sharePlugin, {
+  app.register(objectPlugin, {
     db,
   });
 

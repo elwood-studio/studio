@@ -7,11 +7,11 @@ import {
   resolveWorkflow,
 } from '@elwood-studio/workflow-config';
 
-import type { ServerContext } from '../types';
+import type { AppContext } from '../types';
 import { createEvent } from '../libs/create-event';
 
 export type RunHandlerOptions = {
-  context: ServerContext;
+  context: AppContext;
 };
 
 export default fp<RunHandlerOptions>(async (app, opts): Promise<void> => {

@@ -1,5 +1,5 @@
 import type { JsonObject } from '@elwood-studio/types';
-import type { ServerContext } from '../types';
+import type { AppContext } from '../types';
 
 export type CreateEventOptions = {
   type: string;
@@ -9,7 +9,7 @@ export type CreateEventOptions = {
 };
 
 export async function createEvent(
-  context: ServerContext,
+  context: AppContext,
   opts: CreateEventOptions,
 ): Promise<string> {
   const result = await context.db.executeSql(
