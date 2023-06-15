@@ -4,18 +4,18 @@ import { startServer } from './server';
 import { startWorker } from './worker';
 import type { AppContext } from './types';
 
-const { launchType } = getEnv();
+const { launchMode } = getEnv();
 
 let context: AppContext | null = null;
 
 export async function main() {
   context = await createContext();
 
-  if (['WORKER', 'UNIVERSAL'].includes(launchType)) {
+  if (['WORKER', 'UNIVERSAL'].includes(launchMode)) {
     await startWorker(context);
   }
 
-  if (['SERVER', 'UNIVERSAL'].includes(launchType)) {
+  if (['SERVER', 'UNIVERSAL'].includes(launchMode)) {
     await startServer(context);
   }
 }

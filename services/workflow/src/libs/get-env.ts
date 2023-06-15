@@ -10,7 +10,7 @@ export type Env = {
   host: string;
   unlockKey: string;
   skipTeardown: boolean;
-  launchType: 'SERVER' | 'WORKER' | 'UNIVERSAL';
+  launchMode: 'SERVER' | 'WORKER' | 'UNIVERSAL';
 };
 
 export function getEnv(): Env {
@@ -25,7 +25,7 @@ export function getEnv(): Env {
       PORT,
       HOST,
       SKIP_TEARDOWN,
-      LAUNCH_TYPE,
+      LAUNCH_MODE,
     } = process.env ?? {};
 
     invariant(DATABASE_URL, 'DATABASE_URL is required');
@@ -34,7 +34,7 @@ export function getEnv(): Env {
     invariant(WORKFLOWS_DIR, 'WORKFLOWS_DIR is required');
     invariant(ACTIONS_DIR, 'ACTIONS_DIR is required');
     invariant(UNLOCK_KEY, 'UNLOCK_KEY is required');
-    invariant(LAUNCH_TYPE, 'LAUNCH_TYPE is required');
+    invariant(LAUNCH_MODE, 'LAUNCH_MODE is required');
 
     const port = parseInt(`${PORT ?? 3000}`, 10);
     const host = HOST ?? '0.0.0.0';
@@ -49,7 +49,7 @@ export function getEnv(): Env {
       port,
       host,
       skipTeardown: SKIP_TEARDOWN === 'true',
-      launchType: LAUNCH_TYPE.toUpperCase() as Env['launchType'],
+      launchMode: LAUNCH_MODE.toUpperCase() as Env['launchMode'],
     };
   } catch (err) {
     console.error((err as Error).message);

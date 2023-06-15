@@ -30,7 +30,7 @@ ENV DATA_DIR /data
 ENV WORKING_DIR /var/workflow
 ENV PORT 3002
 ENV HOST 0.0.0.0
-ENV LAUNCH_TYPE UNIVERSAL
+ENV LAUNCH_MODE UNIVERSAL
 
 ENTRYPOINT ["/app/entry.sh"]
 CMD ["/app/workflow-entry"]
