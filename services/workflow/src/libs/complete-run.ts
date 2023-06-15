@@ -3,7 +3,7 @@ import {
   type WorkflowRunnerRuntimeRunReport,
 } from '@elwood-studio/workflow-runner';
 
-import type { ServerContext } from '../types';
+import type { AppContext } from '../types';
 
 type CompleteRunOptions = {
   job_id: string;
@@ -13,7 +13,7 @@ type CompleteRunOptions = {
 };
 
 export async function completeRun(
-  context: ServerContext,
+  context: AppContext,
   options: CompleteRunOptions,
 ): Promise<void> {
   const { db } = context;
@@ -28,6 +28,9 @@ export async function completeRun(
     case RunnerStatus.Skipped: {
       state = 'skipped';
       break;
+    }
+    default: {
+      state = 'completed';
     }
   }
 

@@ -3,13 +3,9 @@ import { type FastifyRequest } from 'fastify';
 import invariant from 'ts-invariant';
 
 import { getEnv } from './get-env';
+import type { AuthToken } from '../types';
 
 const { jwtSecret } = getEnv();
-
-export type AuthToken = {
-  sub?: string;
-  role?: string;
-};
 
 export function getAuthToken(token: string | undefined): AuthToken {
   invariant(token, 'token is required');

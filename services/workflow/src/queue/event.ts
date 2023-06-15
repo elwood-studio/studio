@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 import type { Json, JsonObject } from '@elwood-studio/types';
 
-import type { ServerContext } from '../types';
+import type { AppContext } from '../types';
 import { findWorkflow } from '../libs/find-workflow';
 import { getEnv } from '../libs/get-env';
 
@@ -19,7 +19,7 @@ type EventWorkInput = {
   expireInSeconds?: number;
 };
 
-export default async function register(context: ServerContext): Promise<void> {
+export default async function register(context: AppContext): Promise<void> {
   const { boss, db } = context;
 
   // respond to any event that comes in
@@ -27,7 +27,7 @@ export default async function register(context: ServerContext): Promise<void> {
   await boss.work<EventWorkInput, Json>('event:*', async (job) => {
     console.log('event:*', job.data);
 
-    const { event_id, payload,expireInSeconds } = job.data;
+    const { event_id, payload, expireInSeconds } = job.data;
     const eventType = job.name.replace('event:', '').trim();
     let result: JsonObject = {};
 
@@ -67,7 +67,7 @@ export default async function register(context: ServerContext): Promise<void> {
           );
           context.elwood.has_object = true;
           context.elwood.object = rows.rows[0];
-          context.elwood.object.uri = `elwood://o/${payload.object_id}`;
+          context.elwood.object.uri = `elwood://${payload.object_id}`;
         }
 
         await boss.insert(
@@ -77,7 +77,7 @@ export default async function register(context: ServerContext): Promise<void> {
             return {
               name: 'workflow',
               singletonKey: randomUUID(),
-              expireInSeconds: expireInSeconds ?? 60 * 60 * 12,  
+              expireInSeconds: expireInSeconds ?? 60 * 60 * 2,
               onComplete: true,
               data: {
                 workflow,

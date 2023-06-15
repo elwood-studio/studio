@@ -1,2 +1,2 @@
-export * from './app';
+export * from './context';
 export type { WorkflowService } from './types';

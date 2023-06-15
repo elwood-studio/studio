@@ -1,4 +1,4 @@
-name: Service Docker images
+name: Service Docker Images
 
 on:
   push:
@@ -61,9 +61,7 @@ jobs:
           version: 8
       - run: make ready
         if: ${{ matrix.dist }}
-      - run: pnpm --dir=${{ matrix.dir }} build
-        if: ${{ matrix.dist }}
-
+      
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 

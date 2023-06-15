@@ -2,11 +2,11 @@ import fp from 'fastify-plugin';
 
 import type { JsonObject } from '@elwood-studio/types';
 
-import { ServerContext } from '../types';
+import { AppContext } from '../types';
 import { createEvent } from '../libs/create-event';
 
 export type EventHandlerOptions = {
-  context: ServerContext;
+  context: AppContext;
 };
 
 export default fp<EventHandlerOptions>(async (app, opts): Promise<void> => {

@@ -15,13 +15,13 @@ COPY --from=deps /app/node_modules /app/node_modules
 COPY ./package.json ./tsconfig.json /app/
 COPY ./dist/ /app/dist/
 RUN cd /app \
-    && pkg -t node18-linux -o ./workflow-server ./dist/server.js
+    && pkg -t node18-linux -o ./workflow-entry ./dist/entry.js
 
 FROM lukechannings/deno
 WORKDIR /app
-COPY --from=build /app/workflow-server /app/workflow-server
+COPY --from=build /app/workflow-entry /app/workflow-entry
 COPY ./entry.sh /app/entry.sh
-RUN chmod 755 /app/entry.sh /app/workflow-server
+RUN chmod 755 /app/entry.sh /app/workflow-entry
 RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow /data
 
 ENV ACTIONS_DIR /var/actions
@@ -30,6 +30,7 @@ ENV DATA_DIR /data
 ENV WORKING_DIR /var/workflow
 ENV PORT 3002
 ENV HOST 0.0.0.0
+ENV LAUNCH_TYPE UNIVERSAL
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["/app/workflow-server"]
+CMD ["/app/workflow-entry"]

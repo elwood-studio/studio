@@ -1,24 +1,36 @@
+import invariant from 'ts-invariant';
+import { type FastifyRequest } from 'fastify';
 import { type Client, QueryResult } from 'pg';
 
 import type { Json } from '@elwood-studio/types';
 
-import { getAuthToken } from './get-auth-token';
+import { getAuthToken, getAuthTokenFromRequest } from './get-auth-token';
 
-export type AuthExecuteSqlOptions = {
+interface AuthExecuteSqlOptionsBase {
   client: Client;
-  token: string;
   sql: string;
   params: Json[];
-};
+}
+interface AuthExecuteSqlOptionsWithToken extends AuthExecuteSqlOptionsBase {
+  token: string;
+  req?: never;
+}
+interface AuthExecuteSqlOptionsWithRequest extends AuthExecuteSqlOptionsBase {
+  req: FastifyRequest;
+  token?: never;
+}
+
+export type AuthExecuteSqlOptions =
+  | AuthExecuteSqlOptionsWithToken
+  | AuthExecuteSqlOptionsWithRequest;
 
 export async function authExecuteSql(
   options: AuthExecuteSqlOptions,
 ): Promise<QueryResult> {
-  const { client, sql, params, token } = options;
+  const { client, sql, params, req, token } = options;
+  const jwt = req ? getAuthTokenFromRequest(req) : getAuthToken(token);
 
-  console.log('authExecuteSql');
-
-  const jwt = getAuthToken(token);
+  invariant(jwt, 'jwt is required');
 
   try {
     await client.query('BEGIN');

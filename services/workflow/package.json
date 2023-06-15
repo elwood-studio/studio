@@ -6,7 +6,7 @@
     "dev": "pnpm run build --watch",
     "lint": "eslint \"**/*.ts*\"",
     "test": "jest",
-    "build": "esbuild src/server.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
+    "build": "esbuild src/entry.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "files": [
     "lib"
@@ -20,7 +20,7 @@
     "@types/node": "^20.3.1",
     "@types/pg": "^8.10.2",
     "@vercel/ncc": "^0.36.1",
-    "esbuild": "^0.18.2",
+    "esbuild": "^0.18.3",
     "ts-node-dev": "^2.0.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.3"

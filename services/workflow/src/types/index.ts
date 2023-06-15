@@ -1,4 +1,7 @@
-import type { WorkflowRunnerRuntimeRun } from '@elwood-studio/workflow-runner';
+import type {
+  WorkflowRunnerRuntimeRun,
+  WorkflowRunnerRuntime,
+} from '@elwood-studio/workflow-runner';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import type { JsonObject } from '@elwood-studio/types';
 import type PgBoss from 'pg-boss';
@@ -10,14 +13,11 @@ export type SubmitWorkflowFn = (
   context?: JsonObject,
 ) => Promise<WorkflowRunnerRuntimeRun>;
 
-export type ServerContext = {
+export type AppContext = {
   boss: PgBoss;
   db: PgDatabase;
-  submitWorkflow: SubmitWorkflowFn;
-};
-
-export type WorkflowService = {
-  teardown: () => Promise<void>;
+  submitWorkflow?: SubmitWorkflowFn;
+  runtime?: WorkflowRunnerRuntime;
 };
 
 export type WorkflowQueueData = {

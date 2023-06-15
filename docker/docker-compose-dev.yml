@@ -6,7 +6,7 @@ services:
     container_name: fs
     build:
       context: ../services/fs
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: unless-stopped
     depends_on:
       - db

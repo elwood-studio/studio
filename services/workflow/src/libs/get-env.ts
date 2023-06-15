@@ -8,8 +8,9 @@ export type Env = {
   workflowsDir?: string;
   port: number;
   host: string;
-  unlockKey:string;
-  skipWorkflowTeardown: boolean;
+  unlockKey: string;
+  skipTeardown: boolean;
+  launchType: 'SERVER' | 'WORKER' | 'UNIVERSAL';
 };
 
 export function getEnv(): Env {
@@ -23,7 +24,8 @@ export function getEnv(): Env {
       UNLOCK_KEY,
       PORT,
       HOST,
-      SKIP_WORKFLOW_TEARDOWN,
+      SKIP_TEARDOWN,
+      LAUNCH_TYPE,
     } = process.env ?? {};
 
     invariant(DATABASE_URL, 'DATABASE_URL is required');
@@ -31,7 +33,8 @@ export function getEnv(): Env {
     invariant(DATA_DIR, 'DATA_DIR is required');
     invariant(WORKFLOWS_DIR, 'WORKFLOWS_DIR is required');
     invariant(ACTIONS_DIR, 'ACTIONS_DIR is required');
-    invariant(UNLOCK_KEY, 'UNLOCK_KEY is required')
+    invariant(UNLOCK_KEY, 'UNLOCK_KEY is required');
+    invariant(LAUNCH_TYPE, 'LAUNCH_TYPE is required');
 
     const port = parseInt(`${PORT ?? 3000}`, 10);
     const host = HOST ?? '0.0.0.0';
@@ -45,7 +48,8 @@ export function getEnv(): Env {
       unlockKey: UNLOCK_KEY,
       port,
       host,
-      skipWorkflowTeardown: SKIP_WORKFLOW_TEARDOWN === 'true',
+      skipTeardown: SKIP_TEARDOWN === 'true',
+      launchType: LAUNCH_TYPE.toUpperCase() as Env['launchType'],
     };
   } catch (err) {
     console.error((err as Error).message);
