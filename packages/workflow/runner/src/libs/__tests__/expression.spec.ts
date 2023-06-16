@@ -8,6 +8,7 @@ import {
 import {
   getNativeExpressionValue,
   replaceExpressionTokens,
+  isExpressionValueFalseLike,
 } from '../expression';
 
 describe('library/expression', () => {
@@ -16,11 +17,26 @@ describe('library/expression', () => {
   });
 
   test('getNativeExpressionValue() missing context', async () => {
-    expect.assertions(2);
+    // expect.assertions(4);
     expect(await getNativeExpressionValue('{%= foo %}', {}, {})).toEqual('');
+
     expect(
-      !!(await getNativeExpressionValue('{%= foo %}', {}, {})),
-    ).toBeFalsy();
+      isExpressionValueFalseLike(
+        await getNativeExpressionValue('{%= foo %}', {}, {}),
+      ),
+    ).toBe(true);
+
+    expect(
+      isExpressionValueFalseLike(
+        await getNativeExpressionValue('{% foo === "test" %}', {}, {}),
+      ),
+    ).toEqual(true);
+
+    expect(
+      isExpressionValueFalseLike(
+        await getNativeExpressionValue('{%= foo === "test" %}', {}, {}),
+      ),
+    ).toEqual(true);
   });
 
   test('getNativeExpressionValue() array', async () => {
