@@ -165,7 +165,9 @@ export async function replaceExpressionTokens(
       },
     };
 
-    return await interpolate(str, ctx, {
+    const _str = str.replace(/\{%=/g, '{%').replace(/\{%/g, '{%=');
+
+    return await interpolate(_str, ctx, {
       async: true,
       openDelimiter: '{',
       closeDelimiter: '}',
