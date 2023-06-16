@@ -50,6 +50,12 @@ clean: ## cleanup compile and build artifacts
 	git clean -dfqX -- ./node_modules **/node_modules/ apps/**/lib/ packages/**/lib **/dist **/.next **/tsconfig.tsbuildinfo **/*.zip **/*.log **/.DS_Store
 .PHONY: clean
 
+# TEST 
+test: ## test all 
+	@echo "test..."
+	$(turbo) run test
+.PHONY: test
+
 # VERSION
 version: ## version all packages
 	@echo "version..."
@@ -69,11 +75,6 @@ install: ## install workspace dependencies
 # READY
 ready: clean install build ## clean, install, build workspace
 .PHONY: ready
-
-# catch-all target: route all unknown targets to fail silenetly
-%::
-	@:
-.PHONY: %
 
 help: ## Show this help
 	@echo "\nSpecify a command. The choices are:\n"

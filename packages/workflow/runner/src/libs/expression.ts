@@ -186,5 +186,11 @@ export async function replaceExpressionTokens(
 export function isExpressionValueFalseLike(
   value: string | number | null | boolean,
 ): boolean {
-  return value === false || value === 'false' || value === 0 || value === '0';
+  return (
+    value === false ||
+    value === 'false' ||
+    value === 0 ||
+    value === '0' ||
+    value === ''
+  );
 }

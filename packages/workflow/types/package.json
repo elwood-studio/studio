@@ -6,8 +6,7 @@
   "scripts": {
     "build": "tsc -b ./tsconfig.json",
     "dev": "tsc -b ./tsconfig --watch",
-    "lint": "eslint \"**/*.ts*\"",
-    "test": "jest"
+    "lint": "eslint \"**/*.ts*\""
   },
   "dependencies": {
     "@elwood-studio/types": "workspace:*"
