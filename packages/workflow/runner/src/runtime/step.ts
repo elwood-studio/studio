@@ -134,6 +134,7 @@ export class RuntimeRunStep implements WorkflowRunnerRuntimeRunStep {
       },
       output: this.#output,
       env: this.job.run.context.get('env') ?? {},
+      elwood: this.job.run.context.get('elwood') ?? {},
     };
 
     return data;
