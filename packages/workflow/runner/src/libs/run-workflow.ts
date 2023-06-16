@@ -10,7 +10,7 @@ import type { WorkflowRunnerRuntime, WorkflowRunnerRuntimeRun } from '../types';
 import debug from './debug';
 import { RunnerStatus } from '../constants';
 import { CommandProvider } from '../command/provider';
-import { getExpressionValue } from './expression';
+import { getExpressionValue, isExpressionValueFalseLike } from './expression';
 import { expandJobMatrixAndAddToRun } from './matrix';
 import { runJob } from './run-job';
 
@@ -76,9 +76,8 @@ export async function runWorkflow(
     const shouldStop = (
       await Promise.all(
         instructions.when.map(async (when) => {
-          return (
-            (await getExpressionValue(runtime, when, run.contextValue())) ??
-            false
+          return !isExpressionValueFalseLike(
+            await getExpressionValue(runtime, when, run.contextValue()),
           );
         }),
       )
@@ -86,6 +85,9 @@ export async function runWorkflow(
 
     if (shouldStop !== undefined) {
       log(' runner should not run');
+
+      run.status = RunnerStatus.Skipped;
+
       await run.teardown();
       return run;
     }

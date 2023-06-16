@@ -15,6 +15,14 @@ describe('library/expression', () => {
     await sodium.ready;
   });
 
+  test('getNativeExpressionValue() missing context', async () => {
+    expect.assertions(2);
+    expect(await getNativeExpressionValue('{%= foo %}', {}, {})).toEqual('');
+    expect(
+      !!(await getNativeExpressionValue('{%= foo %}', {}, {})),
+    ).toBeFalsy();
+  });
+
   test('getNativeExpressionValue() array', async () => {
     expect.assertions(1);
     expect(

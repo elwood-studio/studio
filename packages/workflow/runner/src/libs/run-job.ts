@@ -18,11 +18,7 @@ export async function runJob(
   // is if this step should run
   if (job.def.when) {
     for (const exp of job.def.when) {
-      console.log(job.contextValue());
-
       const value = await getExpressionValue(runtime, exp, job.contextValue());
-
-      console.log('Job %s when %s = %s', job.def.id, exp, value);
 
       if (isExpressionValueFalseLike(value)) {
         job.status = RunnerStatus.Skipped;
