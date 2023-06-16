@@ -11,6 +11,7 @@ export type Env = {
   unlockKey: string;
   skipTeardown: boolean;
   launchMode: 'SERVER' | 'WORKER' | 'UNIVERSAL';
+  gatewayBaseUrl: string;
 };
 
 export function getEnv(): Env {
@@ -26,6 +27,7 @@ export function getEnv(): Env {
       HOST,
       SKIP_TEARDOWN,
       LAUNCH_MODE,
+      GATEWAY_BASE_URL,
     } = process.env ?? {};
 
     invariant(DATABASE_URL, 'DATABASE_URL is required');
@@ -50,6 +52,7 @@ export function getEnv(): Env {
       host,
       skipTeardown: SKIP_TEARDOWN === 'true',
       launchMode: LAUNCH_MODE.toUpperCase() as Env['launchMode'],
+      gatewayBaseUrl: GATEWAY_BASE_URL ?? '',
     };
   } catch (err) {
     console.error((err as Error).message);

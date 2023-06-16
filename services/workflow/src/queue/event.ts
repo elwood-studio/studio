@@ -6,15 +6,15 @@ import type { AppContext } from '../types';
 import { findWorkflow } from '../libs/find-workflow';
 import { getEnv } from '../libs/get-env';
 
-const { gatewayUrl } = getEnv();
+const { gatewayBaseUrl } = getEnv();
 
 type EventWorkInput = {
   event_id: string;
   payload: {
     input?: JsonObject;
     object_id?: string;
-    new_state?: string;
-    previous_state?: string;
+    context: JsonObject;
+    trigger?: JsonObject;
   };
   expireInSeconds?: number;
 };
@@ -40,15 +40,17 @@ export default async function register(context: AppContext): Promise<void> {
         const workflows = await findWorkflow();
         const input: JsonObject = payload.input ?? {};
         const context: JsonObject = {
+          ...(payload.context ?? {}),
           event: eventType,
           elwood: {
             sub: '',
             role: '',
             job_id: job.id,
-            gateway_url: gatewayUrl,
+            gateway_url: gatewayBaseUrl,
             event: {
               id: event_id,
               type: eventType,
+              trigger: payload.trigger ?? {},
             },
             has_object: false,
           },

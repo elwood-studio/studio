@@ -155,6 +155,7 @@ export class RuntimeRunJob implements WorkflowRunnerRuntimeRunJob {
         }, {}),
       matrix: this.context.get('matrix'),
       input: this.run.context.get('input'),
+      elwood: this.run.context.get('elwood') ?? {},
     };
 
     return data;
