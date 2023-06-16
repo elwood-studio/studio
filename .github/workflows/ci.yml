@@ -18,3 +18,4 @@ jobs:
           version: 8
 
       - run: make ready
+      - run: make test

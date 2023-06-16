@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "pnpm run build --watch",
     "lint": "eslint \"**/*.ts*\"",
-    "test": "jest",
     "build": "esbuild src/entry.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "files": [

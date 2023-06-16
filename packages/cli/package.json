@@ -29,7 +29,6 @@
     "bin"
   ],
   "scripts": {
-    "test": "jest --runInBand",
     "dev": "tsup --watch",
     "build": "rimraf ./dist && tsup"
   },
