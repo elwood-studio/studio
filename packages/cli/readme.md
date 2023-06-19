@@ -1,10 +1,12 @@
-# Elwood Studio CLI
+# Elwood CLI
+
+Command Line Interface for Elwood
 
 [![npm (scoped)](https://img.shields.io/npm/v/@elwood-studio/cli)](https://www.npmjs.com/package/@elwood-studio/cli)
 
 ## Overview
 
-**Elwood Studio** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration. Powerful role-based sharing. Simple one-click distribution.
+**Elwood** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration. Powerful role-based sharing. Simple one-click distribution.
 
 - 📖 [Documentation and Reference](https://elwood.studio/docs/cli)
 - 🚀 [More about Elwood Studio](../../README.md)
