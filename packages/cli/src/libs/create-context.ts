@@ -42,19 +42,22 @@ export async function createContext(args: Arguments): Promise<Context> {
     );
   }
 
-
-
   const localClient = new ElwoodClient(
     `http://0.0.0.0:8000`,
     localEnv.SERVICE_ROLE_KEY,
     {
       auth: {
-        persistSession:false
-      }
-    }
+        persistSession: false,
+      },
+      global: {
+        headers: {
+          Authorization: `Bearer ${localEnv.SERVICE_ROLE_KEY}`,
+        },
+      },
+    },
   );
   const remoteClient = new ElwoodClient(
-    `http://0.0.0.0:8000`,
+    args.apiUrl ?? `https://api.elwood.studio`,
     localEnv.SERVICE_ROLE_KEY,
     {
       auth: {

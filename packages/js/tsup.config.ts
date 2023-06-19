@@ -10,5 +10,7 @@ export default defineConfig((options: Options) => ({
   clean: true,
   legacyOutput: true,
   external: [],
+  platform: 'node',
+  tsconfig: './tsconfig.json',
   ...options,
 }));

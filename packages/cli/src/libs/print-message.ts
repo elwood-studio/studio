@@ -48,7 +48,7 @@ export function printErrorMessage(err: string | Error) {
 
 export function printSuccessMessage(
   message: string,
-  title: string = 'SUCCESS!',
+  title = 'SUCCESS!',
   body?: string | string[],
 ) {
   return printMessage({

@@ -35,22 +35,18 @@ export async function buildWorkingDir(options: BuildWorkingDirOptions) {
 
   await wd.writeYaml(`${FilePaths.WorkflowsDir}/demo.yml`, {
     name: 'demo',
-    when: '{%= eventType == "object:create:blob" && elwood.object.name == "demo.txt" %}',
+    when: '{%= event === "demo" %}',
     jobs: {
       default: {
         steps: [
           {
-            action: 'fs/pull',
+            action: 'run/echo',
             input: {
-              src: '{%= input.object.uri %}',
-              dest: 'demo.txt',
+              message: '${ input.message }',
             },
           },
           {
-            action: '$actions/demo.ts',
-            input: {
-              file: 'demo.txt',
-            },
+            action: '$static/actions/demo.ts',
           },
         ],
       },

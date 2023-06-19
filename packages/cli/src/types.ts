@@ -12,6 +12,7 @@ export type Arguments<Options = JsonObject> = BaseArguments<
     local?: boolean;
     rootDir?: string;
     context?: Context;
+    apiUrl?: string;
   }
 >;
 
@@ -42,6 +43,7 @@ export type LocalEnv = {
   JWT_SECRET: string;
   ANON_KEY: string;
   SERVICE_ROLE_KEY: string;
+  UNLOCK_KEY: string;
 };
 
 export type LocalConfigDocker = DeepPartial<{

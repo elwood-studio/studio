@@ -14,11 +14,12 @@ export type Config = {
 
 export type ObjectRequestPath = {
   type: 'oid' | 'name' | 'remote';
-  id: string;
+  id: string | null;
   path: string;
 };
 
-export type AuthToken = {
+export type AuthToken<T extends JsonObject = JsonObject> = T & {
+  type?: string;
   sub?: string;
   role?: string;
 };
