@@ -300,15 +300,9 @@ export function outputReport(
   }
 }
 
-export function getInput(raw: string[]): JsonObject {
-  return raw.reduce((acc, cur) => {
-    const [key, ...value] = cur.split('=');
-
-    return {
-      ...acc,
-      [key]: value.join('='),
-    };
-  }, {} as JsonObject);
+export function getInput(raw: JsonObject = {}): JsonObject {
+  invariant(typeof raw === 'object', 'Input must be an object');
+  return raw as JsonObject;
 }
 
 export async function getWorkflow(
@@ -408,6 +402,7 @@ export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
   });
 
   spin.succeed(`Execution complete!`);
+  spin.clear();
 
   outputReport(args.output ?? 'table', run.report);
 
