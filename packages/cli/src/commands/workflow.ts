@@ -133,33 +133,33 @@ export async function register(cli: Argv) {
     report,
   );
 
-  cli.command<JsonObject>(
-    'workflow:generate-unlock-key',
-    'Generate a Workflow Unlock Key',
-    () => {
-      return;
-    },
-    generateUnlockKey,
-  );
+  // cli.command<JsonObject>(
+  //   'workflow:generate-unlock-key',
+  //   'Generate a Workflow Unlock Key',
+  //   () => {
+  //     return;
+  //   },
+  //   generateUnlockKey,
+  // );
 
-  cli.command<SecretOptions>(
-    'workflow:secret <name> [value]',
-    'Seal or unseal a secret',
-    (y) => {
-      y.option('unlock-key', {
-        alias: 'u',
-        type: 'string',
-        describe: 'Unlock key',
-        demandOption: true,
-      });
-      y.option('key-name', {
-        alias: 'n',
-        type: 'string',
-        describe: 'Key Name',
-      });
-    },
-    secret,
-  );
+  // cli.command<SecretOptions>(
+  //   'workflow:secret <name> [value]',
+  //   'Seal or unseal a secret',
+  //   (y) => {
+  //     y.option('unlock-key', {
+  //       alias: 'u',
+  //       type: 'string',
+  //       describe: 'Unlock key',
+  //       demandOption: true,
+  //     });
+  //     y.option('key-name', {
+  //       alias: 'n',
+  //       type: 'string',
+  //       describe: 'Key Name',
+  //     });
+  //   },
+  //   secret,
+  // );
 
   cli.command<ExecuteOptions>(
     'workflow:execute <workflow>',
@@ -372,6 +372,8 @@ export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
     args.workflow,
     context.workingDir.join(''),
   );
+
+  workflow.when = '*';
 
   const runtime = await createRuntime({
     commandServerPort: 4001,

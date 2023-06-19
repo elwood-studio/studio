@@ -10,11 +10,6 @@ export class FFMpegCommandProvider extends CommandProvider {
         args: [],
         cmd: null,
       },
-      access: {
-        stage: ['*/*'],
-        env: { '*': true },
-        secrets: { '*': true },
-      },
       env: {},
     });
   }

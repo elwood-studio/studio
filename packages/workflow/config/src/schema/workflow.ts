@@ -2,7 +2,7 @@ import joi from 'joi';
 
 import { job } from './job';
 import { input } from './input';
-import { name, env, extend, when } from './scalar';
+import { name, env, extend, when, permission } from './scalar';
 
 export const workflow = joi
   .object({
@@ -31,6 +31,11 @@ export const workflow = joi
       .required()
       .description('List of jobs to run')
       .unknown(true),
+    defaults: joi
+      .object({
+        permission: permission.optional(),
+      })
+      .optional(),
     env: env.description('Global Environment variables'),
     runner: joi.object({}).description('Runner instance settings'),
     commands: joi.object({}).description('Commands available to job steps'),

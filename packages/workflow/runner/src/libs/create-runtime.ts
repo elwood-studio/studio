@@ -3,10 +3,12 @@ import invariant from 'ts-invariant';
 import type {
   WorkflowRunnerRuntime,
   WorkflowRunnerConfiguration,
+  WorkflowRunnerRuntimePluginConstructor,
 } from '../types';
 import { Runtime } from '../runtime/runtime';
 import { createCommandServer } from '../command/server';
 import { createDocker } from './docker';
+import { CleanRunStagePlugin } from '../plugins/clean-run-stage';
 
 export async function createRuntime(
   config: WorkflowRunnerConfiguration,
@@ -41,6 +43,8 @@ export async function createRuntime(
     { ...config, context, commandContext },
     docker ?? undefined,
   );
+
+  plugins.push(CleanRunStagePlugin as WorkflowRunnerRuntimePluginConstructor);
 
   // register all the plugins
   for (const plugin of plugins) {

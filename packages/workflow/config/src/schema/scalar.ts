@@ -22,15 +22,27 @@ export const timeout = joi.object({
   minutes: joi.number().required().greater(0),
 });
 
-export const access = joi
-  .object({
-    stage: joi
-      .alternatives()
-      .try(joi.boolean(), joi.string(), joi.array().items(joi.string())),
-    env: joi.alternatives().try(joi.boolean(), joi.string(), joi.object()),
-    secrets: joi.alternatives().try(joi.boolean(), joi.string(), joi.object()),
-  })
-  .unknown(false);
+export const permissionItem = joi
+  .alternatives()
+  .try(joi.boolean(), joi.string(), joi.array().items(joi.string()));
+
+export const permission = joi.alternatives().try(
+  joi.string(),
+  joi.boolean(),
+  joi
+    .object({
+      run: permissionItem,
+      read: permissionItem,
+      write: permissionItem,
+      net: permissionItem,
+      env: permissionItem,
+      sys: permissionItem,
+      ffi: permissionItem,
+      unstable: joi.boolean(),
+    })
+    .default('none')
+    .unknown(false),
+);
 
 export const extend = joi
   .alternatives()

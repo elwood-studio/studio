@@ -13,14 +13,18 @@ export interface Workflow {
   extends?: WorkflowExtends;
   when: WorkflowWhen;
   jobs: Record<string, WorkflowJob>;
+  defaults?: WorkflowDefaults;
   env?: WorkflowEnv;
   input?: WorkflowInput;
   runner?: WorkflowRunner;
   commands?: WorkflowCommands;
-  services?: {};
   timeout?: WorkflowTimeout;
   meta?: WorkflowMeta;
 }
+
+export type WorkflowDefaults = {
+  permission?: WorkflowPermission;
+};
 
 export type WorkflowInput = {
   prompt?: WorkflowInputPrompt[];
@@ -35,7 +39,7 @@ export type WorkflowInputValidate = JsonSchema;
 export type WorkflowCommands = Record<string, WorkflowCommand>;
 export type WorkflowCommand = {
   container: WorkflowContainer;
-  access?: WorkflowAccess;
+  access?: WorkflowPermission;
   env?: WorkflowEnv;
 };
 
@@ -83,11 +87,21 @@ export type WorkflowTimeout = {
 
 export type WorkflowSecrets = Record<string, string>;
 
-export type WorkflowAccess = {
-  env?: boolean | string | Record<string, boolean>;
-  secrets?: boolean | string | Record<string, boolean>;
-  stage?: boolean | string | string[];
-};
+export type WorkflowPermissionValue = boolean | string | string[];
+
+export type WorkflowPermission =
+  | string
+  | boolean
+  | Partial<{
+      run: WorkflowPermissionValue;
+      read: WorkflowPermissionValue;
+      write: WorkflowPermissionValue;
+      net: WorkflowPermissionValue;
+      env: WorkflowPermissionValue;
+      sys: WorkflowPermissionValue;
+      ffi: WorkflowPermissionValue;
+      unstable: boolean;
+    }>;
 
 export interface WorkflowJobStepBase {
   name?: string;
@@ -95,7 +109,7 @@ export interface WorkflowJobStepBase {
   input?: JsonObject;
   output?: JsonObject;
   env?: WorkflowEnv;
-  access?: WorkflowAccess;
+  permission?: WorkflowPermission;
   timeout?: WorkflowTimeout;
   matrix?: WorkflowMatrix;
 }
@@ -118,7 +132,7 @@ export interface WorkflowJob {
   steps: WorkflowJobStep[];
   matrix?: WorkflowMatrix;
   timeout?: WorkflowTimeout;
-  access?: WorkflowAccess;
+  access?: WorkflowPermission;
   env?: WorkflowEnv;
   when?: WorkflowWhen;
 }

@@ -10,11 +10,7 @@ export class FFProbeCommandProvider extends CommandProvider {
         entrypoint: ['ffprobe'],
         args: [],
       },
-      access: {
-        stage: ['*/*'],
-        env: { '*': true },
-        secrets: { '*': true },
-      },
+
       env: {},
     });
   }

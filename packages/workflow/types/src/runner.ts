@@ -2,7 +2,7 @@ import type { JsonObject, Json, JsonScalar } from '@elwood-studio/types';
 
 import type { WorkflowMeta } from './meta';
 
-export type WorkflowRunnerConfiguration = {};
+export type WorkflowRunnerConfiguration = JsonObject;
 
 export interface WorkflowRunnerInstructions {
   meta?: WorkflowMeta;
@@ -14,12 +14,6 @@ export interface WorkflowRunnerInstructions {
   timeoutMinutes: number | null;
   env: WorkflowRunnerEnv;
 }
-
-export type WorkflowRunnerAccess = {
-  stage: string[];
-  env: Record<string, boolean>;
-  secrets: Record<string, boolean>;
-};
 
 export type WorkflowRunnerEnv = Record<string, JsonScalar>;
 
@@ -33,7 +27,7 @@ export type WorkflowRunnerContainer = {
 export type WorkflowRunnerCommand = {
   name: string;
   container: WorkflowRunnerContainer;
-  access: WorkflowRunnerAccess;
+
   env: WorkflowRunnerEnv;
 };
 
@@ -44,13 +38,26 @@ export type WorkflowRunnerAction = {
   version: string | undefined;
 };
 
+export type WorkflowRunnerPermissionValue = boolean | string[];
+
+export type WorkflowRunnerPermission = {
+  run: WorkflowRunnerPermissionValue;
+  read: WorkflowRunnerPermissionValue;
+  write: WorkflowRunnerPermissionValue;
+  net: WorkflowRunnerPermissionValue;
+  env: WorkflowRunnerPermissionValue;
+  sys: WorkflowRunnerPermissionValue;
+  ffi: WorkflowRunnerPermissionValue;
+  unstable: boolean;
+};
+
 export interface WorkflowRunnerJobStep {
   id: string;
   name: string;
   action: WorkflowRunnerAction;
   input: JsonObject;
   output: JsonObject;
-  access: WorkflowRunnerAccess;
+  permission: WorkflowRunnerPermission;
   env: WorkflowRunnerEnv;
   timeoutMinutes: number | null;
   when: WorkflowRunnerExpression[];
@@ -67,7 +74,6 @@ export interface WorkflowRunnerJob {
   when: WorkflowRunnerExpression[];
   matrix: WorkflowRunnerJobMatrix;
   env: WorkflowRunnerEnv;
-  access: WorkflowRunnerAccess;
   timeoutMinutes: number | null;
 }
 
