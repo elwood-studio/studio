@@ -7,6 +7,7 @@ import Table from 'cli-table';
 import * as yaml from 'yaml';
 import chalk from 'chalk';
 
+import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
 import type { JsonObject } from '@elwood-studio/types';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import { resolveWorkflow } from '@elwood-studio/workflow-config';
@@ -15,20 +16,24 @@ import {
   createKeyPair,
   SecretsManager,
 } from '@elwood-studio/workflow-secrets';
+import { createRuntime, runWorkflow } from '@elwood-studio/workflow-runner';
 
 import type { Argv, Arguments, Context } from '../types.ts';
 import { printErrorMessage, printMessage } from '../libs/print-message.ts';
 
 type TopOptions = RunOptions &
   ReportOptions &
+  ExecuteOptions &
   SecretOptions & {
-    command?: 'run' | 'report' | 'generate-unlock-key' | 'secret';
+    command?: 'run' | 'report' | 'generate-unlock-key' | 'secret' | 'execute';
     arguments: string[];
   };
 
 type RunOptions = {
   workflow?: string;
   input?: string[];
+  force?: boolean;
+  event?: string;
 };
 
 type ReportOptions = {
@@ -38,9 +43,16 @@ type ReportOptions = {
 
 type SecretOptions = {
   unlockKey?: string;
-  keyName?:string;
+  keyName?: string;
   name?: string;
   value?: string;
+};
+
+type ExecuteOptions = {
+  wait?: boolean;
+  input?: string[];
+  workflow?: string;
+  output?: ReportOptions['output'];
 };
 
 export async function register(cli: Argv) {
@@ -76,19 +88,31 @@ export async function register(cli: Argv) {
     },
   );
 
-  cli.command(
-    'workflow:run <workflow>',
+  cli.command<RunOptions>(
+    'workflow:run [workflow]',
     'run a workflow',
     (y) => {
       y.option('input', {
         alias: 'i',
         type: 'string',
         array: true,
-      }).option('wait', {
+      });
+      y.option('wait', {
         alias: 'w',
         type: 'boolean',
         default: false,
         describe: 'Wait for the workflow to complete and return the result',
+      });
+      y.option('force', {
+        alias: 'f',
+        type: 'boolean',
+        default: true,
+        describe: 'Override the "when" of the workflow with "*"',
+      });
+      y.option('event', {
+        alias: 'e',
+        type: 'string',
+        describe: 'Name of the event that triggered the workflow',
       });
     },
     run,
@@ -137,47 +161,79 @@ export async function register(cli: Argv) {
     secret,
   );
 
+  cli.command<ExecuteOptions>(
+    'workflow:execute <workflow>',
+    'Execute a workflow directly, without the local or remote API',
+    (y) => {
+      y.option('input', {
+        alias: 'i',
+        type: 'string',
+        array: true,
+      });
+    },
+    execute,
+  );
+
   cli.hide('workflow');
 }
 
 export async function run(args: Arguments<RunOptions>) {
-  invariant(args.workflow, 'Workflow is required');
-
   const context = args.context as Required<Context>;
   const spin = ora('Sending workflow...').start();
 
   try {
     const input = getInput(args.input ?? []);
-    const workflow = await getWorkflow(
-      args.workflow,
-      context.workingDir.join(''),
+    let result: { tracking_id?: string; event_id?: string } = {};
+
+    invariant(args.workflow || args.event, 'Must provide workflow or event');
+
+    if (args.event) {
+      result = await context.client.workflow.event(args.event, input);
+    } else if (args.workflow) {
+      const workflow = await getWorkflow(
+        args.workflow,
+        context.workingDir.join(''),
+      );
+
+      // force the workflow
+      if (args.force !== false) {
+        workflow.when = true;
+      }
+      result = await context.client.workflow.run(workflow, input);
+    } else {
+      throw new Error('Unable to run workflow or submit event');
+    }
+
+    invariant(
+      result.tracking_id || result.event_id,
+      'Unable to find Tracking ID or Event ID in response',
     );
 
-    let result: { tracking_id?: string } = {};
-
-    if (args.local) {
-      result = await context.localClient.workflow.run(workflow, input);
-    }
-
-    if (!args.local) {
-      result = { tracking_id: undefined };
-    }
-
-    invariant(result.tracking_id, 'Unable to find Tracking ID in response');
-
-    spin.succeed(`Workflow send complete!`);
+    spin.succeed(`Send complete!`);
     spin.stop();
     spin.clear();
 
-    printMessage({
-      type: 'success',
-      title: 'Workflow Sent!',
-      message: `Your workflow has been submitted. Tracking id: ${result.tracking_id}`,
-      body: [
-        'Check the status of the workflow by running:',
-        `elwood-studio workflow:report ${result.tracking_id}`,
-      ],
-    });
+    if (result.event_id) {
+      printMessage({
+        type: 'success',
+        title: 'Workflow Event Sent!',
+        message: `Your workflow event has been submitted. Event id: ${result.event_id}`,
+        body: [
+          'Check the status of any workflows trigger by this event using running:',
+          `elwood-studio workflow:report --event-id=${result.event_id}`,
+        ],
+      });
+    } else {
+      printMessage({
+        type: 'success',
+        title: 'Workflow Sent!',
+        message: `Your workflow has been submitted. Tracking id: ${result.tracking_id}`,
+        body: [
+          'Check the status of the workflow by running:',
+          `elwood-studio workflow:report ${result.tracking_id}`,
+        ],
+      });
+    }
   } catch (e) {
     spin.stop();
     printErrorMessage(e as Error);
@@ -191,7 +247,14 @@ export async function report(args: Arguments<ReportOptions>) {
 
   invariant(result, 'Unable to find workflow report');
 
-  switch (args.output) {
+  outputReport(args.output, result);
+}
+
+export function outputReport(
+  output: ReportOptions['output'],
+  result: JsonObject,
+): void {
+  switch (output) {
     case 'json-pretty': {
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
       break;
@@ -282,15 +345,16 @@ export async function generateUnlockKey(
 
 export async function secret(args: Arguments<SecretOptions>): Promise<void> {
   invariant(args.unlockKey, 'Unlock key is required');
-  invariant(args.name, 'Secret name is required')
+  invariant(args.name, 'Secret name is required');
 
   const sm = new SecretsManager(Buffer.from(args.unlockKey, 'base64'));
   const [pub, priv] = await createKeyPair();
   const key = sm.createKey('root', pub, priv);
 
-
   if (args.value) {
-    const sealedValue = await sm.createSecret(key, args.name, args.value).seal();
+    const sealedValue = await sm
+      .createSecret(key, args.name, args.value)
+      .seal();
     const sealedKey = await key.seal();
 
     return printMessage({
@@ -299,4 +363,54 @@ export async function secret(args: Arguments<SecretOptions>): Promise<void> {
       body: [`Secret: ${sealedValue}`, ` Key: ${sealedKey}`],
     });
   }
+}
+
+export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
+  const context = args.context as Required<Context>;
+  const spin = ora('Executing workflow...').start();
+
+  invariant(args.workflow, 'Unlock key is required');
+
+  const unlockKey = context.localEnv.UNLOCK_KEY;
+  const input = getInput(args.input ?? []);
+
+  const workflow = await getWorkflow(
+    args.workflow,
+    context.workingDir.join(''),
+  );
+
+  const runtime = await createRuntime({
+    commandServerPort: 4001,
+    workingDir: context.workingDir.join('runs'),
+    keychainUnlockKey: unlockKey,
+    commandContext: 'local',
+    context: 'local',
+    staticFiles: {
+      data: context.workingDir.join('data'),
+      actions: context.workingDir.join('actions'),
+    },
+    plugins: [],
+  });
+  const secretsManager = new SecretsManager(Buffer.from(unlockKey, 'base64'));
+  const instructions = await normalizeWorkflowToInstructions(workflow);
+
+  spin.text = 'Starting...';
+
+  runtime.on('runStarted', (o) => {
+    spin.text = `Step: ${o.def.id}`;
+  });
+
+  const run = await runWorkflow({
+    runtime,
+    secretsManager,
+    instructions,
+    input,
+  });
+
+  spin.succeed(`Execution complete!`);
+
+  outputReport(args.output ?? 'table', run.report);
+
+  await run.teardown();
+  await runtime.teardown();
 }

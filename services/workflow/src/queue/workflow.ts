@@ -21,7 +21,7 @@ export default async function register(context: AppContext): Promise<void> {
 
   // run a specific workflow
   await boss.work<WorkflowQueueData, Json>('workflow', async (job) => {
-    console.log('received workflow job');
+    console.log('received workflow job', job.data);
     const { data } = job;
     const tracking_id =
       job.data.tracking_id ?? job.data.input.tracking_id ?? randomUUID();

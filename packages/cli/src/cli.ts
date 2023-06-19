@@ -40,6 +40,11 @@ export async function main(argv: string[]) {
       describe: 'Run commands against the local instance.',
       default: false,
     })
+    .option('api-url', {
+      type: 'string',
+      describe: 'Base URL for the remote API',
+      default: 'https://api.elwood.studio',
+    })
     .command(
       '$0',
       'Show help',
@@ -55,9 +60,9 @@ export async function main(argv: string[]) {
         printErrorMessage(`Unknown command: ${args._[0]}`);
       },
     )
-    .middleware(async (argv: Arguments) => {
+    .middleware(async (argv) => {
       argv.rootDir = resolve(argv.rootDir ?? '.');
-      argv.context = await createContext(argv);
+      argv.context = await createContext(argv as Arguments);
     })
     .fail((msg, err) => {
       printErrorMessage(err ?? msg);

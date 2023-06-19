@@ -9,7 +9,8 @@ RUN cd /app \
     && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
     && mv package.json.tmp package.json \
     && npm install --omit=dev --omit=optional \
-    && npm install -g node-dev
+    && npm install -g node-dev \
+    && npm install source-map-support
 
 COPY ./dist /app/dist/
 COPY --from=0 /usr/local/bin/rclone /usr/local/bin/rclone
@@ -24,4 +25,4 @@ ENV RCLONE_PORT 5001
 ENV RCLONE_ADDR localhost:$RCLONE_PORT
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["node-dev", "./dist/server.js"]
+CMD ["node-dev", "-r", "source-map-support/register", "./dist/server.js"]

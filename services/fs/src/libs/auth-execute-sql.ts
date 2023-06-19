@@ -24,9 +24,9 @@ export type AuthExecuteSqlOptions =
   | AuthExecuteSqlOptionsWithToken
   | AuthExecuteSqlOptionsWithRequest;
 
-export async function authExecuteSql(
+export async function authExecuteSql<T = Json>(
   options: AuthExecuteSqlOptions,
-): Promise<QueryResult> {
+): Promise<QueryResult<T>> {
   const { client, sql, params, req, token } = options;
   const jwt = req ? getAuthTokenFromRequest(req) : getAuthToken(token);
 

@@ -36,7 +36,11 @@ export class WorkflowClient {
       },
     );
 
-    return (await response.json()) as Response;
+    invariant(response.ok, 'workflow.submit(): response is not ok');
+
+    const result = await response.json();
+
+    return result as Response;
   }
 
   async run(
@@ -46,14 +50,20 @@ export class WorkflowClient {
   ): Promise<{ tracking_id: string }> {
     invariant(workflow, 'workflow.submit(): workflow is required');
 
-    return await this._fetch<{ tracking_id: string }>(`job`, 'POST', {
+    return await this._fetch<{ tracking_id: string }>(`run`, 'POST', {
       workflow,
       input,
       tracking_id: trackingId,
     });
   }
 
+  async event(type: string, input: JsonObject = {}) {
+    return await this._fetch<{ event_id: string }>(`event/${type}`, 'POST', {
+      input,
+    });
+  }
+
   async report(trackingId: string): Promise<JsonObject> {
-    return await this._fetch<JsonObject>(`job/${trackingId}`, 'GET');
+    return await this._fetch<JsonObject>(`run/${trackingId}`, 'GET');
   }
 }

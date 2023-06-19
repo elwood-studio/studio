@@ -6,13 +6,10 @@
 <p align="center">
 <small>
 <a href="https://elwood.studio">elwood.studio</a> &#8226; 
+<a href="mailto:mailto:hello@elwood.studio">Email Us</a> &#8226;
 <a href="https://discord.gg/ZxWKPeABNG">Discord</a>
 </small>
 </p>
-
-<p>&nbsp;</p>
-
-<p align="center">Elwood Studio is currently in public <strong>BETA</strong>. We are actively developing and improving the code & documentation. If you have any questions, please reach out to us at <a href="mailto:hello@elwood.studio">hello@elwood.studio</a>.</p>
 
 <p>&nbsp;</p>
 
@@ -20,23 +17,19 @@
 
 **Elwood Studio** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration. Powerful role-based sharing. Simple one-click distribution.
 
-- [x] **Accelerated Uploads** <br/><small>With accelerated, edge optimized, resumable uploads, you can upload large files and folders in a fraction of the time.</small>
-- [x] **Collaborate** <br/><small>Streamline teamwork and boost productivity with advanced collaboration feature - share, edit and communicate seamlessly with your team all in one secure platform.</small>
-- [x] **Distribute Anywhere** <br/><small>Effortless one click publishing to YouTube, Facebook, Instagram and more. Or build custom workflows to publish to your own website or apps.</small>
-- [x] **All Your Files** <br/><small>Access files from dozens of cloud storage providers. Centralize sharing, audit logs, and collaboration across all your cloud storage providers.</small>
-- [x] [**Custom Workflows**](./packages/workflow/) <br/><small>A powerful workflow engine to automate your file management pipeline. Use our prebuilt workflows and actions, or build your own in Deno, Node or any language you choose.</small>
+<p>Elwood Studio is currently in public <strong>BETA</strong>. We are actively developing and improving the code & documentation. If you have any questions, please reach out to us at <a href="mailto:hello@elwood.studio">hello@elwood.studio</a>.</p>
 
 ## 💻 Development
 
 ```bash
+# Setup development environment for working with ./packages
+make ready
+
 # Start all services in development mode
 make up
 
 # Destroy all services in development mode
 make down
-
-# Setup development environment for working with ./packages
-make ready
 
 # Start development watch process
 make dev

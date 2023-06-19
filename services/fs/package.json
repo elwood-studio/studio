@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "pnpm run build --watch",
     "lint": "eslint \"**/*.ts*\"",
-    "build": "esbuild src/server.ts --bundle --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
+    "build": "esbuild src/server.ts --bundle --sourcemap --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "devDependencies": {
     "@elwood-studio/types": "workspace:*",
@@ -24,7 +24,7 @@
     "@fastify/static": "^6.10.2",
     "@hapi/boom": "^10.0.1",
     "@tus/file-store": "1.0.0-beta.1",
-    "@tus/server": "1.0.0-beta.5",
+    "@tus/server": "1.0.0-beta.6",
     "fastify": "^4.18.0",
     "fastify-boom": "^1.0.0",
     "fastify-plugin": "^4.5.0",

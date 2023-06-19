@@ -11,6 +11,7 @@ const { gatewayBaseUrl } = getEnv();
 type EventWorkInput = {
   event_id: string;
   payload: {
+    workflow?: JsonObject;
     input?: JsonObject;
     object_id?: string;
     context: JsonObject;
@@ -37,7 +38,14 @@ export default async function register(context: AppContext): Promise<void> {
         break;
       }
       default: {
-        const workflows = await findWorkflow();
+        const workflows = [];
+
+        if (eventType === 'workflow') {
+          workflows.push(payload.workflow);
+        } else {
+          workflows.push(...(await findWorkflow()));
+        }
+
         const input: JsonObject = payload.input ?? {};
         const context: JsonObject = {
           ...(payload.context ?? {}),

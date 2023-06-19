@@ -1,3 +1,5 @@
+import type { ObjectModel, FileSystemTreeNode } from '@elwood-studio/types';
+
 import { getEnv } from './get-env';
 
 const { rcloneHost } = getEnv();
@@ -15,4 +17,29 @@ export async function fetchRclone(
   });
 
   return response;
+}
+
+export function mapObjectDataToRcloneRemote(object: ObjectModel): string {
+  return '';
+}
+
+export function mapObjectDataToRclonePath(
+  object: ObjectModel,
+  path: string,
+): string {
+  return '';
+}
+
+export async function fetchAndMapRcloneResultToTree(
+  remote: string,
+  fs: string,
+): Promise<FileSystemTreeNode[]> {
+  await fetchRclone('/operations/list', {
+    body: JSON.stringify({
+      remote,
+      fs,
+    }),
+  });
+
+  return [];
 }

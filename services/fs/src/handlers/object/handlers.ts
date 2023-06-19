@@ -29,11 +29,12 @@ export default fp<ObjectOptions>(async (app, opts) => {
         db,
         req,
         res,
-        params: normalizeRequestPath(req.params['*']),
+        params: normalizeRequestPath(req.params['*'] ?? ''),
         authToken: getAuthTokenFromRequest(req),
       });
   }
 
+  app.get('/tree', withHandlerOptions(treeHandler));
   app.get('/tree/*', withHandlerOptions(treeHandler));
   app.get('/blob/*', withHandlerOptions(blobHandler));
   app.get('/share/*', withHandlerOptions(shareHandler));
@@ -54,7 +55,7 @@ export function normalizeRequestPath(raw: string): ObjectRequestPath {
 
   return {
     type: 'oid',
-    id: pathParts[0],
+    id: pathParts[0].length > 0 ? pathParts[0] : null,
     path,
   };
 }

@@ -2,7 +2,8 @@
 CREATE TYPE elwood.object_type AS ENUM (
     'TREE',
     'BLOB',
-    'LINK'
+    'LINK',
+    'BACKEND'
 );
 
 CREATE TYPE elwood.object_state AS ENUM (
@@ -25,14 +26,14 @@ CREATE TABLE IF NOT EXISTS "elwood"."object" (
     "mime_type" text NULL,
     "metadata" jsonb NULL,
     "size" bigint NULL,
+    "data" jsonb NULL DEFAULT '{}',
 
     -- type of sidecar file for this object
     "sidecar_type" text NULL,
 
     -- remote info for this object
     -- and where it is stored. not all objects have
-    "local_urn" text[] NULL,
-    "remote_urn" text[] NULL,
+    "backend_urn" text[] NULL,
 
     -- timestamps for stuff
     "created_at" timestamptz DEFAULT now(),
@@ -46,9 +47,6 @@ CREATE TABLE IF NOT EXISTS "elwood"."object" (
     -- this is used to determine if this is a user dir or a shared dir
     -- if it's a user dir, sharing is limited to explicit grants
     "root_user_id" uuid NULL,
-
-    -- should we skip automated workflows for this object
-    "skip_workflows" boolean NOT NULL DEFAULT false,
 
     "content_hash" text NULL,
 
