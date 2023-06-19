@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/cli",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
@@ -38,8 +38,8 @@
   "dependencies": {
     "@elwood-studio/js": "workspace:*",
     "@elwood-studio/workflow-config": "workspace:*",
-    "@elwood-studio/workflow-secrets": "workspace:*",
     "@elwood-studio/workflow-runner": "workspace:*",
+    "@elwood-studio/workflow-secrets": "workspace:*",
     "@iarna/toml": "^2.2.5",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
