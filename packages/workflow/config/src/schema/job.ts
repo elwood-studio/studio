@@ -2,7 +2,7 @@ import joi from 'joi';
 
 import type { WorkflowJob } from '@elwood-studio/workflow-types';
 
-import { timeout, access, env, when, matrix } from './scalar';
+import { timeout, env, when, matrix } from './scalar';
 import { step } from './step';
 
 export const job = joi
@@ -12,7 +12,6 @@ export const job = joi
     matrix: matrix.optional(),
     when: when.optional(),
     timeout: timeout.optional(),
-    access: access.optional(),
     env: env.optional(),
   })
   .unknown(false);

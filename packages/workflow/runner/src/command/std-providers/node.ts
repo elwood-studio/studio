@@ -10,11 +10,6 @@ export class NodeCommandProvider extends CommandProvider {
         entrypoint: ['node'],
         args: [],
       },
-      access: {
-        stage: ['*/*'],
-        env: { '*': true },
-        secrets: { '*': true },
-      },
       env: {},
     });
   }

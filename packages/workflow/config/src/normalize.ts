@@ -21,10 +21,13 @@ import {
   WorkflowCommands,
   WorkflowTimeout,
   WorkflowEnv,
-  WorkflowRunnerAccess,
-  WorkflowAccess,
+  WorkflowPermission,
+  WorkflowPermissionValue,
   WorkflowJobStepRun,
   WorkflowWhen,
+  WorkflowRunnerPermission,
+  WorkflowRunnerPermissionValue,
+  WorkflowDefaults,
 } from '@elwood-studio/workflow-types';
 
 export function uid(prefix: string): string {
@@ -71,50 +74,56 @@ export function normalizeEnv(env: WorkflowEnv | undefined): WorkflowRunnerEnv {
   return env ?? {};
 }
 
-export function normalizeAccessStage(
-  stage: WorkflowAccess['stage'],
-): WorkflowRunnerAccess['stage'] {
-  if (stage === false) {
-    return [];
+export function normalizePermissionItem(
+  value: WorkflowPermissionValue | undefined | null,
+): WorkflowRunnerPermissionValue {
+  if (!value) {
+    return false;
   }
-  if (!stage || stage === true || stage === '*') {
-    return ['**/*'];
+
+  if (typeof value === 'string') {
+    return [value];
   }
-  if (typeof stage === 'string') {
-    return [stage];
-  }
-  return stage;
+  return value;
 }
 
-export function normalizeAccessEnvOrSecrets(
-  env: WorkflowAccess['env'] | WorkflowAccess['secrets'],
-): WorkflowRunnerAccess['env'] | WorkflowRunnerAccess['secrets'] {
-  if (env === false) {
-    return {};
-  }
-  if (!env || env === true || env === '*') {
-    return {
-      '*': true,
-    };
-  }
-  if (typeof env === 'object') {
-    return env;
+export function normalizePermission(
+  permission: WorkflowPermission | undefined,
+  defaults?: WorkflowRunnerPermission | undefined,
+): WorkflowRunnerPermission {
+  if (typeof permission === 'string') {
+    return normalizePermission(permission === '*' || permission === 'all');
   }
 
-  return {};
-}
+  if (permission === true || permission === false) {
+    return normalizePermission({
+      run: permission,
+      read: permission,
+      write: permission,
+      net: permission,
+      env: permission,
+      sys: permission,
+      ffi: permission,
+      unstable: permission,
+    });
+  }
 
-export function normalizeAccess(
-  access: WorkflowAccess | undefined,
-): WorkflowRunnerAccess {
   return {
-    stage: normalizeAccessStage(access?.stage),
-    env: normalizeAccessEnvOrSecrets(access?.env),
-    secrets: normalizeAccessEnvOrSecrets(access?.secrets),
+    run: normalizePermissionItem(permission?.run ?? defaults?.run),
+    read: normalizePermissionItem(permission?.read ?? defaults?.read),
+    write: normalizePermissionItem(permission?.write ?? defaults?.write),
+    net: normalizePermissionItem(permission?.net ?? defaults?.net),
+    env: normalizePermissionItem(permission?.env ?? defaults?.env),
+    sys: normalizePermissionItem(permission?.sys ?? defaults?.sys),
+    ffi: normalizePermissionItem(permission?.ffi ?? defaults?.ffi),
+    unstable: permission?.unstable ?? defaults?.unstable ?? false,
   };
 }
 
-export function normalizeJobStep(step: WorkflowJobStep): WorkflowRunnerJobStep {
+export function normalizeJobStep(
+  step: WorkflowJobStep,
+  defaults: WorkflowDefaults = {},
+): WorkflowRunnerJobStep {
   const id = uid('s');
   const shared = {
     id,
@@ -123,7 +132,10 @@ export function normalizeJobStep(step: WorkflowJobStep): WorkflowRunnerJobStep {
     output: step.output ?? {},
     env: normalizeEnv(step.env),
     timeoutMinutes: normalizeTimeout(step.timeout),
-    access: normalizeAccess(step.access),
+    permission: normalizePermission(
+      step.permission,
+      normalizePermission(defaults.permission),
+    ),
     when: normalizeWhen(step.when ?? []),
     matrix: normalizeMatrix(step.matrix),
   };
@@ -175,16 +187,16 @@ export function normalizeMatrix(
 
 export function normalizeJob(
   job: WorkflowJob & { name: string },
+  defaults: WorkflowDefaults = {},
 ): WorkflowRunnerJob {
   const id = uid('j');
 
   return {
     id,
     name: job.name ?? id,
-    steps: job.steps.map(normalizeJobStep),
+    steps: job.steps.map((item) => normalizeJobStep(item, defaults)),
     matrix: normalizeMatrix(job.matrix),
     env: normalizeEnv(job.env),
-    access: normalizeAccess(job.access),
     timeoutMinutes: normalizeTimeout(job.timeout),
     when: normalizeWhen(job.when ?? []),
   };
@@ -280,7 +292,6 @@ export function normalizeCommands(
         args: command.container.args ?? null,
         entrypoint: command.container.entrypoint ?? null,
       },
-      access: normalizeAccess(command.access),
       env: command.env ?? {},
     };
   });
@@ -300,7 +311,10 @@ export async function normalizeWorkflowToInstructions(
     meta: workflow.meta ?? undefined,
     id,
     jobs: Object.keys(workflow.jobs).map((name) => {
-      return normalizeJob({ ...workflow.jobs[name], name });
+      return normalizeJob(
+        { ...workflow.jobs[name], name },
+        workflow.defaults ?? {},
+      );
     }),
     when: normalizeWhen(workflow.when),
     instance: normalizeRunner(workflow.runner),

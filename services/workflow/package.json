@@ -1,6 +1,6 @@
 {
   "name": "@elwood-studio/workflow-service",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "main": "./lib",
   "scripts": {
     "dev": "pnpm run build --watch",

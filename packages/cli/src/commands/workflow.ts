@@ -133,33 +133,33 @@ export async function register(cli: Argv) {
     report,
   );
 
-  cli.command<JsonObject>(
-    'workflow:generate-unlock-key',
-    'Generate a Workflow Unlock Key',
-    () => {
-      return;
-    },
-    generateUnlockKey,
-  );
+  // cli.command<JsonObject>(
+  //   'workflow:generate-unlock-key',
+  //   'Generate a Workflow Unlock Key',
+  //   () => {
+  //     return;
+  //   },
+  //   generateUnlockKey,
+  // );
 
-  cli.command<SecretOptions>(
-    'workflow:secret <name> [value]',
-    'Seal or unseal a secret',
-    (y) => {
-      y.option('unlock-key', {
-        alias: 'u',
-        type: 'string',
-        describe: 'Unlock key',
-        demandOption: true,
-      });
-      y.option('key-name', {
-        alias: 'n',
-        type: 'string',
-        describe: 'Key Name',
-      });
-    },
-    secret,
-  );
+  // cli.command<SecretOptions>(
+  //   'workflow:secret <name> [value]',
+  //   'Seal or unseal a secret',
+  //   (y) => {
+  //     y.option('unlock-key', {
+  //       alias: 'u',
+  //       type: 'string',
+  //       describe: 'Unlock key',
+  //       demandOption: true,
+  //     });
+  //     y.option('key-name', {
+  //       alias: 'n',
+  //       type: 'string',
+  //       describe: 'Key Name',
+  //     });
+  //   },
+  //   secret,
+  // );
 
   cli.command<ExecuteOptions>(
     'workflow:execute <workflow>',
@@ -300,15 +300,9 @@ export function outputReport(
   }
 }
 
-export function getInput(raw: string[]): JsonObject {
-  return raw.reduce((acc, cur) => {
-    const [key, ...value] = cur.split('=');
-
-    return {
-      ...acc,
-      [key]: value.join('='),
-    };
-  }, {} as JsonObject);
+export function getInput(raw: JsonObject = {}): JsonObject {
+  invariant(typeof raw === 'object', 'Input must be an object');
+  return raw as JsonObject;
 }
 
 export async function getWorkflow(
@@ -379,6 +373,8 @@ export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
     context.workingDir.join(''),
   );
 
+  workflow.when = '*';
+
   const runtime = await createRuntime({
     commandServerPort: 4001,
     workingDir: context.workingDir.join('runs'),
@@ -408,6 +404,7 @@ export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
   });
 
   spin.succeed(`Execution complete!`);
+  spin.clear();
 
   outputReport(args.output ?? 'table', run.report);
 

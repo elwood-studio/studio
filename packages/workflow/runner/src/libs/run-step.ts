@@ -4,9 +4,13 @@ import { spawn } from 'child_process';
 import { invariant } from 'ts-invariant';
 import which from 'which';
 
-import { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood-studio/types';
+import type { WorkflowRunnerPermission } from '@elwood-studio/workflow-types';
 
-import type { WorkflowRunnerRuntimeRunStep } from '../types';
+import type {
+  WorkflowRunnerRuntimeRunStep,
+  WorkflowRunnerRuntime,
+} from '../types';
 import { RunnerStatus } from '../constants';
 import debug from './debug';
 import { isExpressionValueFalseLike } from './expression';
@@ -18,7 +22,7 @@ export async function runStep(
   step: WorkflowRunnerRuntimeRunStep,
 ): Promise<void> {
   try {
-    const { action } = step.def;
+    const { action, permission } = step.def;
     const runtime = step.job.run.runtime;
 
     // is if this step should run
@@ -79,25 +83,42 @@ export async function runStep(
       runtime.config.commandServerPort,
     ].join(':');
 
-    function _getScriptUrl() {
-      switch (actionName) {
-        case '$static':
-          return `${staticServerBaseUrl}/${actionPath.join('/')}`;
-
-        default:
-          return runtime.getStdLibUrl(stdLibUrl, actionVersion);
-      }
-    }
+    const _getScriptUrl = getScriptUrlProvider(
+      runtime,
+      actionName,
+      actionPath,
+      actionVersion ?? '',
+      stdLibUrl,
+      staticServerBaseUrl,
+    );
 
     const scriptUrl = _getScriptUrl();
+
+    const env = await step.getContainerEnvironment(
+      {},
+      additionalEnv,
+      'localhost',
+    );
+
+    const envObj = env.reduce(
+      (acc, value) => {
+        const [key, ...val] = value.split('=');
+        return {
+          ...acc,
+          [key]: val.join('='),
+        };
+      },
+      {
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
+        PATH: String(process.env.PATH),
+      },
+    );
 
     const cmd: string[] = [
       'deno',
       'run',
-      '-A',
       '-q',
-      '--unstable',
-      '--reload',
+      ...getActionPermissions(permission, Object.keys(envObj)),
       scriptUrl,
       ...action.args,
     ];
@@ -107,9 +128,9 @@ export async function runStep(
     let exitCode = 1;
 
     if (runtime.config.context === 'local') {
-      exitCode = await runStepLocally(step, cmd, additionalEnv);
+      exitCode = await runStepLocally(step, cmd, envObj);
     } else {
-      exitCode = await runStepInContainer(step, cmd, additionalEnv);
+      exitCode = await runStepInContainer(step, cmd, envObj);
     }
 
     step.exitCode = exitCode;
@@ -121,6 +142,61 @@ export async function runStep(
   }
 
   await step.complete();
+}
+
+export function getActionPermissions(
+  permissions: WorkflowRunnerPermission,
+  additionalEnv: string[] = [],
+): string[] {
+  const args: Array<string | boolean> = [];
+
+  for (const [key, value] of Object.entries(permissions)) {
+    switch (key) {
+      case 'unstable': {
+        args.push(value && '--unstable');
+        break;
+      }
+      case 'env': {
+        const _values = additionalEnv;
+
+        if (Array.isArray(value)) {
+          _values.push(...value);
+        }
+
+        args.push(`--allow-env=${_values.join(',')}`);
+
+        break;
+      }
+      default: {
+        if (Array.isArray(value)) {
+          args.push(`--allow-${key}=${value.join(',')}`);
+        } else {
+          args.push(value && `--allow-${key}`);
+        }
+      }
+    }
+  }
+
+  return args.filter(Boolean) as string[];
+}
+
+export function getScriptUrlProvider(
+  runtime: WorkflowRunnerRuntime,
+  actionName: string,
+  actionPath: string[],
+  actionVersion: string,
+  stdLibUrl: string,
+  staticServerBaseUrl: string,
+) {
+  return function _getScriptUrl() {
+    switch (actionName) {
+      case '$static':
+        return `${staticServerBaseUrl}/${actionPath.join('/')}`;
+
+      default:
+        return runtime.getStdLibUrl(stdLibUrl, actionVersion);
+    }
+  };
 }
 
 export function resolveLocalFile(
@@ -181,14 +257,8 @@ export async function runStepInContainer(
 export async function runStepLocally(
   step: WorkflowRunnerRuntimeRunStep,
   cmd: string[],
-  additionalEnv: JsonObject,
+  env: JsonObject,
 ): Promise<number> {
-  const env = await step.getContainerEnvironment(
-    {},
-    additionalEnv,
-    'localhost',
-  );
-
   log(' env=%o', env);
 
   const [_, ...args] = cmd;
@@ -200,18 +270,7 @@ export async function runStepLocally(
     const proc = spawn(denoBin, args, {
       cwd: step.job.stageDir.path(),
       stdio: ['ignore', 'pipe', 'pipe'],
-      env: env.reduce(
-        (acc, value) => {
-          const [key, ...val] = value.split('=');
-          return {
-            ...acc,
-            [key]: val.join('='),
-          };
-        },
-        {
-          PATH: process.env.PATH,
-        },
-      ),
+      env,
     });
 
     proc.stdout.on('data', (chunk) => {

@@ -1,4 +1,4 @@
-name: Service Docker Images
+name: Release
 
 on:
   push:
@@ -8,8 +8,8 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  build-and-push-image:
-    name: Image ${{ matrix.name }}
+  images:
+    name: ${{ matrix.name }} Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -61,7 +61,7 @@ jobs:
           version: 8
       - run: make ready
         if: ${{ matrix.dist }}
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 

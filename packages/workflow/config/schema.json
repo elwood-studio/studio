@@ -202,10 +202,58 @@
                     "properties": {},
                     "additionalProperties": true
                   },
-                  "access": {
+                  "permission": {
                     "type": "object",
                     "properties": {
-                      "stage": {
+                      "run": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "read": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "write": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "net": {
                         "oneOf": [
                           {
                             "type": "boolean"
@@ -230,13 +278,14 @@
                             "type": "string"
                           },
                           {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         ]
                       },
-                      "secrets": {
+                      "sys": {
                         "oneOf": [
                           {
                             "type": "boolean"
@@ -245,9 +294,26 @@
                             "type": "string"
                           },
                           {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "ffi": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         ]
                       }
@@ -387,58 +453,6 @@
               "required": [
                 "minutes"
               ],
-              "additionalProperties": false
-            },
-            "access": {
-              "type": "object",
-              "properties": {
-                "stage": {
-                  "oneOf": [
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  ]
-                },
-                "env": {
-                  "oneOf": [
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
-                    }
-                  ]
-                },
-                "secrets": {
-                  "oneOf": [
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
-                    }
-                  ]
-                }
-              },
               "additionalProperties": false
             },
             "env": {
@@ -513,10 +527,58 @@
                     "properties": {},
                     "additionalProperties": true
                   },
-                  "access": {
+                  "permission": {
                     "type": "object",
                     "properties": {
-                      "stage": {
+                      "run": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "read": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "write": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "net": {
                         "oneOf": [
                           {
                             "type": "boolean"
@@ -541,13 +603,14 @@
                             "type": "string"
                           },
                           {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         ]
                       },
-                      "secrets": {
+                      "sys": {
                         "oneOf": [
                           {
                             "type": "boolean"
@@ -556,9 +619,26 @@
                             "type": "string"
                           },
                           {
-                            "type": "object",
-                            "properties": {},
-                            "additionalProperties": false
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      },
+                      "ffi": {
+                        "oneOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         ]
                       }
@@ -698,58 +778,6 @@
               "required": [
                 "minutes"
               ],
-              "additionalProperties": false
-            },
-            "access": {
-              "type": "object",
-              "properties": {
-                "stage": {
-                  "oneOf": [
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  ]
-                },
-                "env": {
-                  "oneOf": [
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
-                    }
-                  ]
-                },
-                "secrets": {
-                  "oneOf": [
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
-                    }
-                  ]
-                }
-              },
               "additionalProperties": false
             },
             "env": {
