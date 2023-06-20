@@ -12,7 +12,7 @@ services:
       - db
     volumes:
       - ../services/fs/dist:/app/dist
-      - ../tmp/data:/data
+      - ../.dev/data:/data
     environment:
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood
@@ -26,10 +26,10 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ../services/workflow/dist:/app/dist
-      - ../tmp/data:/data
-      - ../tmp/actions:/var/actions
-      - ../tmp/workflows:/var/workflows
-      - ../tmp/working:/var/workflow
+      - ../.dev/data:/data
+      - ../.dev/actions:/var/actions
+      - ../.dev/workflows:/var/workflows
+      - ../.dev/working:/var/workflow
     restart: unless-stopped
     environment:
       DEBUG: 'runner:*'
