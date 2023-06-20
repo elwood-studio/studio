@@ -157,6 +157,14 @@ export function getActionPermissions(
         break;
       }
       case 'env': {
+        // if env is true, allow all env vars
+        if (value === true) {
+          args.push('--allow-env');
+          break;
+        }
+
+        // if env is not true, allow only the env
+        // vars that we're passing in
         const _values = additionalEnv;
 
         if (Array.isArray(value)) {
