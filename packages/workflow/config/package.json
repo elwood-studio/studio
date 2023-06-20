@@ -9,8 +9,7 @@
   "scripts": {
     "dev": "tsc -b ./tsconfig.json --watch",
     "test": "jest --runInBand",
-    "build": "tsc -b ./tsconfig.json",
-    "dist": "node ./scripts/generate-json-schema.js"
+    "build": "tsc -b ./tsconfig.json && node ./scripts/generate-json-schema.js"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
