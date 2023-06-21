@@ -1,4 +1,4 @@
-import type { AppContext } from './types/index.ts';
+import type { AppContext } from './types.ts';
 import { getEnv } from './libs/get-env.ts';
 import { createContext } from './context.ts';
 import { startServer } from './server.ts';

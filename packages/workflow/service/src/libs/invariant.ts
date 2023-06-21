@@ -1,10 +1,12 @@
+import type { Json } from '@elwood-studio/types';
+
 const genericMessage = 'Invariant Violation';
 const {
-  setPrototypeOf = function (obj: any, proto: any) {
+  setPrototypeOf = function (obj: Json, proto: Json) {
     obj.__proto__ = proto;
     return obj;
   },
-} = Object as any;
+} = Object as Json;
 
 export class InvariantError extends Error {
   framesToPop = 1;
@@ -20,7 +22,7 @@ export class InvariantError extends Error {
 }
 
 export function invariant(
-  condition: any,
+  condition: Json,
   message?: string | number,
 ): asserts condition {
   if (!condition) {

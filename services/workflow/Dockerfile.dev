@@ -12,8 +12,9 @@ RUN cd /app \
     && npm install ssh2
 COPY ./dist /app/dist/
 COPY ./entry.sh /app/entry.sh
-RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow /data
 COPY ./workflows /var/system-workflows
+RUN mkdir -p /var/workflows /var/actions /var/system-workflows /var/workflow /data
+
 
 ENV ACTIONS_DIR /var/actions
 ENV WORKFLOWS_DIR /var/workflows

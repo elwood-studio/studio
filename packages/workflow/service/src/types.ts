@@ -1,3 +1,4 @@
+import { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
 import type {
   WorkflowRunnerRuntimeRun,
   WorkflowRunnerRuntime,
@@ -17,6 +18,7 @@ export type AppContext = {
   db: Db;
   submitWorkflow?: SubmitWorkflowFn;
   runtime?: WorkflowRunnerRuntime;
+  secretsManager?: WorkflowSecretsManager;
 };
 
 export type WorkflowQueueData = {

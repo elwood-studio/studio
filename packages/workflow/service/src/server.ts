@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 
-import type { AppContext } from './types/index.ts';
+import type { AppContext } from './types.ts';
 import { getEnv } from './libs/get-env.ts';
 
 import runHandlerPlugin from './handlers/run.ts';
