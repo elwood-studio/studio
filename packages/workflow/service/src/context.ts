@@ -1,6 +1,6 @@
 import PgBoss from 'pg-boss';
 
-import type { AppContext } from './types/index.ts';
+import type { AppContext } from './types.ts';
 import PgDatabase from './libs/db.ts';
 import { getEnv } from './libs/get-env.ts';
 

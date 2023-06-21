@@ -3,6 +3,7 @@
   "version": "0.1.11",
   "type": "commonjs",
   "scripts": {
+    "dev": "pnpm run build --watch",
     "build": "esbuild entry.ts --format=cjs --bundle --sourcemap --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import { stat } from 'node:fs/promises';
 
-import type { AppContext } from './types/index.ts';
+import type { AppContext } from './types.ts';
 import { createWorkflowRuntime } from './libs/create-runtime.ts';
 import { submitWorkflow } from './libs/submit-workflow.ts';
 import { getEnv } from './libs/get-env.ts';
@@ -25,6 +25,7 @@ export async function startWorker(context: AppContext) {
     unlockKey,
   });
 
+  context.secretsManager = secretsManager;
   context.runtime = runtime;
   context.submitWorkflow = function _submitWorkflow(workflow, input, context) {
     return submitWorkflow({

@@ -1,6 +1,6 @@
 import { type WorkflowRunnerRuntimeRunReport } from '@elwood-studio/workflow-runner';
 
-import type { AppContext } from '../types/index.ts';
+import type { AppContext } from '../types.ts';
 
 type UpdateRunOptions = {
   job_id: string;

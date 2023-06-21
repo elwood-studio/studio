@@ -7,7 +7,7 @@ import {
   resolveWorkflow,
 } from '@elwood-studio/workflow-config';
 
-import type { AppContext } from '../types/index.ts';
+import type { AppContext } from '../types.ts';
 import { createEvent } from '../libs/create-event.ts';
 
 export type RunHandlerOptions = {

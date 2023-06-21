@@ -53,32 +53,12 @@ export async function runWorkflow(
     // if not, we can stop here
     if (shouldRun === false) {
       log(' runner should not run');
-
       run.status = RunnerStatus.Skipped;
-
       await run.teardown();
       return run;
     }
 
-    await run.start();
-
     log(' ready to add jobs');
-
-    for (const def of instructions.jobs) {
-      // if there is no matrix, we can just continue
-      // on with the job as normal
-      if (Object.keys(def.matrix).length === 0) {
-        log(' add job %s', def.name);
-        run.addJob(def);
-        continue;
-      }
-
-      log(' expanding matrix for %s', def.name);
-
-      // expand out each matrix job and add it to
-      // the run
-      await expandJobMatrixAndAddToRun(runtime, run, def);
-    }
 
     await startRunWorkflow(run);
     await run.complete();
@@ -97,6 +77,24 @@ export async function startRunWorkflow(
   waitingStepId: string | undefined = undefined,
 ): Promise<void> {
   log(' starting workflow run');
+
+  await run.start();
+
+  for (const def of run.def.jobs) {
+    // if there is no matrix, we can just continue
+    // on with the job as normal
+    if (Object.keys(def.matrix).length === 0) {
+      log(' add job %s', def.name);
+      run.addJob(def);
+      continue;
+    }
+
+    log(' expanding matrix for %s', def.name);
+
+    // expand out each matrix job and add it to
+    // the run
+    await expandJobMatrixAndAddToRun(run.runtime, run, def);
+  }
 
   try {
     // now run each job. the jobs will come back in the
