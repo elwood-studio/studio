@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from './invariant.ts';
 
 export type Env = {
   dbUrl: string;

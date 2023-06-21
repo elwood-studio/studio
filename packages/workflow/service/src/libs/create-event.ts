@@ -1,5 +1,5 @@
 import type { JsonObject } from '@elwood-studio/types';
-import type { AppContext } from '../types';
+import type { AppContext } from '../types/index.ts';
 
 export type CreateEventOptions = {
   type: string;

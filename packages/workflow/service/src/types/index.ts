@@ -3,9 +3,8 @@ import type {
   WorkflowRunnerRuntime,
 } from '@elwood-studio/workflow-runner';
 import type { Workflow } from '@elwood-studio/workflow-types';
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject, Json } from '@elwood-studio/types';
 import type PgBoss from 'pg-boss';
-import type PgDatabase from 'pg-boss/src/db';
 
 export type SubmitWorkflowFn = (
   instructions: Workflow,
@@ -15,7 +14,7 @@ export type SubmitWorkflowFn = (
 
 export type AppContext = {
   boss: PgBoss;
-  db: PgDatabase;
+  db: Db;
   submitWorkflow?: SubmitWorkflowFn;
   runtime?: WorkflowRunnerRuntime;
 };
@@ -30,3 +29,11 @@ export type WorkflowQueueData = {
   source_name?: string;
   source_job_id?: string;
 };
+
+interface Db {
+  executeSql(
+    text: string,
+    values: Json[],
+  ): Promise<{ rows: Json[]; rowCount: number }>;
+  close(): Promise<void>;
+}

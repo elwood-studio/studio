@@ -1,8 +1,8 @@
 import PgBoss from 'pg-boss';
 
-import PgDatabase from './libs/db';
-import type { AppContext } from './types';
-import { getEnv } from './libs/get-env';
+import type { AppContext } from './types/index.ts';
+import PgDatabase from './libs/db.ts';
+import { getEnv } from './libs/get-env.ts';
 
 const { dbUrl } = getEnv();
 
