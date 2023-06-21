@@ -36,7 +36,7 @@
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
-    "@elwood-studio/js": "workspace:*",
+    "@elwood-studio/sdk": "workspace:*",
     "@elwood-studio/workflow-config": "workspace:*",
     "@elwood-studio/workflow-runner": "workspace:*",
     "@elwood-studio/workflow-secrets": "workspace:*",

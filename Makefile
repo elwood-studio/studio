@@ -47,7 +47,7 @@ format: ## run prettier on all apps/* or packages/*
 # CLEAN
 clean: ## cleanup compile and build artifacts
 	@echo "clean..."
-	npx rimraf -g **/dist **/node_modules ./node_modules **/lib **/tsconfig.tsbuildinfo **/*.zip **/*.log **/.DS_Store **/.next
+	pnpm -s dlx rimraf -g **/dist **/node_modules ./node_modules **/lib **/tsconfig.tsbuildinfo **/*.zip **/*.log **/.DS_Store **/.next
 .PHONY: clean
 
 # TEST 

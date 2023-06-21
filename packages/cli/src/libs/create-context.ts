@@ -6,7 +6,7 @@ import * as toml from '@iarna/toml';
 import fs from 'fs-jetpack';
 import { invariant } from 'ts-invariant';
 import { parse } from 'dotenv';
-import { ElwoodClient } from '@elwood-studio/js';
+import { ElwoodClient } from '@elwood-studio/sdk';
 
 import type {
   Context,

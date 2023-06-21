@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/js",
+  "name": "@elwood-studio/sdk",
   "version": "0.1.11",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
