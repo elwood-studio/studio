@@ -1,12 +1,12 @@
 import { stat } from 'node:fs/promises';
 
-import type { AppContext } from './types';
-import { createWorkflowRuntime } from './libs/create-runtime';
-import { submitWorkflow } from './libs/submit-workflow';
-import { getEnv } from './libs/get-env';
+import type { AppContext } from './types/index.ts';
+import { createWorkflowRuntime } from './libs/create-runtime.ts';
+import { submitWorkflow } from './libs/submit-workflow.ts';
+import { getEnv } from './libs/get-env.ts';
 
-import registerWorkflowQueue from './queue/workflow';
-import registerEventQueue from './queue/event';
+import registerWorkflowQueue from './queue/workflow.ts';
+import registerEventQueue from './queue/event.ts';
 
 const { dataDir, workingDir, actionsDir, unlockKey } = getEnv();
 

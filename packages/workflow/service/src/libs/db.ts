@@ -1,6 +1,9 @@
 import EventEmitter from 'events';
 import { Pool, QueryResult } from 'pg';
-import invariant from 'ts-invariant';
+
+import type { Json } from '@elwood-studio/types';
+
+import { invariant } from './invariant.ts';
 
 interface DatabaseOptions {
   application_name?: string;
@@ -10,7 +13,7 @@ interface DatabaseOptions {
   host?: string;
   port?: number;
   schema?: string;
-  ssl?: any;
+  ssl?: Json;
   connectionString?: string;
   max?: number;
   db?: Db;
@@ -48,7 +51,7 @@ export default class Db extends EventEmitter {
     }
   }
 
-  async executeSql(text: string, values: any[]): Promise<QueryResult<any>> {
+  async executeSql(text: string, values: Json[]): Promise<QueryResult<Json>> {
     invariant(this.opened, 'Database not opened');
     return await this.pool.query(text, values);
   }

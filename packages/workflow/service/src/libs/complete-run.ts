@@ -3,7 +3,7 @@ import {
   type WorkflowRunnerRuntimeRunReport,
 } from '@elwood-studio/workflow-runner';
 
-import type { AppContext } from '../types';
+import type { AppContext } from '../types/index.ts';
 
 type CompleteRunOptions = {
   job_id: string;

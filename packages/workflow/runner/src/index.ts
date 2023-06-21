@@ -22,6 +22,7 @@ export { runWorkflow } from './libs/run-workflow';
 export { createRuntime } from './libs/create-runtime';
 export { handleWorkflowCallback } from './libs/callback';
 export { cli } from './cli/cli';
+export { shouldRunWhen } from './libs/should-run-when';
 
 export { FileReporterPlugin } from './plugins/file-reporter';
 

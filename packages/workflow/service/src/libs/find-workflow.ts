@@ -5,7 +5,7 @@ import { globSync } from 'glob';
 import type { Workflow } from '@elwood-studio/workflow-types';
 import { resolveWorkflow } from '@elwood-studio/workflow-config';
 
-import { getEnv } from './get-env';
+import { getEnv } from './get-env.ts';
 
 const { dataDir, workflowsDir } = getEnv();
 

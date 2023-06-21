@@ -23,7 +23,7 @@ services:
     container_name: workflow
     build:
       context: ./services/workflow/
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     volumes:
       - ../services/workflow/dist:/app/dist
       - ../.dev/data:/data

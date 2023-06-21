@@ -1,4 +1,4 @@
-import type { AppContext, WorkflowQueueData } from '../types';
+import type { AppContext, WorkflowQueueData } from '../types/index.ts';
 
 export type StartRunOptions = {
   job_id: string;

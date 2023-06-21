@@ -1,4 +1,3 @@
-import invariant from 'ts-invariant';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -7,6 +6,8 @@ import {
   WorkflowRunnerRuntime,
   createRuntime,
 } from '@elwood-studio/workflow-runner';
+
+import { invariant } from './invariant.ts';
 
 export type CreateWorkflowRuntimeOptions = {
   workingDir: string;

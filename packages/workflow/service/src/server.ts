@@ -1,11 +1,11 @@
 import fastify from 'fastify';
 
-import type { AppContext } from './types';
-import { getEnv } from './libs/get-env';
+import type { AppContext } from './types/index.ts';
+import { getEnv } from './libs/get-env.ts';
 
-import runHandlerPlugin from './handlers/run';
-import eventHandlerPlugin from './handlers/event';
-import configHandlerPlugin from './handlers/config';
+import runHandlerPlugin from './handlers/run.ts';
+import eventHandlerPlugin from './handlers/event.ts';
+import configHandlerPlugin from './handlers/config.ts';
 
 const { port, host } = getEnv();
 

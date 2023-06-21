@@ -1,20 +1,10 @@
-FROM node:18-alpine as deps
-RUN apk add --no-cache libc6-compat python3 make g++ make jq
-WORKDIR /app
-COPY ./package.json /app/
-RUN cd /app \
-    && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
-    && mv package.json.tmp package.json \
-    && npm install --omit=dev --omit=optional
-
 FROM node:18-alpine as build
 RUN apk add --no-cache libc6-compat python3 make g++ make \ 
     && npm install -g pkg
 WORKDIR /app
-COPY --from=deps /app/node_modules /app/node_modules
-COPY ./package.json ./tsconfig.json /app/
 COPY ./dist/ /app/dist/
 RUN cd /app \
+    && npm install ssh2 \
     && pkg -t node18-linux -o ./workflow-entry ./dist/entry.js
 
 FROM lukechannings/deno
