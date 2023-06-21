@@ -58,36 +58,43 @@ describe('normalize', () => {
     describe('normalizeWhen()', () => {
       test('null or undefined', () => {
         expect(normalizeWhen(null)).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression(true)],
         });
         expect(normalizeWhen(undefined)).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression(true)],
         });
       });
       test('boolean', () => {
         expect(normalizeWhen(true)).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression(true)],
         });
         expect(normalizeWhen(false)).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression(false)],
         });
       });
       test('string', () => {
         expect(normalizeWhen('*')).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression(true)],
         });
         expect(normalizeWhen('hello')).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression('hello')],
         });
       });
       test('array', () => {
         expect(normalizeWhen(['a', 'b'])).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression('a'), normalizeWhenToExpression('b')],
         });
@@ -95,14 +102,17 @@ describe('normalize', () => {
 
       test('object no event', () => {
         expect(normalizeWhen({ all: ['a'] })).toEqual({
+          operator: 'and',
           any: [],
           all: [normalizeWhenToExpression('a')],
         });
         expect(normalizeWhen({ any: ['a'] })).toEqual({
+          operator: 'and',
           any: [normalizeWhenToExpression('a')],
           all: [],
         });
         expect(normalizeWhen({ all: ['b'], any: ['a'] })).toEqual({
+          operator: 'and',
           any: [normalizeWhenToExpression('a')],
           all: [normalizeWhenToExpression('b')],
         });
@@ -110,6 +120,7 @@ describe('normalize', () => {
 
       test('object with event', () => {
         expect(normalizeWhen({ event: 'b', all: ['a'] })).toEqual({
+          operator: 'and',
           any: [],
           all: [
             normalizeWhenToExpression('a'),
@@ -117,6 +128,7 @@ describe('normalize', () => {
           ],
         });
         expect(normalizeWhen({ event: ['b', 'c'], all: ['a'] })).toEqual({
+          operator: 'and',
           any: [],
           all: [
             normalizeWhenToExpression('a'),
