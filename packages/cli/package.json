@@ -47,7 +47,7 @@
     "docker-compose": "^0.24.1",
     "dotenv": "^16.3.1",
     "fs-jetpack": "^5.1.0",
-    "glob": "^10.2.7",
+    "glob": "^10.3.0",
     "is-glob": "^4.0.3",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.0",
