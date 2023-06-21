@@ -13,7 +13,7 @@ import type {
 } from '../types';
 import { RunnerStatus } from '../constants';
 import debug from './debug';
-import { isExpressionValueFalseLike } from './expression';
+import { shouldRunWhen } from './should-run-when';
 
 const log = debug('run:step');
 const localStageDir = '/var/stage';
@@ -25,15 +25,14 @@ export async function runStep(
     const { action, permission } = step.def;
     const runtime = step.job.run.runtime;
 
+    const shouldRun = await shouldRunWhen(step.def.when, async (exp) =>
+      step.getExpressionValue(exp),
+    );
+
     // is if this step should run
-    if (step.def.when) {
-      for (const exp of step.def.when) {
-        const value = await step.getExpressionValue(exp);
-        if (isExpressionValueFalseLike(value)) {
-          step.status = RunnerStatus.Skipped;
-          return;
-        }
-      }
+    if (shouldRun === false) {
+      step.status = RunnerStatus.Skipped;
+      return;
     }
 
     await step.start();

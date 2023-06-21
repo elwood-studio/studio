@@ -131,11 +131,97 @@
           "properties": {
             "run": {
               "type": "string"
+            },
+            "input": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true
             }
           },
           "required": [
             "run"
           ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "operator": {
+              "type": "string",
+              "enum": [
+                "and",
+                "or",
+                "xor"
+              ]
+            },
+            "event": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "any": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "run": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": true
+                      }
+                    },
+                    "required": [
+                      "run"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "all": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "run": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "object",
+                        "properties": {},
+                        "additionalProperties": true
+                      }
+                    },
+                    "required": [
+                      "run"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          },
           "additionalProperties": false
         }
       ]
@@ -178,11 +264,97 @@
                         "properties": {
                           "run": {
                             "type": "string"
+                          },
+                          "input": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": true
                           }
                         },
                         "required": [
                           "run"
                         ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "operator": {
+                            "type": "string",
+                            "enum": [
+                              "and",
+                              "or",
+                              "xor"
+                            ]
+                          },
+                          "event": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            ]
+                          },
+                          "any": {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "run": {
+                                      "type": "string"
+                                    },
+                                    "input": {
+                                      "type": "object",
+                                      "properties": {},
+                                      "additionalProperties": true
+                                    }
+                                  },
+                                  "required": [
+                                    "run"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "all": {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "run": {
+                                      "type": "string"
+                                    },
+                                    "input": {
+                                      "type": "object",
+                                      "properties": {},
+                                      "additionalProperties": true
+                                    }
+                                  },
+                                  "required": [
+                                    "run"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          }
+                        },
                         "additionalProperties": false
                       }
                     ]
@@ -446,11 +618,97 @@
                   "properties": {
                     "run": {
                       "type": "string"
+                    },
+                    "input": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": true
                     }
                   },
                   "required": [
                     "run"
                   ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "and",
+                        "or",
+                        "xor"
+                      ]
+                    },
+                    "event": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    },
+                    "any": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "run": {
+                                "type": "string"
+                              },
+                              "input": {
+                                "type": "object",
+                                "properties": {},
+                                "additionalProperties": true
+                              }
+                            },
+                            "required": [
+                              "run"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    },
+                    "all": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "run": {
+                                "type": "string"
+                              },
+                              "input": {
+                                "type": "object",
+                                "properties": {},
+                                "additionalProperties": true
+                              }
+                            },
+                            "required": [
+                              "run"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  },
                   "additionalProperties": false
                 }
               ]
@@ -517,11 +775,97 @@
                         "properties": {
                           "run": {
                             "type": "string"
+                          },
+                          "input": {
+                            "type": "object",
+                            "properties": {},
+                            "additionalProperties": true
                           }
                         },
                         "required": [
                           "run"
                         ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "operator": {
+                            "type": "string",
+                            "enum": [
+                              "and",
+                              "or",
+                              "xor"
+                            ]
+                          },
+                          "event": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            ]
+                          },
+                          "any": {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "run": {
+                                      "type": "string"
+                                    },
+                                    "input": {
+                                      "type": "object",
+                                      "properties": {},
+                                      "additionalProperties": true
+                                    }
+                                  },
+                                  "required": [
+                                    "run"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          },
+                          "all": {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "run": {
+                                      "type": "string"
+                                    },
+                                    "input": {
+                                      "type": "object",
+                                      "properties": {},
+                                      "additionalProperties": true
+                                    }
+                                  },
+                                  "required": [
+                                    "run"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            }
+                          }
+                        },
                         "additionalProperties": false
                       }
                     ]
@@ -785,11 +1129,97 @@
                   "properties": {
                     "run": {
                       "type": "string"
+                    },
+                    "input": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": true
                     }
                   },
                   "required": [
                     "run"
                   ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "and",
+                        "or",
+                        "xor"
+                      ]
+                    },
+                    "event": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    },
+                    "any": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "run": {
+                                "type": "string"
+                              },
+                              "input": {
+                                "type": "object",
+                                "properties": {},
+                                "additionalProperties": true
+                              }
+                            },
+                            "required": [
+                              "run"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    },
+                    "all": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "run": {
+                                "type": "string"
+                              },
+                              "input": {
+                                "type": "object",
+                                "properties": {},
+                                "additionalProperties": true
+                              }
+                            },
+                            "required": [
+                              "run"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  },
                   "additionalProperties": false
                 }
               ]
@@ -964,24 +1394,6 @@
       "description": "Global Environment variables",
       "properties": {},
       "additionalProperties": true
-    },
-    "runner": {
-      "type": "object",
-      "description": "Runner instance settings",
-      "properties": {},
-      "additionalProperties": false
-    },
-    "commands": {
-      "type": "object",
-      "description": "Commands available to job steps",
-      "properties": {},
-      "additionalProperties": false
-    },
-    "services": {
-      "type": "object",
-      "description": "Services available to job steps",
-      "properties": {},
-      "additionalProperties": false
     },
     "timeout": {
       "type": "object",

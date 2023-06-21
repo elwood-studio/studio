@@ -53,6 +53,8 @@ type ExecuteOptions = {
   input?: string[];
   workflow?: string;
   output?: ReportOptions['output'];
+  force?: boolean;
+  event?: string;
 };
 
 export async function register(cli: Argv) {
@@ -170,6 +172,16 @@ export async function register(cli: Argv) {
         type: 'string',
         array: true,
       });
+      y.option('force', {
+        alias: 'f',
+        type: 'boolean',
+        default: true,
+      });
+      y.option('event', {
+        alias: 'e',
+        type: 'string',
+        describe: 'Name of the event that triggered the workflow',
+      });
     },
     execute,
   );
@@ -268,8 +280,12 @@ export function outputReport(
       break;
     }
     default: {
+      process.stdout.write(
+        `---------------------------\nRun Result: ${result.status.value} ${result.status.reason}\n---------------------------\n`,
+      );
+
       for (const job of result.jobs) {
-        process.stdout.write(`${chalk.bold(job.name)}\n`);
+        process.stdout.write(`Job: ${chalk.bold(job.name)}\n`);
         process.stdout.write(
           `Result: ${job.status.value} ${job.status.reason}\n`,
         );
@@ -373,7 +389,9 @@ export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
     context.workingDir.join(''),
   );
 
-  workflow.when = '*';
+  if (args.force !== false) {
+    workflow.when = '*';
+  }
 
   const runtime = await createRuntime({
     commandServerPort: 4001,
@@ -401,6 +419,9 @@ export async function execute(args: Arguments<ExecuteOptions>): Promise<void> {
     secretsManager,
     instructions,
     input,
+    context: {
+      event: args.event ?? undefined,
+    },
   });
 
   spin.succeed(`Execution complete!`);

@@ -152,6 +152,9 @@ export class RuntimeRun implements WorkflowRunnerRuntimeRun {
   async setup(input: WorkflowRunnerInput, context: JsonObject = {}) {
     this.#log('setup');
 
+    // set a default event to undefined
+    this.#context.set('event', undefined);
+
     if (context && typeof context === 'object') {
       Object.entries(context).forEach(([key, value]) => {
         this.#context.set(key, value);

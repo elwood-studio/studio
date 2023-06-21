@@ -1,4 +1,4 @@
-import { expandMatrixValues } from '../matrix';
+import { expandMatrixValues } from '../libs/matrix';
 
 describe('library/matrix', () => {
   test('expandMatrixValues()', () => {

@@ -3,7 +3,7 @@
 module.exports = {
   roots: ["<rootDir>"],
   testMatch: [
-    "**/src/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"
+    "**/src/__tests__/**/*.(spec|test|).[jt]s?(x)"
   ],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
