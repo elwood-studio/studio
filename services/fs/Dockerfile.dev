@@ -1,14 +1,10 @@
 FROM rclone/rclone
 
-
 FROM node:18-alpine
 RUN apk add --no-cache libc6-compat python3 make g++ make unzip curl jq
 WORKDIR /app
-COPY ./tsconfig.json ./package.json ./entry.sh /app/
+COPY ./entry.sh /app/
 RUN cd /app \
-    && jq -c 'del(.devDependencies)' package.json > package.json.tmp \
-    && mv package.json.tmp package.json \
-    && npm install --omit=dev --omit=optional \
     && npm install -g node-dev \
     && npm install source-map-support
 
@@ -25,4 +21,4 @@ ENV RCLONE_PORT 5001
 ENV RCLONE_ADDR localhost:$RCLONE_PORT
 
 ENTRYPOINT ["/app/entry.sh"]
-CMD ["node-dev", "-r", "source-map-support/register", "./dist/server.js"]
+CMD ["node-dev", "-r", "source-map-support/register", "./dist/entry.js"]
