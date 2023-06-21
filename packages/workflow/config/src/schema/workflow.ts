@@ -37,9 +37,6 @@ export const workflow = joi
       })
       .optional(),
     env: env.description('Global Environment variables'),
-    runner: joi.object({}).description('Runner instance settings'),
-    commands: joi.object({}).description('Commands available to job steps'),
-    services: joi.object({}).description('Services available to job steps'),
     timeout: joi.object({}).description('Maximum time to run the workflow'),
     meta: joi
       .object({})

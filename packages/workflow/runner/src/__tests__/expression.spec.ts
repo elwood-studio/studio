@@ -9,7 +9,7 @@ import {
   getNativeExpressionValue,
   replaceExpressionTokens,
   isExpressionValueFalseLike,
-} from '../expression';
+} from '../libs/expression';
 
 describe('library/expression', () => {
   beforeAll(async () => {

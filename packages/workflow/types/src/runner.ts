@@ -8,12 +8,16 @@ export interface WorkflowRunnerInstructions {
   meta?: WorkflowMeta;
   id: string;
   jobs: WorkflowRunnerJob[];
-  when: WorkflowRunnerExpression[];
-  instance: WorkflowRunnerInstance;
-  commands: WorkflowRunnerCommand[];
+  when: WorkflowRunnerWhen;
   timeoutMinutes: number | null;
   env: WorkflowRunnerEnv;
 }
+
+export type WorkflowRunnerWhen = {
+  operator: 'and' | 'or' | 'xor';
+  any: WorkflowRunnerExpression[];
+  all: WorkflowRunnerExpression[];
+};
 
 export type WorkflowRunnerEnv = Record<string, JsonScalar>;
 
@@ -60,7 +64,7 @@ export interface WorkflowRunnerJobStep {
   permission: WorkflowRunnerPermission;
   env: WorkflowRunnerEnv;
   timeoutMinutes: number | null;
-  when: WorkflowRunnerExpression[];
+  when: WorkflowRunnerWhen;
 }
 
 export type WorkflowRunnerJobMatrix =
@@ -71,7 +75,7 @@ export interface WorkflowRunnerJob {
   id: string;
   name: string;
   steps: WorkflowRunnerJobStep[];
-  when: WorkflowRunnerExpression[];
+  when: WorkflowRunnerWhen;
   matrix: WorkflowRunnerJobMatrix;
   env: WorkflowRunnerEnv;
   timeoutMinutes: number | null;

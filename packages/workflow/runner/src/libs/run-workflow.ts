@@ -6,13 +6,12 @@ import type { JsonObject } from '@elwood-studio/types';
 import { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
 
 import type { WorkflowRunnerRuntime, WorkflowRunnerRuntimeRun } from '../types';
-
 import debug from './debug';
 import { RunnerStatus } from '../constants';
-import { CommandProvider } from '../command/provider';
-import { getExpressionValue, isExpressionValueFalseLike } from './expression';
+import { getExpressionValue } from './expression';
 import { expandJobMatrixAndAddToRun } from './matrix';
 import { runJob } from './run-job';
+import { shouldRunWhen } from './should-run-when';
 
 const log = debug('run:workflow');
 
@@ -44,46 +43,15 @@ export async function runWorkflow(
 
     log(' done setup');
 
-    // first add all of the command providers they requested
-    if (instructions.commands) {
-      log(' setting up commands');
-
-      for (const cmd of instructions.commands) {
-        log('  command: %s', cmd.name);
-
-        const values: string[] = [];
-
-        for (const key of Object.keys(cmd.env)) {
-          const value = await getExpressionValue(
-            runtime,
-            cmd.env[key],
-            run.contextValue(),
-            {
-              secrets: run.secretsManager,
-            },
-          );
-          values.push(`${key.toUpperCase()}=${value}`);
-        }
-
-        await run.addCommandProvider(new CommandProvider(cmd, values));
-      }
-    }
-
     run.status = RunnerStatus.Running;
+
+    const shouldRun = await shouldRunWhen(instructions.when, (expression) =>
+      getExpressionValue(runtime, expression, run.contextValue()),
+    );
 
     // first thing, figure out if we want to run the job
     // if not, we can stop here
-    const shouldStop = (
-      await Promise.all(
-        instructions.when.map(async (when) => {
-          return !isExpressionValueFalseLike(
-            await getExpressionValue(runtime, when, run.contextValue()),
-          );
-        }),
-      )
-    ).find((value) => value === false);
-
-    if (shouldStop !== undefined) {
+    if (shouldRun === false) {
       log(' runner should not run');
 
       run.status = RunnerStatus.Skipped;

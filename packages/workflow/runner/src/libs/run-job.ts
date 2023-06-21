@@ -2,7 +2,8 @@ import type { WorkflowRunnerRuntimeRunJob } from '../types';
 import { RunnerStatus } from '../constants';
 import { createDockerRuntimeContainer } from './docker';
 import debug from './debug';
-import { getExpressionValue, isExpressionValueFalseLike } from './expression';
+import { getExpressionValue } from './expression';
+import { shouldRunWhen } from './should-run-when';
 
 const log = debug('run:job');
 
@@ -15,16 +16,14 @@ export async function runJob(
   const runtime = job.run.runtime;
   const run = job.run;
 
-  // is if this step should run
-  if (job.def.when) {
-    for (const exp of job.def.when) {
-      const value = await getExpressionValue(runtime, exp, job.contextValue());
+  const shouldRun = await shouldRunWhen(job.def.when, async (exp) =>
+    getExpressionValue(runtime, exp, job.contextValue()),
+  );
 
-      if (isExpressionValueFalseLike(value)) {
-        job.status = RunnerStatus.Skipped;
-        return;
-      }
-    }
+  // is if this step should run
+  if (shouldRun == false) {
+    job.status = RunnerStatus.Skipped;
+    return;
   }
 
   await job.start();
@@ -126,5 +125,7 @@ export async function runJob(
   try {
     await job.complete();
     await job.teardown();
-  } catch (_) {}
+  } catch (_) {
+    return;
+  }
 }

@@ -48,12 +48,29 @@ export const extend = joi
   .alternatives()
   .try(joi.string(), joi.array().items(joi.string()));
 
+const whenObj = joi.object({
+  run: joi.string().required(),
+  input: joi.object().unknown(true).optional(),
+});
+
 export const when = joi.alternatives().try(
   joi.string(),
   joi.boolean(),
   joi.array().items(joi.string()),
+  whenObj,
   joi.object({
-    run: joi.string().required(),
+    operator: joi.string().valid('and', 'or', 'xor').optional(),
+    event: joi
+      .alternatives()
+      .try(joi.string(), joi.array().items(joi.string())),
+    any: joi
+      .array()
+      .items(joi.alternatives().try(joi.string(), whenObj))
+      .optional(),
+    all: joi
+      .array()
+      .items(joi.alternatives().try(joi.string(), whenObj))
+      .optional(),
   }),
 );
 

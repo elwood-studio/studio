@@ -14,16 +14,14 @@ export interface Workflow {
   when: WorkflowWhen;
   jobs: Record<string, WorkflowJob>;
   defaults?: WorkflowDefaults;
-  env?: WorkflowEnv;
-  input?: WorkflowInput;
-  runner?: WorkflowRunner;
-  commands?: WorkflowCommands;
   timeout?: WorkflowTimeout;
+  env?: WorkflowEnv;
   meta?: WorkflowMeta;
 }
 
 export type WorkflowDefaults = {
   permission?: WorkflowPermission;
+  env?: WorkflowEnv;
 };
 
 export type WorkflowInput = {
@@ -58,9 +56,16 @@ export type WorkflowExtendsObject = {
   jobs?: string[];
 };
 
-export interface WorkflowWhenObject {
+export interface WorkflowWhenRunObject {
   run?: string;
   input?: JsonObject;
+}
+
+export interface WorkflowWhenObject {
+  event?: string | string[];
+  all?: Array<string | WorkflowWhenRunObject>;
+  any?: Array<string | WorkflowWhenRunObject>;
+  operator?: 'and' | 'or' | 'xor';
 }
 
 export type WorkflowWhen =
@@ -68,7 +73,8 @@ export type WorkflowWhen =
   | string
   | string[]
   | WorkflowWhenObject
-  | WorkflowWhenObject[];
+  | WorkflowWhenRunObject
+  | WorkflowWhenRunObject[];
 
 export type WorkflowEnv = Record<string, JsonScalar>;
 
