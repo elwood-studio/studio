@@ -3,8 +3,8 @@ import type { Writable } from 'stream';
 import Docker, { Container, ContainerCreateOptions } from 'dockerode';
 import invariant from 'ts-invariant';
 
-import type { WorkflowRunnerCommand } from '@elwood-studio/workflow-types';
-import type { JsonObject } from '@elwood-studio/types';
+import type { WorkflowRunnerCommand } from '@elwood/workflow-types';
+import type { JsonObject } from '@elwood/types';
 
 import type { WorkflowRunnerRuntimeRun } from '../types';
 import debug from './debug';

@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/sdk",
+  "name": "@elwood/sdk",
   "version": "0.1.11",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
@@ -30,7 +30,7 @@
     "preset": "jest-presets/jest/node"
   },
   "devDependencies": {
-    "@elwood-studio/types": "workspace:*",
+    "@elwood/types": "workspace:*",
     "@types/crypto-js": "^4.1.1",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/jest": "^29.5.2",

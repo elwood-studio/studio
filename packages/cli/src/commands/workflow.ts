@@ -7,16 +7,16 @@ import Table from 'cli-table';
 import * as yaml from 'yaml';
 import chalk from 'chalk';
 
-import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
-import type { JsonObject } from '@elwood-studio/types';
-import type { Workflow } from '@elwood-studio/workflow-types';
-import { resolveWorkflow } from '@elwood-studio/workflow-config';
+import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
+import type { JsonObject } from '@elwood/types';
+import type { Workflow } from '@elwood/workflow-types';
+import { resolveWorkflow } from '@elwood/workflow-config';
 import {
   createUnlockKey,
   createKeyPair,
   SecretsManager,
-} from '@elwood-studio/workflow-secrets';
-import { createRuntime, runWorkflow } from '@elwood-studio/workflow-runner';
+} from '@elwood/workflow-secrets';
+import { createRuntime, runWorkflow } from '@elwood/workflow-runner';
 
 import type { Argv, Arguments, Context } from '../types.ts';
 import { printErrorMessage, printMessage } from '../libs/print-message.ts';

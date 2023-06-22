@@ -4,7 +4,7 @@ import type {
   WorkflowJobStepAction,
   WorkflowJobStepRun,
   WorkflowDefaults,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 import { uid } from './utilts';
 import { normalizeEnv, normalizeTimeout, normalizeMatrix } from './scalar';

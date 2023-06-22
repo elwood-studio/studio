@@ -14,8 +14,8 @@
       "persistent": true
     },
     "test": {},
-    "@elwood-studio/cli#dev": {
-      "dependsOn": ["@elwood-studio/js#dev"]
+    "@elwood/cli#dev": {
+      "dependsOn": ["@elwood/js#dev"]
     }
   }
 }

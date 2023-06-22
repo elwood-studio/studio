@@ -4,8 +4,8 @@ import { spawn } from 'child_process';
 import { invariant } from 'ts-invariant';
 import which from 'which';
 
-import type { JsonObject } from '@elwood-studio/types';
-import type { WorkflowRunnerPermission } from '@elwood-studio/workflow-types';
+import type { JsonObject } from '@elwood/types';
+import type { WorkflowRunnerPermission } from '@elwood/workflow-types';
 
 import type {
   WorkflowRunnerRuntimeRunStep,

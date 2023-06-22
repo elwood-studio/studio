@@ -4,7 +4,7 @@ import * as FileSystem from 'fs-jetpack';
 import {
   WorkflowRunnerJob,
   WorkflowRunnerJobStep,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 import type {
   WorkflowRunnerRuntimeRunJob,

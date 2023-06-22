@@ -1,4 +1,4 @@
-import type { Json, JsonObject } from '@elwood-studio/types';
+import type { Json, JsonObject } from '@elwood/types';
 
 import type { LocalConfigDocker, Context } from '../types.ts';
 

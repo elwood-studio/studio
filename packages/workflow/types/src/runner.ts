@@ -1,4 +1,4 @@
-import type { JsonObject, Json, JsonScalar } from '@elwood-studio/types';
+import type { JsonObject, Json, JsonScalar } from '@elwood/types';
 
 import type { WorkflowMeta } from './meta';
 

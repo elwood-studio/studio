@@ -1,6 +1,6 @@
 import { stat, readFile } from 'node:fs/promises';
 
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 
 import { getEnv } from './get-env.ts';
 import type { Config } from '@/types.ts';

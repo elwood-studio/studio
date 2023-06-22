@@ -2,8 +2,8 @@ import type {
   Argv as BaseArgv,
   ArgumentsCamelCase as BaseArguments,
 } from 'yargs';
-import type { DeepPartial, JsonObject } from '@elwood-studio/types';
-import type { ElwoodClient } from '@elwood-studio/sdk';
+import type { DeepPartial, JsonObject } from '@elwood/types';
+import type { ElwoodClient } from '@elwood/sdk';
 
 export type Argv = BaseArgv<Arguments>;
 

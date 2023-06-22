@@ -1,4 +1,4 @@
-import type { ObjectModel, FileSystemTreeNode } from '@elwood-studio/types';
+import type { ObjectModel, FileSystemTreeNode } from '@elwood/types';
 
 import { getEnv } from './get-env.ts';
 

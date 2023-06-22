@@ -1,4 +1,4 @@
-import { WorkflowJob } from '@elwood-studio/workflow-types';
+import { WorkflowJob } from '@elwood/workflow-types';
 
 import { job } from '../schema/job';
 

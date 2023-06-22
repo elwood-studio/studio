@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-import type { WorkflowCommand } from '@elwood-studio/workflow-types';
+import type { WorkflowCommand } from '@elwood/workflow-types';
 
 import { name, env } from './scalar';
 

@@ -1,4 +1,4 @@
-import type { Json } from '@elwood-studio/types';
+import type { Json } from '@elwood/types';
 
 const genericMessage = 'Invariant Violation';
 const {

@@ -2,11 +2,11 @@ import type { Duplex } from 'stream';
 
 import invariant from 'ts-invariant';
 
-import type { Json, JsonObject } from '@elwood-studio/types';
+import type { Json, JsonObject } from '@elwood/types';
 import type {
   WorkflowRunnerExpression,
   WorkflowRunnerJobStep,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 import type {
   WorkflowRunnerRuntimeRunJob,

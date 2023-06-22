@@ -21,7 +21,7 @@ Learn More:
  
 */
 
-import type { Workflow } from '@elwood-studio/workflow-types';
+import type { Workflow } from '@elwood/workflow-types';
 
 export const workflow: Workflow = {
   name: 'ffprobe',

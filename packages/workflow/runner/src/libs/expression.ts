@@ -4,9 +4,9 @@ import { render as interpolate } from 'ejs';
 import invariant from 'ts-invariant';
 import lodashGet from 'lodash.get';
 
-import type { Json, JsonObject } from '@elwood-studio/types';
-import type { WorkflowRunnerExpression } from '@elwood-studio/workflow-types';
-import type { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
+import type { Json, JsonObject } from '@elwood/types';
+import type { WorkflowRunnerExpression } from '@elwood/workflow-types';
+import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 
 import type { WorkflowRunnerRuntime } from '../types';
 

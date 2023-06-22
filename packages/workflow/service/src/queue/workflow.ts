@@ -1,14 +1,14 @@
 import { randomUUID } from 'crypto';
 
-import type { Json } from '@elwood-studio/types';
+import type { Json } from '@elwood/types';
 import {
   type WorkflowRunnerRuntimeRunReport,
   shouldRunWhen,
   startRunWorkflow,
   getExpressionValue,
   RunnerStatus,
-} from '@elwood-studio/workflow-runner';
-import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
+} from '@elwood/workflow-runner';
+import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
 
 import type { AppContext, WorkflowQueueData } from '../types.ts';
 import { startRun } from '../libs/start-run.ts';

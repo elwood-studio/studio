@@ -1,11 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import fp from 'fastify-plugin';
 
-import type { JsonObject } from '@elwood-studio/types';
-import {
-  createWorkflowInput,
-  resolveWorkflow,
-} from '@elwood-studio/workflow-config';
+import type { JsonObject } from '@elwood/types';
+import { createWorkflowInput, resolveWorkflow } from '@elwood/workflow-config';
 
 import type { AppContext } from '../types.ts';
 import { createEvent } from '../libs/create-event.ts';

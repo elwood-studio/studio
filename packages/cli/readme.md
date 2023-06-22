@@ -2,7 +2,7 @@
 
 Command Line Interface for Elwood
 
-[![npm (scoped)](https://img.shields.io/npm/v/@elwood-studio/cli)](https://www.npmjs.com/package/@elwood-studio/cli)
+[![npm (scoped)](https://img.shields.io/npm/v/@elwood/cli)](https://www.npmjs.com/package/@elwood/cli)
 
 ## Overview
 

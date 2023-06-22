@@ -6,14 +6,14 @@ import type {
   WorkflowRunnerJob,
   WorkflowRunnerInstructions,
   WorkflowRunnerInput,
-} from '@elwood-studio/workflow-types';
-import type { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
+} from '@elwood/workflow-types';
+import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 import {
   getWorkflowKeychainFromInput,
   getWorkflowSecretsFromInput,
   normalizeWorkflowInput,
   getTrackingIdFromInput,
-} from '@elwood-studio/workflow-config';
+} from '@elwood/workflow-config';
 
 import type {
   WorkflowRunnerRuntimeRunJob,
@@ -29,7 +29,7 @@ import debug from '../libs/debug';
 import { RuntimeRunContext } from './context';
 import { RuntimeRunJob } from './job';
 import { RuntimeTimer } from './timer';
-import { JsonObject } from '@elwood-studio/types';
+import { JsonObject } from '@elwood/types';
 
 export class RuntimeRun implements WorkflowRunnerRuntimeRun {
   readonly #context = new RuntimeRunContext();

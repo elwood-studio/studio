@@ -35,13 +35,7 @@ importers:
 
   internal/elwood:
     dependencies:
-      '@elwood-studio/cli':
-        specifier: workspace:*
-        version: link:../../packages/cli
-
-  internal/elwood-studio:
-    dependencies:
-      '@elwood-studio/cli':
+      '@elwood/cli':
         specifier: workspace:*
         version: link:../../packages/cli
 
@@ -76,16 +70,16 @@ importers:
 
   packages/cli:
     dependencies:
-      '@elwood-studio/sdk':
+      '@elwood/sdk':
         specifier: workspace:*
         version: link:../sdk
-      '@elwood-studio/workflow-config':
+      '@elwood/workflow-config':
         specifier: workspace:*
         version: link:../workflow/config
-      '@elwood-studio/workflow-runner':
+      '@elwood/workflow-runner':
         specifier: workspace:*
         version: link:../workflow/runner
-      '@elwood-studio/workflow-secrets':
+      '@elwood/workflow-secrets':
         specifier: workspace:*
         version: link:../workflow/secrets
       '@iarna/toml':
@@ -140,10 +134,10 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../types
-      '@elwood-studio/workflow-types':
+      '@elwood/workflow-types':
         specifier: workspace:*
         version: link:../workflow/types
       '@types/cli-table':
@@ -228,7 +222,7 @@ importers:
         specifier: ^0.10.3
         version: 0.10.3
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../../types
       '@types/jsonwebtoken':
@@ -283,7 +277,7 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../types
       '@types/crypto-js':
@@ -360,10 +354,10 @@ importers:
         specifier: ^2.3.1
         version: 2.3.1
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../../types
-      '@elwood-studio/workflow-types':
+      '@elwood/workflow-types':
         specifier: workspace:*
         version: link:../types
       '@types/isomorphic-fetch':
@@ -393,10 +387,10 @@ importers:
 
   packages/workflow/runner:
     dependencies:
-      '@elwood-studio/workflow-config':
+      '@elwood/workflow-config':
         specifier: workspace:*
         version: link:../config
-      '@elwood-studio/workflow-secrets':
+      '@elwood/workflow-secrets':
         specifier: workspace:*
         version: link:../secrets
       '@fastify/static':
@@ -454,10 +448,10 @@ importers:
         specifier: ^21.1.1
         version: 21.1.1
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../../types
-      '@elwood-studio/workflow-types':
+      '@elwood/workflow-types':
         specifier: workspace:*
         version: link:../types
       '@types/debug':
@@ -509,10 +503,10 @@ importers:
         specifier: ^0.10.3
         version: 0.10.3
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../../types
-      '@elwood-studio/workflow-types':
+      '@elwood/workflow-types':
         specifier: workspace:*
         version: link:../types
       '@types/libsodium-wrappers':
@@ -558,19 +552,19 @@ importers:
         specifier: ^1.14.0
         version: 1.14.0
     devDependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../../types
-      '@elwood-studio/workflow-config':
+      '@elwood/workflow-config':
         specifier: workspace:*
         version: link:../config
-      '@elwood-studio/workflow-runner':
+      '@elwood/workflow-runner':
         specifier: workspace:*
         version: link:../runner
-      '@elwood-studio/workflow-secrets':
+      '@elwood/workflow-secrets':
         specifier: workspace:*
         version: link:../secrets
-      '@elwood-studio/workflow-types':
+      '@elwood/workflow-types':
         specifier: workspace:*
         version: link:../types
       '@types/node':
@@ -603,7 +597,7 @@ importers:
 
   packages/workflow/types:
     dependencies:
-      '@elwood-studio/types':
+      '@elwood/types':
         specifier: workspace:*
         version: link:../../types
     devDependencies:
@@ -616,7 +610,7 @@ importers:
 
   services/fs:
     devDependencies:
-      '@elwood-studio/fs-service':
+      '@elwood/fs-service':
         specifier: workspace:*
         version: link:../../packages/fs/service
       esbuild:
@@ -631,7 +625,7 @@ importers:
 
   services/workflow:
     devDependencies:
-      '@elwood-studio/workflow-service':
+      '@elwood/workflow-service':
         specifier: workspace:*
         version: link:../../packages/workflow/service
       esbuild:

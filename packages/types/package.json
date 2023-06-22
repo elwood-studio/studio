@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/types",
+  "name": "@elwood/types",
   "version": "0.1.11",
   "main": "./lib",
   "files": [

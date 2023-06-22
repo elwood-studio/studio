@@ -3,7 +3,7 @@
  * ==============================
  * Docs: https://elwood.studio/docs/workflow/
  * Bin Usage:
- *  npx @elwood-studio/workflow-runner [workflow] [options]
+ *  npx @elwood/workflow-runner [workflow] [options]
  *  yarn cli [workflow] [options]
  *
  * Glossary:

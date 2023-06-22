@@ -1,9 +1,9 @@
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 import type {
   WorkflowRunnerInput,
   WorkflowRunnerKeychain,
   WorkflowRunnerSecrets,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 import { WorkflowInputKeyName } from './constants';
 

@@ -1,4 +1,4 @@
-import type { WorkflowRunnerCommand } from '@elwood-studio/workflow-types';
+import type { WorkflowRunnerCommand } from '@elwood/workflow-types';
 import invariant from 'ts-invariant';
 
 import type { RunnerCommandProvider, DockerContainer } from '../types';

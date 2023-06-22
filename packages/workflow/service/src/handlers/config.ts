@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin';
-import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
+import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
 
 import type { AppContext } from '../types.ts';
 import { invariant } from '../libs/invariant.ts';

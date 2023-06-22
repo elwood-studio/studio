@@ -1,9 +1,6 @@
 import sodium from 'libsodium-wrappers';
 
-import {
-  SecretsManager,
-  createUnlockKey,
-} from '@elwood-studio/workflow-secrets';
+import { SecretsManager, createUnlockKey } from '@elwood/workflow-secrets';
 
 import {
   getNativeExpressionValue,

@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { exists, tmpDir } from 'fs-jetpack';
 
-import { createUnlockKey } from '@elwood-studio/workflow-secrets';
+import { createUnlockKey } from '@elwood/workflow-secrets';
 
 import type {
   WorkflowRunnerCliArguments,

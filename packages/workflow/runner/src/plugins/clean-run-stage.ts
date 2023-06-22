@@ -1,4 +1,4 @@
-import { JsonObject } from '@elwood-studio/types';
+import { JsonObject } from '@elwood/types';
 
 import type {
   WorkflowRunnerRuntime,

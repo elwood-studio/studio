@@ -1,8 +1,8 @@
 import type {
   WorkflowRunnerJob,
   WorkflowRunnerExpression,
-} from '@elwood-studio/workflow-types';
-import type { JsonObject, Json } from '@elwood-studio/types';
+} from '@elwood/workflow-types';
+import type { JsonObject, Json } from '@elwood/types';
 import invariant from 'ts-invariant';
 
 import type { WorkflowRunnerRuntimeRun, WorkflowRunnerRuntime } from '../types';
@@ -53,7 +53,7 @@ export function expandMatrixValues(
 ): JsonObject[] {
   function recurse(keys: string[]): JsonObject[] {
     if (!keys.length) return [{}];
-    let result = recurse(keys.slice(1));
+    const result = recurse(keys.slice(1));
     return matrix[keys[0]].reduce(
       (acc, value) =>
         acc.concat(

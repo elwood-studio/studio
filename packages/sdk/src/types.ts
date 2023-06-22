@@ -1,4 +1,4 @@
-export * from '@elwood-studio/types';
+export * from '@elwood/types';
 
 export type Fetch = typeof fetch;
 export type FileSystemFetch = <R = unknown>(

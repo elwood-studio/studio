@@ -1,7 +1,7 @@
 import { dirname, extname, isAbsolute, join } from 'path';
 import { existsSync } from 'fs';
 
-import { resolveWorkflowNameOrFileToWorkflow } from '@elwood-studio/workflow-config';
+import { resolveWorkflowNameOrFileToWorkflow } from '@elwood/workflow-config';
 
 import type { WorkflowCliPayload } from '../types';
 import * as helloWorld from './hello-world';

@@ -1,11 +1,11 @@
 {
-  "name": "@elwood-studio/workspace",
+  "name": "@elwood/workspace",
   "private": true,
   "scripts": {},
   "description": "The open source Dropbox alternative for content creators.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elwood-studio/studio.git"
+    "url": "git+https://github.com/elwood-studio/elwood.git"
   },
   "engines": {
     "pnpm": ">=8.6.1",

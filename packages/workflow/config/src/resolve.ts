@@ -4,7 +4,7 @@ import { existsAsync, readAsync, tmpDirAsync } from 'fs-jetpack';
 import { parse as parseYaml } from 'yaml';
 import fetch from 'isomorphic-fetch';
 
-import type { Workflow } from '@elwood-studio/workflow-types';
+import type { Workflow } from '@elwood/workflow-types';
 
 export const supportedFileExtensions = ['.yml', '.yaml', '.json', '.js'];
 

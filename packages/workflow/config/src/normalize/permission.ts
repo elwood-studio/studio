@@ -3,7 +3,7 @@ import {
   WorkflowPermissionValue,
   WorkflowRunnerPermission,
   WorkflowRunnerPermissionValue,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 export function normalizePermissionItem(
   value: WorkflowPermissionValue | undefined | null,
