@@ -1390,10 +1390,11 @@
       "additionalProperties": false
     },
     "env": {
-      "type": "object",
-      "description": "Global Environment variables",
-      "properties": {},
-      "additionalProperties": true
+      "type": "array",
+      "description": "Environment variables to copy from the runner and make available to the workflow (in context.env).",
+      "items": {
+        "type": "string"
+      }
     },
     "timeout": {
       "type": "object",

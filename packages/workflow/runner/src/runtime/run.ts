@@ -152,8 +152,25 @@ export class RuntimeRun implements WorkflowRunnerRuntimeRun {
   async setup(input: WorkflowRunnerInput, context: JsonObject = {}) {
     this.#log('setup');
 
-    // set a default event to undefined
     this.#context.set('event', undefined);
+
+    // workflow.env is a list of environment variables that should be
+    // available to the context
+    const availableEnv = this.runtime.context.get('env') ?? process.env ?? {};
+
+    // context might already have env variables, so we need to merge them
+    // and initialize the context.env object if it doesn't exist
+    context.env = {
+      ...(context.env ?? {}),
+    };
+
+    // loop through the env names and set them on the context
+    // if they exist in the available env
+    for (const envName of this.def.env) {
+      if (envName in availableEnv) {
+        context.env[envName] = availableEnv[envName];
+      }
+    }
 
     if (context && typeof context === 'object') {
       Object.entries(context).forEach(([key, value]) => {
