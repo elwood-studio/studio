@@ -4,7 +4,7 @@ import type {
   WorkflowTimeout,
   WorkflowMatrix,
   WorkflowRunnerJobMatrix,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 export function normalizeEnv(env: WorkflowEnv | undefined): WorkflowRunnerEnv {
   return env ?? {};

@@ -5,13 +5,13 @@ import yargs from 'yargs-parser';
 import invariant from 'ts-invariant';
 import { config as dotenv } from 'dotenv';
 
-import { SecretsManager } from '@elwood-studio/workflow-secrets';
+import { SecretsManager } from '@elwood/workflow-secrets';
 import {
   normalizeWorkflowToInstructions,
   createWorkflowInput,
   validateWorkflow,
   validateWorkflowInput,
-} from '@elwood-studio/workflow-config';
+} from '@elwood/workflow-config';
 
 import type { WorkflowRunnerCliArguments } from '../types';
 import { createRuntime } from '../libs/create-runtime';

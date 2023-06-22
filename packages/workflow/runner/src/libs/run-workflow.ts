@@ -1,9 +1,9 @@
 import type {
   WorkflowRunnerInstructions,
   WorkflowRunnerInput,
-} from '@elwood-studio/workflow-types';
-import type { JsonObject } from '@elwood-studio/types';
-import { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
+} from '@elwood/workflow-types';
+import type { JsonObject } from '@elwood/types';
+import { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 
 import type { WorkflowRunnerRuntime, WorkflowRunnerRuntimeRun } from '../types';
 import debug from './debug';

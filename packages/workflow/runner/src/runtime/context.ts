@@ -1,7 +1,7 @@
 import set from 'lodash.set';
 import get from 'lodash.get';
 
-import { JsonObject, Json } from '@elwood-studio/types';
+import { JsonObject, Json } from '@elwood/types';
 
 export class RuntimeRunContext {
   readonly #data: JsonObject = {};

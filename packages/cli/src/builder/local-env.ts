@@ -1,8 +1,8 @@
 import { randomBytes } from 'node:crypto';
 import jwt from 'jsonwebtoken';
-import { createUnlockKey } from '@elwood-studio/workflow-secrets';
+import { createUnlockKey } from '@elwood/workflow-secrets';
 
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 
 export async function buildLocalEnv(): Promise<JsonObject> {
   const iat = new Date().getTime() / 1000;

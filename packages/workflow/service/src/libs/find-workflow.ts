@@ -2,8 +2,8 @@ import { join } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { globSync } from 'glob';
 
-import type { Workflow } from '@elwood-studio/workflow-types';
-import { resolveWorkflow } from '@elwood-studio/workflow-config';
+import type { Workflow } from '@elwood/workflow-types';
+import { resolveWorkflow } from '@elwood/workflow-config';
 
 import { getEnv } from './get-env.ts';
 

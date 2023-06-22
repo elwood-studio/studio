@@ -1,7 +1,7 @@
 import { type FastifyRequest } from 'fastify';
 import { type Client, QueryResult, QueryResultRow } from 'pg';
 
-import type { Json } from '@elwood-studio/types';
+import type { Json } from '@elwood/types';
 
 import { invariant } from './invariant.ts';
 import { getAuthToken, getAuthTokenFromRequest } from './get-auth-token.ts';

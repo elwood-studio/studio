@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import { Pool, QueryResult } from 'pg';
 
-import type { Json } from '@elwood-studio/types';
+import type { Json } from '@elwood/types';
 
 import { invariant } from './invariant.ts';
 

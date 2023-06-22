@@ -1,4 +1,4 @@
-import type { WorkflowWhenRunObject } from '@elwood-studio/workflow-types';
+import type { WorkflowWhenRunObject } from '@elwood/workflow-types';
 
 import { normalizeWhen, normalizeWhenToExpression } from '../normalize';
 

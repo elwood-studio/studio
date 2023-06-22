@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 
-import type { Json, JsonObject } from '@elwood-studio/types';
+import type { Json, JsonObject } from '@elwood/types';
 
 import type { AppContext } from '../types.ts';
 import { findWorkflow } from '../libs/find-workflow.ts';

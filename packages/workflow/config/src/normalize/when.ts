@@ -4,7 +4,7 @@ import {
   WorkflowWhen,
   WorkflowRunnerExpression,
   WorkflowWhenRunObject,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 import { invariant } from 'ts-invariant';
 
 export function normalizeWhen(

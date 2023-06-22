@@ -1,5 +1,5 @@
-import type { Workflow } from '@elwood-studio/workflow-types';
-import { createKeyPair } from '@elwood-studio/workflow-secrets';
+import type { Workflow } from '@elwood/workflow-types';
+import { createKeyPair } from '@elwood/workflow-secrets';
 
 export default async function init() {
   const workflow: Workflow = {

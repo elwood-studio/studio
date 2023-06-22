@@ -1,4 +1,4 @@
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 import invariant from 'ts-invariant';
 
 import type {

@@ -9,7 +9,7 @@
     "bin.js"
   ],
   "dependencies": {
-    "@elwood-studio/cli": "workspace:*"
+    "@elwood/cli": "workspace:*"
   },
   "scripts": {
     "build": "cp  ../../packages/cli/readme.md ."

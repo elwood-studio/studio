@@ -1,12 +1,12 @@
-import { normalizeWorkflowToInstructions } from '@elwood-studio/workflow-config';
-import { SecretsManager } from '@elwood-studio/workflow-secrets';
+import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
+import { SecretsManager } from '@elwood/workflow-secrets';
 import {
   WorkflowRunnerRuntime,
   WorkflowRunnerRuntimeRun,
   runWorkflow,
-} from '@elwood-studio/workflow-runner';
-import type { Workflow } from '@elwood-studio/workflow-types';
-import type { JsonObject } from '@elwood-studio/types';
+} from '@elwood/workflow-runner';
+import type { Workflow } from '@elwood/workflow-types';
+import type { JsonObject } from '@elwood/types';
 
 export type RunWorkflowOptions = {
   runtime: WorkflowRunnerRuntime;

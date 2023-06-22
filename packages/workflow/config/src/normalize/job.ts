@@ -2,7 +2,7 @@ import type {
   WorkflowRunnerJob,
   WorkflowJob,
   WorkflowDefaults,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 import { uid } from './utilts';
 import { normalizeJobStep } from './job-step';

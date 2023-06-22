@@ -1,6 +1,6 @@
 import type { Client } from 'pg';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 
 export type Config = {
   remotes?: Record<

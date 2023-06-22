@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/workflow-service",
+  "name": "@elwood/workflow-service",
   "version": "0.1.11",
   "type": "module",
   "module": "./dist/esm/index.js",
@@ -28,11 +28,11 @@
     "dist"
   ],
   "devDependencies": {
-    "@elwood-studio/types": "workspace:*",
-    "@elwood-studio/workflow-config": "workspace:*",
-    "@elwood-studio/workflow-runner": "workspace:*",
-    "@elwood-studio/workflow-secrets": "workspace:*",
-    "@elwood-studio/workflow-types": "workspace:*",
+    "@elwood/types": "workspace:*",
+    "@elwood/workflow-config": "workspace:*",
+    "@elwood/workflow-runner": "workspace:*",
+    "@elwood/workflow-secrets": "workspace:*",
+    "@elwood/workflow-types": "workspace:*",
     "@types/node": "^20.3.1",
     "@types/pg": "^8.10.2",
     "@vercel/ncc": "^0.36.1",
@@ -48,7 +48,7 @@
     "fast-json-stringify": "^5.7.0",
     "fastify": "^4.18.0",
     "fastify-plugin": "^4.5.0",
-    "glob": "^10.2.7",
+    "glob": "^10.3.0",
     "pg": "^8.11.0",
     "pg-boss": "8.4.2",
     "ssh2": "^1.14.0"

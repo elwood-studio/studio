@@ -1,1 +1,1 @@
-import('@elwood-studio/cli/esm/bin.js')
+import('@elwood/cli/esm/bin.js')

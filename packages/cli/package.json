@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/cli",
+  "name": "@elwood/cli",
   "version": "0.1.11",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,8 +21,7 @@
     }
   },
   "bin": {
-    "elwood": "./bin/cli.mjs",
-    "elwood-studio": "./bin/cli.mjs"
+    "elwood-cli": "./bin/cli.mjs"
   },
   "files": [
     "dist",
@@ -36,10 +35,10 @@
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
-    "@elwood-studio/js": "workspace:*",
-    "@elwood-studio/workflow-config": "workspace:*",
-    "@elwood-studio/workflow-runner": "workspace:*",
-    "@elwood-studio/workflow-secrets": "workspace:*",
+    "@elwood/sdk": "workspace:*",
+    "@elwood/workflow-config": "workspace:*",
+    "@elwood/workflow-runner": "workspace:*",
+    "@elwood/workflow-secrets": "workspace:*",
     "@iarna/toml": "^2.2.5",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
@@ -47,7 +46,7 @@
     "docker-compose": "^0.24.1",
     "dotenv": "^16.3.1",
     "fs-jetpack": "^5.1.0",
-    "glob": "^10.2.7",
+    "glob": "^10.3.0",
     "is-glob": "^4.0.3",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.0",
@@ -59,8 +58,8 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@elwood-studio/types": "workspace:*",
-    "@elwood-studio/workflow-types": "workspace:*",
+    "@elwood/types": "workspace:*",
+    "@elwood/workflow-types": "workspace:*",
     "@types/cli-table": "^0.3.1",
     "@types/is-glob": "^4.0.2",
     "@types/isomorphic-fetch": "^0.0.36",

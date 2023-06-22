@@ -1,8 +1,8 @@
-import { Json } from '@elwood-studio/types';
+import { Json } from '@elwood/types';
 import type {
   WorkflowRunnerWhen,
   WorkflowRunnerExpression,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 import { isExpressionValueFalseLike } from './expression';
 

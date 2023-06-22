@@ -8,12 +8,12 @@ import FileSystem from 'fs-jetpack';
 import axios from 'axios';
 import type { FastifyInstance } from 'fastify';
 
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 import type {
   WorkflowRunnerInstructions,
   WorkflowActionRegistry,
-} from '@elwood-studio/workflow-types';
-import type { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
+} from '@elwood/workflow-types';
+import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 
 import type {
   RuntimeEventsEmitter,

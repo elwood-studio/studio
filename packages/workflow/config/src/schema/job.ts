@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-import type { WorkflowJob } from '@elwood-studio/workflow-types';
+import type { WorkflowJob } from '@elwood/workflow-types';
 
 import { timeout, env, when, matrix } from './scalar';
 import { step } from './step';

@@ -1,11 +1,8 @@
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-import { SecretsManager } from '@elwood-studio/workflow-secrets';
-import {
-  WorkflowRunnerRuntime,
-  createRuntime,
-} from '@elwood-studio/workflow-runner';
+import { SecretsManager } from '@elwood/workflow-secrets';
+import { WorkflowRunnerRuntime, createRuntime } from '@elwood/workflow-runner';
 
 import { invariant } from './invariant.ts';
 

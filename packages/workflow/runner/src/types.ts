@@ -14,9 +14,9 @@ import type {
   WorkflowRunnerCommand,
   WorkflowActionRegistry,
   WorkflowRunnerExpression,
-} from '@elwood-studio/workflow-types';
-import type { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
-import type { JsonObject, Json } from '@elwood-studio/types';
+} from '@elwood/workflow-types';
+import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
+import type { JsonObject, Json } from '@elwood/types';
 import yargsParser from 'yargs-parser';
 
 export type WorkflowRunnerConfiguration = {

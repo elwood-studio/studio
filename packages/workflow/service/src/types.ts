@@ -1,10 +1,10 @@
-import { WorkflowSecretsManager } from '@elwood-studio/workflow-secrets';
+import { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 import type {
   WorkflowRunnerRuntimeRun,
   WorkflowRunnerRuntime,
-} from '@elwood-studio/workflow-runner';
-import type { Workflow } from '@elwood-studio/workflow-types';
-import type { JsonObject, Json } from '@elwood-studio/types';
+} from '@elwood/workflow-runner';
+import type { Workflow } from '@elwood/workflow-types';
+import type { JsonObject, Json } from '@elwood/types';
 import type PgBoss from 'pg-boss';
 
 export type SubmitWorkflowFn = (

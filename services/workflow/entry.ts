@@ -1,8 +1,8 @@
-// do not change this to use @elwood-studio/workflow-service
+// always reference node modules to pickup the symlink
 import {
   launchWorkflowService,
   destroyWorkflowService,
-} from './node_modules/@elwood-studio/workflow-service/src/';
+} from './node_modules/@elwood/workflow-service/src/';
 
 launchWorkflowService().catch(async (err) => {
   console.error(err);

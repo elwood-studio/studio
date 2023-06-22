@@ -1,8 +1,8 @@
-// do not change this to use @elwood-studio/workflow-service
+// always reference node modules to pickup the symlink
 import {
   startFileSystemService,
   stopFileSystemService,
-} from './node_modules/@elwood-studio/fs-service/src/';
+} from './node_modules/@elwood/fs-service/src/';
 
 startFileSystemService().catch(async () => {
   await stopFileSystemService();

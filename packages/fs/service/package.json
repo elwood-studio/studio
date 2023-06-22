@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/fs-service",
+  "name": "@elwood/fs-service",
   "version": "0.1.11",
   "license": "MIT",
   "type": "module",
@@ -29,7 +29,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@elwood-studio/types": "workspace:*",
+    "@elwood/types": "workspace:*",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^18.16.18",
     "@types/pg": "^8.10.2",

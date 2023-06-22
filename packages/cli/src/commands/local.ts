@@ -1,7 +1,7 @@
 import { invariant } from 'ts-invariant';
 import { Writable } from 'node:stream';
 import ora from 'ora';
-import type { Json } from '@elwood-studio/types';
+import type { Json } from '@elwood/types';
 
 import type { Argv, Arguments, Context } from '../types.ts';
 import { spawnDockerCompose } from '../libs/spawn-docker-compose.ts';

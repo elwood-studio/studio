@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin';
 
-import type { JsonObject } from '@elwood-studio/types';
+import type { JsonObject } from '@elwood/types';
 
 import { AppContext } from '../types.ts';
 import { createEvent } from '../libs/create-event.ts';

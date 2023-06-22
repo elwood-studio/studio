@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/workflow-runner",
+  "name": "@elwood/workflow-runner",
   "version": "0.1.11",
   "main": "./lib/index.js",
   "files": [
@@ -18,8 +18,8 @@
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
-    "@elwood-studio/workflow-config": "workspace:*",
-    "@elwood-studio/workflow-secrets": "workspace:*",
+    "@elwood/workflow-config": "workspace:*",
+    "@elwood/workflow-secrets": "workspace:*",
     "@fastify/static": "^6.10.2",
     "@types/jest": "^29.5.2",
     "axios": "^1.4.0",
@@ -40,8 +40,8 @@
     "yargs-parser": "^21.1.1"
   },
   "devDependencies": {
-    "@elwood-studio/types": "workspace:*",
-    "@elwood-studio/workflow-types": "workspace:*",
+    "@elwood/types": "workspace:*",
+    "@elwood/workflow-types": "workspace:*",
     "@types/debug": "^4.1.8",
     "@types/dockerode": "^3.3.19",
     "@types/ejs": "^3.1.2",

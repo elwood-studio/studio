@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-import type { WorkflowInput } from '@elwood-studio/workflow-types';
+import type { WorkflowInput } from '@elwood/workflow-types';
 
 export const input = joi
   .object<WorkflowInput>({

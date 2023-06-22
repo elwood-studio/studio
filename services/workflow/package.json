@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/service-workflow",
+  "name": "@elwood/service-workflow",
   "version": "0.1.11",
   "type": "commonjs",
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "esbuild entry.ts --format=cjs --bundle --sourcemap --platform=node --target=node18 --outdir=./dist \"--external:ssh2\" \"--external:./transpilers/swc.js\""
   },
   "devDependencies": {
-    "@elwood-studio/workflow-service": "workspace:*",
+    "@elwood/workflow-service": "workspace:*",
     "esbuild": "^0.18.6",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.3"

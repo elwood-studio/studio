@@ -2,7 +2,7 @@ import type {
   ObjectModel,
   FileSystemTreeNode,
   FileSystemTreeResult,
-} from '@elwood-studio/types';
+} from '@elwood/types';
 
 import type { ObjectHandlerOptions } from '@/types.ts';
 import { authExecuteSql } from '@/libs/auth-execute-sql.ts';

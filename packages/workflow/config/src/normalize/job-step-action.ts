@@ -1,7 +1,7 @@
 import type {
   WorkflowAction,
   WorkflowRunnerAction,
-} from '@elwood-studio/workflow-types';
+} from '@elwood/workflow-types';
 
 export function normalizeJobStepAction(
   action: WorkflowAction,

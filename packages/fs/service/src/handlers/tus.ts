@@ -4,7 +4,7 @@ import { FileStore } from '@tus/file-store';
 import { type IncomingMessage } from 'http';
 import { Client } from 'pg';
 
-import type { Json } from '@elwood-studio/types';
+import type { Json } from '@elwood/types';
 
 import { tusBeforeCreate } from '@/libs/tus-before-create.ts';
 import { tusAfterCreate } from '@/libs/tus-after-create.ts';

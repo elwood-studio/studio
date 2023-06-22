@@ -1,8 +1,8 @@
 import type { ValidationError } from 'joi';
 import { type ErrorObject } from 'ajv';
 
-import type { JsonObject } from '@elwood-studio/types';
-import type { Workflow } from '@elwood-studio/workflow-types';
+import type { JsonObject } from '@elwood/types';
+import type { Workflow } from '@elwood/workflow-types';
 
 import { schema } from './schema';
 

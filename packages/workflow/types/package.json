@@ -1,5 +1,5 @@
 {
-  "name": "@elwood-studio/workflow-types",
+  "name": "@elwood/workflow-types",
   "version": "0.1.11",
   "main": "./lib/index.ts",
   "types": "./lib/index.d.ts",
@@ -9,7 +9,7 @@
     "lint": "eslint \"**/*.ts*\""
   },
   "dependencies": {
-    "@elwood-studio/types": "workspace:*"
+    "@elwood/types": "workspace:*"
   },
   "devDependencies": {
     "tsconfig": "workspace:*",

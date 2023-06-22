@@ -1,7 +1,7 @@
 import {
   RunnerStatus,
   type WorkflowRunnerRuntimeRunReport,
-} from '@elwood-studio/workflow-runner';
+} from '@elwood/workflow-runner';
 
 import type { AppContext } from '../types.ts';
 
