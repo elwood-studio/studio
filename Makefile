@@ -64,7 +64,7 @@ version: ## version all packages
 # PUBLISH
 publish: ## publish all packages
 	@echo "publish..."
-	pnpm publish -r --access public --publish-branch main	
+	pnpm publish -r --access public --publish-branch main --no-git-tag-version --no-push
 
 # INSTALL
 install: ## install workspace dependencies
