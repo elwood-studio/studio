@@ -1,3 +1,8 @@
+:warning: **@elwood-studio/cli is deprecated.** :warning:<br/>
+Please switch to [`@elwood/cli`](https://www.npmjs.com/package/@elwood/cli) or [`elwood`](https://www.npmjs.com/package/elwood)
+
+<p>&nbsp;</p>
+
 # Elwood CLI
 
 Command Line Interface for Elwood

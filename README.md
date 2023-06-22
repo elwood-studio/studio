@@ -1,3 +1,8 @@
+:warning: **The `@elwood-studio/\*` namespace is deprecated.** :warning:<br/>
+Please switch to [`@elwood/*`](https://www.npmjs.com/search?q=%40elwood)
+
+<p>&nbsp;</p>
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/elwood-studio/.github/main/profile/gh-banner-light.png#gh-light-mode-only">
 <img src="https://raw.githubusercontent.com/elwood-studio/.github/main/profile/gh-banner-dark.png#gh-dark-mode-only">
