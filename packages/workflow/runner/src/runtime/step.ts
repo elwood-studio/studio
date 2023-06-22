@@ -187,7 +187,6 @@ export class RuntimeRunStep implements WorkflowRunnerRuntimeRunStep {
     const input = { ...additionalInput, ...(this.def.input ?? {}) };
     const env = {
       ...additionalEnv,
-      ...(this.job.run.def.env ?? {}),
       ...(this.job.def.env ?? {}),
       ...(this.def.env ?? {}),
     };

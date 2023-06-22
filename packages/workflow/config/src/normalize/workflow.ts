@@ -6,7 +6,7 @@ import type {
 import { uid } from './utilts';
 import { normalizeJob } from './job';
 import { normalizeWhen } from './when';
-import { normalizeEnv, normalizeTimeout } from './scalar';
+import { normalizeTimeout } from './scalar';
 
 export async function normalizeWorkflowToInstructions(
   workflow: Workflow,
@@ -23,6 +23,6 @@ export async function normalizeWorkflowToInstructions(
     }),
     when: normalizeWhen(workflow.when),
     timeoutMinutes: normalizeTimeout(workflow.timeout),
-    env: normalizeEnv(workflow.env),
+    env: workflow.env ?? [],
   };
 }

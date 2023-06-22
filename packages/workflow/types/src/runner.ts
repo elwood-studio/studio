@@ -10,7 +10,7 @@ export interface WorkflowRunnerInstructions {
   jobs: WorkflowRunnerJob[];
   when: WorkflowRunnerWhen;
   timeoutMinutes: number | null;
-  env: WorkflowRunnerEnv;
+  env: string[];
 }
 
 export type WorkflowRunnerWhen = {

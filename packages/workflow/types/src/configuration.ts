@@ -10,7 +10,7 @@ export interface Workflow {
   jobs: Record<string, WorkflowJob>;
   defaults?: WorkflowDefaults;
   timeout?: WorkflowTimeout;
-  env?: WorkflowEnv;
+  env?: string[];
   meta?: WorkflowMeta;
 }
 

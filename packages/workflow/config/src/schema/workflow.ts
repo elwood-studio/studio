@@ -34,9 +34,28 @@ export const workflow = joi
     defaults: joi
       .object({
         permission: permission.optional(),
+        env: env.optional(),
+        job: joi
+          .object({
+            permission: permission.optional(),
+            env: env.optional(),
+          })
+          .optional(),
+        step: joi
+          .object({
+            permission: permission.optional(),
+            env: env.optional(),
+          })
+          .optional(),
       })
+      .description('Default values set for each job & step in a workflow')
       .optional(),
-    env: env.description('Global Environment variables'),
+    env: joi
+      .array()
+      .items(joi.string())
+      .description(
+        'Environment variables to copy from the runner and make available to the workflow (in context.env).',
+      ),
     timeout: joi.object({}).description('Maximum time to run the workflow'),
     meta: joi
       .object({})
