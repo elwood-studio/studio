@@ -1,29 +1,32 @@
+import type { Json } from '@elwood/types';
+
 import Emittery from 'emittery';
 import * as tus from 'tus-js-client';
-import { type Upload, type UploadOptions } from 'tus-js-client';
+import {
+  type Upload as TusUpload,
+  type UploadOptions as TusUploadOptions,
+} from 'tus-js-client';
 import crypto from 'crypto-js';
 
-import type { Fetch } from '../types.ts';
+import type { Fetch } from './types.ts';
+import { invariant } from './libs/invariant.ts';
 
-export type FileSystemUploadClientFile =
+export type UploadFile =
   | Blob
   | File
-  | Pick<ReadableStreamDefaultReader<any>, 'read'>;
+  | Pick<ReadableStreamDefaultReader<Json>, 'read'>;
 
-export type FileSystemUploadClientOptions = {
+export type UploadOptions = {
   url: string;
   key: string;
   getAuthenticationToken(): Promise<string | undefined>;
   fetch: Fetch;
 };
 
-export type FileSystemUploadClientAddFileOptions = Omit<
-  UploadOptions,
-  'endpoint'
->;
+export type UploadFileOptions = Omit<TusUploadOptions, 'endpoint'>;
 
 type State = {
-  upload: Upload;
+  upload: TusUpload;
   id: string;
   state: 'pending' | 'uploading' | 'success' | 'error';
   error?: Error;
@@ -34,72 +37,78 @@ type State = {
 type Events = {
   success: {
     id: string;
-    upload: Upload;
+    upload: TusUpload;
   };
   error: {
     id: string;
-    upload: Upload;
+    upload: TusUpload;
     error: Error;
   };
   progress: {
     id: string;
-    upload: Upload;
+    upload: TusUpload;
     bytesSent: number;
     bytesTotal: number;
   };
   added: {
     id: string;
-    upload: Upload;
+    upload: TusUpload;
   };
   started: undefined;
   finished: undefined;
 };
 
-export class FileSystemUploadClient extends Emittery<Events> {
+export class Upload extends Emittery<Events> {
   #uploads = new Map<string, State>();
 
-  constructor(private readonly options: FileSystemUploadClientOptions) {
+  constructor(private readonly options: UploadOptions) {
     super();
   }
 
-  #onSuccess = (id: string) => {
+  getUploadState(id: string): State {
     const cur = this.#uploads.get(id);
-    this.#uploads.set(id, { id, upload: cur!.upload, state: 'success' });
+    invariant(cur, 'upload not found');
+    return cur;
+  }
+
+  #onSuccess = (id: string) => {
+    const cur = this.getUploadState(id);
+    this.#uploads.set(id, { id, upload: cur.upload, state: 'success' });
     this.emit('success', {
       id,
-      upload: cur!.upload,
+      upload: cur.upload,
     });
     this.#processNext();
   };
 
   #onError = (id: string, err: Error) => {
-    const cur = this.#uploads.get(id);
+    const cur = this.getUploadState(id);
     this.#uploads.set(id, {
       id,
-      upload: cur!.upload,
+      upload: cur.upload,
       state: 'error',
       error: err,
     });
     this.emit('error', {
       id,
-      upload: cur!.upload,
+      upload: cur.upload,
       error: err,
     });
     this.#processNext();
   };
 
   #onProgress = (id: string, bytesSent: number, bytesTotal: number) => {
-    const cur = this.#uploads.get(id);
+    const cur = this.getUploadState(id);
     this.#uploads.set(id, {
       id,
-      upload: cur!.upload,
-      state: cur!.state,
+      upload: cur.upload,
+      state: cur.state,
       bytesSent,
       bytesTotal,
     });
     this.emit('progress', {
       id,
-      upload: cur!.upload,
+      upload: cur.upload,
       bytesSent,
       bytesTotal,
     });
@@ -118,8 +127,8 @@ export class FileSystemUploadClient extends Emittery<Events> {
   }
 
   async add(
-    file: FileSystemUploadClientFile,
-    options: FileSystemUploadClientAddFileOptions = {},
+    file: UploadFile,
+    options: UploadFileOptions = {},
   ): Promise<string> {
     const headers: Record<string, string> = { apikey: this.options.key };
     const token =

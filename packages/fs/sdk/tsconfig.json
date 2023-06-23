@@ -1,0 +1,22 @@
+{
+  "extends": "tsconfig/node.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "node16",
+    "esModuleInterop": true,
+    "module": "Node16",
+    "jsx": "react",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["./src", "./test"],
+  "exclude": ["dist", "build", "node_modules"]
+}

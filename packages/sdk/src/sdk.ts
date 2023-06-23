@@ -1,16 +1,16 @@
 import supa from '@supabase/supabase-js';
 import type { SupabaseClientOptions } from '@supabase/supabase-js';
+import { ElwoodFileSystemSdk } from '@elwood/fs-sdk';
+import { ElwoodWorkflowSdk } from '@elwood/workflow-sdk';
 
 import type { Database } from './types.ts';
 import { invariant } from './libs/invariant.ts';
-import { FileSystemClient } from './file-system/index.ts';
-import { WorkflowClient } from './workflow/index.ts';
 
 const { SupabaseClient } = supa;
 
-export default class Client extends SupabaseClient<Database, 'elwood'> {
-  protected readonly _fs: FileSystemClient;
-  protected readonly _workflow: WorkflowClient;
+export class ElwoodSdk extends SupabaseClient<Database, 'elwood'> {
+  protected readonly _fs: ElwoodFileSystemSdk;
+  protected readonly _workflow: ElwoodWorkflowSdk;
 
   constructor(
     url: string,
@@ -21,17 +21,19 @@ export default class Client extends SupabaseClient<Database, 'elwood'> {
     invariant(key, 'Must provide API key');
     super(url, key, { ...opts, db: { schema: 'elwood' } });
 
-    this._fs = new FileSystemClient({
+    invariant(this.fetch, 'Must provide fetch method');
+
+    this._fs = new ElwoodFileSystemSdk({
       url,
       key,
-      fetch: this.fetch!,
+      fetch: this.fetch,
       getAuthenticationToken: this._getAuthenticationToken,
     });
 
-    this._workflow = new WorkflowClient({
+    this._workflow = new ElwoodWorkflowSdk({
       url,
       key,
-      fetch: this.fetch!,
+      fetch: this.fetch,
     });
   }
 

@@ -1,5 +1,5 @@
 {
-  "name": "@elwood/sdk",
+  "name": "@elwood/workflow-sdk",
   "version": "0.1.13",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@elwood/types": "workspace:*",
+    "@types/crypto-js": "^4.1.1",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/jest": "^29.5.2",
     "dotenv": "^16.3.1",
@@ -45,8 +46,9 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.26.0",
-    "@elwood/fs-sdk": "workspace:*",
-    "@elwood/workflow-sdk": "workspace:*",
-    "isomorphic-fetch": "^3.0.0"
+    "crypto-js": "^4.1.1",
+    "emittery": "^1.0.1",
+    "isomorphic-fetch": "^3.0.0",
+    "tus-js-client": "^3.1.0"
   }
 }

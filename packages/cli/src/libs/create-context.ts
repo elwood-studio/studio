@@ -6,7 +6,7 @@ import * as toml from '@iarna/toml';
 import fs from 'fs-jetpack';
 import { invariant } from 'ts-invariant';
 import { parse } from 'dotenv';
-import { ElwoodClient } from '@elwood/sdk';
+import { ElwoodSdk } from '@elwood/sdk';
 
 import type {
   Context,
@@ -42,7 +42,7 @@ export async function createContext(args: Arguments): Promise<Context> {
     );
   }
 
-  const localClient = new ElwoodClient(
+  const localClient = new ElwoodSdk(
     `http://0.0.0.0:8000`,
     localEnv.SERVICE_ROLE_KEY,
     {
@@ -56,7 +56,7 @@ export async function createContext(args: Arguments): Promise<Context> {
       },
     },
   );
-  const remoteClient = new ElwoodClient(
+  const remoteClient = new ElwoodSdk(
     args.apiUrl ?? `https://api.elwood.studio`,
     localEnv.SERVICE_ROLE_KEY,
     {

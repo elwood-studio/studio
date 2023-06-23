@@ -137,7 +137,7 @@ jobs:
           git config --global user.name "Elwood Studio"
           git config --global user.email "security@elwood.studio"
 
-      - run: make ready
+      - run: make install
       - run: make version
       - run: make publish
         env:
