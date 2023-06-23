@@ -1,6 +1,6 @@
 {
   "name": "@elwood/workflow-service",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "type": "module",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
