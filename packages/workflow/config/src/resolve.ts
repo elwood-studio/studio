@@ -3,6 +3,7 @@ import { basename, dirname, extname, join } from 'path';
 import { existsAsync, readAsync, tmpDirAsync } from 'fs-jetpack';
 import { parse as parseYaml } from 'yaml';
 import fetch from 'isomorphic-fetch';
+import { invariant } from 'ts-invariant';
 
 import type { Workflow } from '@elwood/workflow-types';
 
@@ -35,8 +36,15 @@ export async function resolveWorkflow(
   // if this is a remote workflow
   // we feed to fetch it
   if (value.startsWith('http')) {
+    const url = new URL(value);
+
+    invariant(
+      url.protocol === 'http:' || url.protocol === 'https:',
+      'Remote workflow URLs must start with http(s)://',
+    );
+
     return {
-      ...(await resolveWorkflow(await (await fetch(value)).text())),
+      ...(await resolveWorkflow(await (await fetch(url)).text())),
       meta: {
         url: value,
       },
