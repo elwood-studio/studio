@@ -1,6 +1,6 @@
 {
   "name": "@elwood/service-workflow",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "type": "commonjs",
   "scripts": {
     "dev": "pnpm run build --watch",

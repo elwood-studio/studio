@@ -1,6 +1,6 @@
 {
   "name": "@elwood/sdk",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
@@ -44,9 +44,9 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.26.0",
     "@elwood/fs-sdk": "workspace:*",
     "@elwood/workflow-sdk": "workspace:*",
+    "@supabase/supabase-js": "^2.26.0",
     "isomorphic-fetch": "^3.0.0"
   }
 }
