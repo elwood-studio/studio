@@ -6,6 +6,7 @@ import { getEnv } from './libs/get-env.ts';
 import runHandlerPlugin from './handlers/run.ts';
 import eventHandlerPlugin from './handlers/event.ts';
 import configHandlerPlugin from './handlers/config.ts';
+import triggerHandlerPlugin from './handlers/trigger.ts';
 
 const { port, host } = getEnv();
 
@@ -21,6 +22,10 @@ export async function startServer(context: AppContext) {
   });
 
   app.register(configHandlerPlugin, {
+    context,
+  });
+
+  app.register(triggerHandlerPlugin, {
     context,
   });
 

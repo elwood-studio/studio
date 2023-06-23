@@ -57,10 +57,12 @@ export class WorkflowClient {
     });
   }
 
-  async event(type: string, input: JsonObject = {}) {
-    return await this._fetch<{ event_id: string }>(`event/${type}`, 'POST', {
-      input,
-    });
+  async event(type: string, payload: JsonObject = {}) {
+    return await this._fetch<{ event_id: string }>(
+      `event/${type}`,
+      'POST',
+      payload,
+    );
   }
 
   async report(trackingId: string): Promise<JsonObject> {
