@@ -59,7 +59,7 @@ test: ## test all
 # VERSION
 version: ## version all packages
 	@echo "version..."
-	$(turbo) run build && $(lerna) version --no-private
+	$(turbo) run build && $(lerna) version --no-private --yes patch
 
 # PUBLISH
 publish: ## publish all packages
