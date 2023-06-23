@@ -99,7 +99,7 @@ export async function copy(args: Arguments<CopyOptions>) {
   const sources = source.split(',');
   const files: string[] = [];
   const spin = ora('Sending workflow...').start();
-  const client = context?.localClient;
+  const client = context?.client;
 
   invariant(client, 'client is required');
 

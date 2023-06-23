@@ -13,8 +13,10 @@ import type {
   Arguments,
   ContextWorkingDir,
   LocalEnv,
+  Settings,
 } from '../types.ts';
 import { FilePaths } from '../constants.ts';
+import { LocalConfig } from 'dist/types.js';
 
 export async function createContext(args: Arguments): Promise<Context> {
   const workingDir = createWorkingDirContext(args.rootDir ?? process.cwd());
@@ -34,7 +36,13 @@ export async function createContext(args: Arguments): Promise<Context> {
     await readFile(workingDir.join(FilePaths.LocalDotEnv)),
   );
 
-  let localConfig;
+  let local = args.local ?? false;
+  let localConfig: LocalConfig = {};
+  let settings: Settings = {
+    version: '0.0.0',
+    apiUrl: args.apiUrl ?? null,
+    project: args.projectId ?? null,
+  };
 
   if (fs.exists(workingDir.join(FilePaths.LocalConfig))) {
     localConfig = toml.parse(
@@ -42,8 +50,20 @@ export async function createContext(args: Arguments): Promise<Context> {
     );
   }
 
+  if (fs.exists(workingDir.join(FilePaths.Settings))) {
+    settings = {
+      ...settings,
+      ...(toml.parse(
+        (await readFile(workingDir.join(FilePaths.Settings))).toString(),
+      ) as Settings),
+    };
+  }
+
+  const localHost = localConfig.gateway?.host ?? '0.0.0.0';
+  const localPort = localConfig.gateway?.port ?? 8000;
+
   const localClient = new ElwoodSdk(
-    `http://0.0.0.0:8000`,
+    `http://${localHost}:${localPort}`,
     localEnv.SERVICE_ROLE_KEY,
     {
       auth: {
@@ -56,6 +76,7 @@ export async function createContext(args: Arguments): Promise<Context> {
       },
     },
   );
+
   const remoteClient = new ElwoodSdk(
     args.apiUrl ?? `https://api.elwood.studio`,
     localEnv.SERVICE_ROLE_KEY,
@@ -66,11 +87,15 @@ export async function createContext(args: Arguments): Promise<Context> {
     },
   );
 
+  // if there's no project id, assume we're in local mode
+  if (!settings.project && !local) {
+    local = true;
+  }
+
   return {
-    client: args.local ? localClient : remoteClient,
+    client: local ? localClient : remoteClient,
+    settings,
     localEnv,
-    remoteClient,
-    localClient,
     workingDir,
     localConfig,
   };

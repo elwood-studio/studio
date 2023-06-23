@@ -27,20 +27,21 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${env.AWS_SECRET_ACCESS_KEY}
           AWS_DEFAULT_REGION: ${env.AWS_DEFAULT_REGION}
         input:
-          args: sns confirm-subscription --topic-arn {% elwood.trigger.body['TopicArn'] %} --token {% elwood.trigger.body['Token'] %}
+          args: 'sns confirm-subscription --topic-arn {% elwood.trigger.body.TopicArn %} --token {% elwood.trigger.body.Token %}'
   notification:
     when: "{% elwood.trigger.header['x-amz-sns-message-type] === 'Notification' %}"
     steps:
       - name: parse-sns-message
         input:
-          message: '{% elwood.trigger.body %}'
+          message: '{% elwood.trigger.body.Message %}'
         run: |
           const message = JSON.parse(core.getInput('message'));
           const records = message?.Records ?? [];
 
-          for (const record of records) {
-            await core.sdk.workflow.event(record.eventName, record);
-          }
+          // loop through each record and trigger a workflow event
+          await Promise.all(records.map(async (record) => {
+            await sdk.workflow.event(record.eventName, record);
+          })
 ```
 
 ### 2. Create a workflow to handle S3:ObjectCreated:\*
@@ -103,5 +104,5 @@ aws s3api put-bucket-notification-configuration \
 aws sns subscribe
   --topic-arn $TOPIC_ARN
   --protocol https
-  --notification-endpoint https://demo.elwood.app/workflow/v1/trigger
+  --notification-endpoint https://demo.elwood.cloud/workflow/v1/trigger
 ```

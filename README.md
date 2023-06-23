@@ -21,7 +21,6 @@
 
 ## 📖 Documentation
 
-- [Guides](./docs/guides/readme.md)
 - [Workflow](./docs/workflow/readme.md)
 - [File System](./docs/fs/readme.md)
 - [Command Line Interface](./docs/cli/readme.md)
@@ -43,23 +42,20 @@ npm install -g elwood
 # initialize a new Elwood project
 elwood init
 
-# test out executing a workflow
-elwood workflow:execute demo.yml --input.message="Hello from Elwood"
-
 # start a local server using docker-compose
 elwood start
 
-# queue a workflow to run on the server
-elwood workflow:run demo --input.message="Hello from Elwood"
+# Upload a file
+elwood fs:upload https://x.elwood.studio/p/bunny.mp4 /bunny.mp4
 
-# view the report
-elwood workflow:report
+# Queue a workflow job to generate an MP3 on our bunny video
+elwood workflow:run demo.yml --input.src="/bunny.mp4" --input.dest="/bunny.mp3" --wait
 
-# upload a file to the server to the root
-elwood fs:upload ./elwood/data/demo.txt ./
+# Download the MP3
+elwood fs:download /bunny.mp3
 
-# share a file
-elwood fs:share link ./demo.txt --password=test
+# Create a link to the file with a password
+elwood fs:share link /bunny.mp3 --with-password=test
 
 # stop local server
 elwood stop
@@ -70,12 +66,6 @@ elwood stop
 ```bash
 # Setup development environment for working with ./packages
 make ready
-
-# Start all services in development mode
-make up
-
-# Destroy all services in development mode
-make down
 
 # Start development watch process
 make dev

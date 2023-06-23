@@ -13,14 +13,20 @@ export type Arguments<Options = JsonObject> = BaseArguments<
     rootDir?: string;
     context?: Context;
     apiUrl?: string;
+    projectId?: string;
   }
 >;
+
+export type Settings = {
+  version: string;
+  apiUrl: string | null;
+  project: string | null;
+};
 
 export type Context = {
   localEnv?: LocalEnv;
   localConfig?: LocalConfig;
-  localClient?: ElwoodSdk;
-  remoteClient?: ElwoodSdk;
+  settings?: Settings;
   client?: ElwoodSdk;
   workingDir: ContextWorkingDir;
 };
