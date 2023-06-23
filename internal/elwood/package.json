@@ -4,7 +4,7 @@
   "repository": "git@github.com:elwood-studio/cli.git",
   "author": "Travis <travis@elwood.studio>",
   "license": "Apache License",
-  "bin": "./bin.js",
+  "bin": "./node_modules/.bin/elwood-cli",
   "files": [
     "bin.js"
   ],
