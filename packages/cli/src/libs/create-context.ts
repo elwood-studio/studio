@@ -16,7 +16,7 @@ import type {
   Settings,
 } from '../types.ts';
 import { FilePaths } from '../constants.ts';
-import { LocalConfig } from 'dist/types.js';
+import { LocalConfig } from '../types.js';
 
 export async function createContext(args: Arguments): Promise<Context> {
   const workingDir = createWorkingDirContext(args.rootDir ?? process.cwd());
