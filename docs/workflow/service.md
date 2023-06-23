@@ -8,6 +8,8 @@
 
 ### `POST /workflow/v1/run`
 
+### `GET /workflow/v1/run/:tracking-id`
+
 ### `GET /workflow/v1/config`
 
 ### `GET /workflow/v1/config/:name`

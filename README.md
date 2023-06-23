@@ -13,11 +13,57 @@
 
 <p>&nbsp;</p>
 
-# 🚀 What is Elwood
+# What is Elwood
 
 **Elwood** is an open source Dropbox alternative, built for advanced media management. Lighting fast uploads. Real-time, multi-user collaboration. Powerful role-based sharing. Simple one-click distribution.
 
 <p>Elwood is currently in public <strong>BETA</strong>. We are actively developing and improving the code & documentation. If you have any questions, please reach out to us at <a href="mailto:hello@elwood.studio">hello@elwood.studio</a>.</p>
+
+## 📖 Documentation
+
+- [Guides](./docs/guides/readme.md)
+- [Workflow](./docs/workflow/readme.md)
+- [File System](./docs/fs/readme.md)
+- [Command Line Interface](./docs/cli/readme.md)
+- [JavaScript SDK](./docs/sdk/js/readme.md)
+
+## 🚀 Getting Started
+
+### Install
+
+```bash
+pnpm add -g elwood
+yarn add -g elwood
+npm install -g elwood
+```
+
+### Usage
+
+```bash
+# initialize a new Elwood project
+elwood init
+
+# test out executing a workflow
+elwood workflow:execute demo --input.message="Hello from Elwood"
+
+# start a local server using docker-compose
+elwood start
+
+# queue a workflow to run on the server
+elwood workflow:run demo --input.message="Hello from Elwood"
+
+# view the report
+elwood workflow:report
+
+# upload a file to the server to the root
+elwood fs:upload ./elwood/data/demo.txt ./
+
+# share a file
+elwood fs:share link ./demo.txt --password=test
+
+# stop local server
+elwood stop
+```
 
 ## 💻 Development
 

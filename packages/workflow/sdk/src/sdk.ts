@@ -1,16 +1,17 @@
 import type { JsonObject } from '@elwood/types';
 
-import { invariant } from '../libs/invariant.ts';
-import type { Fetch } from '../types.ts';
+import { invariant } from './libs/invariant.ts';
+import type { Fetch } from './types.ts';
+import * as fetch from './libs/fetch.ts';
 
-export type WorkflowClientOptions = {
+export type ElwoodWorkflowSdkOptions = {
   url: string;
   key: string;
   fetch: Fetch;
 };
 
-export class WorkflowClient {
-  constructor(private readonly options: WorkflowClientOptions) {}
+export class ElwoodWorkflowSdk {
+  constructor(private readonly options: ElwoodWorkflowSdkOptions) {}
 
   /**
    * fetch a response from the file system
@@ -20,19 +21,18 @@ export class WorkflowClient {
    * @returns
    * @link https://rclone.org/rc/#operations-list
    */
-  private async _fetch<Response extends JsonObject = JsonObject>(
-    path: string,
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    body?: Record<string, unknown>,
+  private async _fetch(
+    info: RequestInfo | URL,
+    init: RequestInit = {},
   ): Promise<Response> {
     const response = await this.options.fetch(
-      `${this.options.url}/workflow/v1/${path}`,
+      `${this.options.url}/workflow/v1/${info}`,
       {
-        method,
+        method: init?.method ?? 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...(init?.headers ?? {}),
         },
-        body: body ? JSON.stringify(body) : undefined,
       },
     );
 
@@ -50,22 +50,24 @@ export class WorkflowClient {
   ): Promise<{ tracking_id: string }> {
     invariant(workflow, 'workflow.submit(): workflow is required');
 
-    return await this._fetch<{ tracking_id: string }>(`run`, 'POST', {
-      workflow,
-      input,
-      tracking_id: trackingId,
+    return await fetch.post<{ tracking_id: string }>(this._fetch, `run`, {
+      body: {
+        workflow,
+        input,
+        tracking_id: trackingId,
+      },
     });
   }
 
   async event(type: string, payload: JsonObject = {}) {
-    return await this._fetch<{ event_id: string }>(
+    return await fetch.post<{ event_id: string }>(
+      this._fetch,
       `event/${type}`,
-      'POST',
       payload,
     );
   }
 
   async report(trackingId: string): Promise<JsonObject> {
-    return await this._fetch<JsonObject>(`run/${trackingId}`, 'GET');
+    return await fetch.get<JsonObject>(this._fetch, `run/${trackingId}`);
   }
 }

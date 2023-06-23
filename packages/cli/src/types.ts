@@ -3,7 +3,7 @@ import type {
   ArgumentsCamelCase as BaseArguments,
 } from 'yargs';
 import type { DeepPartial, JsonObject } from '@elwood/types';
-import type { ElwoodClient } from '@elwood/sdk';
+import type { ElwoodSdk } from '@elwood/sdk';
 
 export type Argv = BaseArgv<Arguments>;
 
@@ -19,9 +19,9 @@ export type Arguments<Options = JsonObject> = BaseArguments<
 export type Context = {
   localEnv?: LocalEnv;
   localConfig?: LocalConfig;
-  localClient?: ElwoodClient;
-  remoteClient?: ElwoodClient;
-  client?: ElwoodClient;
+  localClient?: ElwoodSdk;
+  remoteClient?: ElwoodSdk;
+  client?: ElwoodSdk;
   workingDir: ContextWorkingDir;
 };
 
