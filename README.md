@@ -44,7 +44,7 @@ npm install -g elwood
 elwood init
 
 # test out executing a workflow
-elwood workflow:execute demo --input.message="Hello from Elwood"
+elwood workflow:execute demo.yml --input.message="Hello from Elwood"
 
 # start a local server using docker-compose
 elwood start
