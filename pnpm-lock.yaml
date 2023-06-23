@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -89,8 +89,8 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
       chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^5.2.0
+        version: 5.2.0
       cli-table:
         specifier: ^0.3.11
         version: 0.3.11
@@ -1600,7 +1600,7 @@ packages:
     resolution: {integrity: sha512-QyKIWEnKQFnYu2ey+SAAm1A5xjzJLJJj3bhIZd3QKyXKKjaJ0hlxam/OsWSltxTNbcyH1jRJjC6Cxv31usv0Ag==}
     engines: {node: ^14.17.0 || >=16.0.0}
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       execa: 5.0.0
       strong-log-transformer: 2.1.0
     dev: true
