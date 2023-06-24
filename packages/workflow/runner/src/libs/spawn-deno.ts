@@ -7,11 +7,15 @@ import type { WorkflowRunnerPermission } from '@elwood/workflow-types';
 
 export type SpawnDenoOptions = {
   script: string;
-  args: string[];
+  args?: string[];
   cwd: string;
   env?: JsonObject;
   permissions?: WorkflowRunnerPermission;
   stdin?: StdioNull | StdioPipe;
+  stdout?: StdioNull | StdioPipe;
+  stderr?: StdioNull | StdioPipe;
+  onStderr?: (chunk: string) => void;
+  onStdout?: (chunk: string) => void;
 };
 
 export async function spawnRunDeno(
@@ -19,11 +23,13 @@ export async function spawnRunDeno(
 ): Promise<ChildProcess> {
   const {
     script,
-    args,
+    args = [],
     cwd,
     env = {},
     permissions,
     stdin = 'ignore',
+    stderr = 'pipe',
+    stdout = 'pipe',
   } = options;
 
   const denoBin = await which('deno');
@@ -34,7 +40,7 @@ export async function spawnRunDeno(
 
   // if they provide permission, push it onto the args
   if (permissions) {
-    _args.push(...getDenoPermissions(permissions));
+    _args.push(...getDenoPermissions(permissions, Object.keys(env)));
   }
 
   // path to script and any other args
@@ -44,9 +50,53 @@ export async function spawnRunDeno(
   // return the spawn. always pipe stdout/stderr. let
   // the user decide about stdin
   return spawn(denoBin, _args, {
-    stdio: [stdin, 'pipe', 'pipe'],
+    stdio: [stdin, stdout, stderr],
     cwd,
     env,
+  });
+}
+
+export async function runDenoInlineScript(
+  options: Omit<SpawnDenoOptions, 'stdin'>,
+): Promise<[string, number]> {
+  const { script } = options;
+
+  const proc = await spawnRunDeno({
+    ...options,
+    script: '-',
+    stdin: 'pipe',
+  });
+
+  const scripts = `  
+    ${script}
+  `;
+
+  const output: string[] = [];
+
+  return await new Promise((resolve) => {
+    proc.stdout?.on('data', (chunk) => {
+      options.onStdout?.(chunk.toString());
+      output.push(chunk.toString().trim());
+    });
+    proc.stderr?.on('data', (chunk) => {
+      options.onStderr?.(chunk.toString());
+      console.log(chunk.toString());
+    });
+
+    proc.on('error', (err) => {
+      console.log(err);
+      resolve(['', 1]);
+    });
+
+    proc.on('close', (code) => {
+      resolve([output.join(''), code ?? 0]);
+    });
+
+    scripts.split('\n').forEach((line) => {
+      proc.stdin?.write(`${line.trim()}\n`);
+    });
+
+    proc.stdin?.end();
   });
 }
 

@@ -1,9 +1,6 @@
 import { isAbsolute, join } from 'path';
-import { spawn } from 'child_process';
 
 import { invariant } from 'ts-invariant';
-import which from 'which';
-
 import type { JsonObject } from '@elwood/types';
 import type { WorkflowRunnerPermission } from '@elwood/workflow-types';
 
@@ -14,6 +11,7 @@ import type {
 import { RunnerStatus } from '../constants';
 import debug from '../libs/debug';
 import { shouldRunWhen } from '../libs/should-run-when';
+import { spawnRunDeno, runDenoInlineScript } from '../libs/spawn-deno';
 
 const log = debug('run:step');
 const localStageDir = '/var/stage';
@@ -99,35 +97,37 @@ export async function runStep(
       'localhost',
     );
 
-    const envObj = env.reduce(
-      (acc, value) => {
-        const [key, ...val] = value.split('=');
-        return {
-          ...acc,
-          [key]: val.join('='),
-        };
-      },
-      {
-        // eslint-disable-next-line turbo/no-undeclared-env-vars
-        PATH: String(process.env.PATH),
-      },
-    );
+    const envObj = env.reduce((acc, value) => {
+      const [key, ...val] = value.split('=');
+      return {
+        ...acc,
+        [key]: val.join('='),
+      };
+    }, {});
 
-    const cmd: string[] = [
-      'deno',
-      'run',
-      '-q',
-      ...getActionPermissions(permission, Object.keys(envObj)),
-      scriptUrl,
-      ...action.args,
-    ];
+    const cmd: string[] = ['deno', 'run', '-q', scriptUrl, ...action.args];
 
     log(' cmd=%o', cmd);
 
     let exitCode = 1;
 
-    if (runtime.config.context === 'local') {
-      exitCode = await runStepLocally(step, cmd, envObj);
+    if (actionName === '__run_script__') {
+      exitCode = await runStepLocally(
+        step,
+        step.def.input.script,
+        action.args,
+        envObj,
+        permission,
+        true,
+      );
+    } else if (runtime.config.context === 'local') {
+      exitCode = await runStepLocally(
+        step,
+        scriptUrl,
+        action.args,
+        envObj,
+        permission,
+      );
     } else {
       exitCode = await runStepInContainer(step, cmd, envObj);
     }
@@ -141,50 +141,6 @@ export async function runStep(
   }
 
   await step.complete();
-}
-
-export function getActionPermissions(
-  permissions: WorkflowRunnerPermission,
-  additionalEnv: string[] = [],
-): string[] {
-  const args: Array<string | boolean> = [];
-
-  for (const [key, value] of Object.entries(permissions)) {
-    switch (key) {
-      case 'unstable': {
-        args.push(value && '--unstable');
-        break;
-      }
-      case 'env': {
-        // if env is true, allow all env vars
-        if (value === true) {
-          args.push('--allow-env');
-          break;
-        }
-
-        // if env is not true, allow only the env
-        // vars that we're passing in
-        const _values = additionalEnv;
-
-        if (Array.isArray(value)) {
-          _values.push(...value);
-        }
-
-        args.push(`--allow-env=${_values.join(',')}`);
-
-        break;
-      }
-      default: {
-        if (Array.isArray(value)) {
-          args.push(`--allow-${key}=${value.join(',')}`);
-        } else {
-          args.push(value && `--allow-${key}`);
-        }
-      }
-    }
-  }
-
-  return args.filter(Boolean) as string[];
 }
 
 export function getScriptUrlProvider(
@@ -263,28 +219,49 @@ export async function runStepInContainer(
 
 export async function runStepLocally(
   step: WorkflowRunnerRuntimeRunStep,
-  cmd: string[],
+  script: string,
+  args: string[],
   env: JsonObject,
+  permissions: WorkflowRunnerPermission,
+  inline = false,
 ): Promise<number> {
   log(' env=%o', env);
 
-  const [_, ...args] = cmd;
-  const denoBin = await which('deno');
-
-  invariant(denoBin, 'deno is not installed');
-
-  return await new Promise((resolve) => {
-    const proc = spawn(denoBin, args, {
+  if (inline) {
+    const [_, code] = await runDenoInlineScript({
       cwd: step.job.stageDir.path(),
-      stdio: ['ignore', 'pipe', 'pipe'],
+      script: `
+        import * as core from 'https://x.elwood.studio/a/core/mod.ts';
+        ${script}
+      `,
+      permissions,
+      args,
       env,
+      onStderr(chunk) {
+        step.stderr.write(chunk);
+      },
+      onStdout(chunk) {
+        step.stdout.write(chunk);
+      },
     });
 
-    proc.stdout.on('data', (chunk) => {
+    return code;
+  }
+
+  const proc = await spawnRunDeno({
+    cwd: step.job.stageDir.path(),
+    script,
+    args,
+    env,
+    permissions,
+  });
+
+  return await new Promise((resolve) => {
+    proc.stdout?.on('data', (chunk) => {
       step.stdout.write(chunk);
     });
 
-    proc.stderr.on('data', (chunk) => {
+    proc.stderr?.on('data', (chunk) => {
       step.stderr.write(chunk);
     });
 

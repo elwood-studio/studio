@@ -35,7 +35,7 @@ export function normalizeJobStep(
   if ((step as WorkflowJobStepRun).run) {
     return {
       ...shared,
-      action: normalizeJobStepAction('run/script'),
+      action: normalizeJobStepAction('__run_script__'),
       input: {
         ...shared.input,
         script: (step as WorkflowJobStepRun).run,

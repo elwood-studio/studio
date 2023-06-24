@@ -8,8 +8,7 @@ import type { Json, JsonObject } from '@elwood/types';
 import type { WorkflowRunnerExpression } from '@elwood/workflow-types';
 import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 
-import type { WorkflowRunnerRuntime } from '../types';
-import { spawnRunDeno } from '../libs/spawn-deno';
+import { runDenoInlineScript } from '../libs/spawn-deno';
 
 export type ExpressionOptions = {
   secrets?: WorkflowSecretsManager;
@@ -59,12 +58,16 @@ export async function runExpressionValue(
     );
   }
 
-  const proc = await spawnRunDeno({
-    script: '-',
-    args: [] as string[],
+  const [output] = await runDenoInlineScript({
+    script: `  
+      import {getArgsInput,getInput,getInputWithJson,getBooleanInput} from 'https://x.elwood.studio/a/core/input.ts';
+      function returnValue(value:any) {
+        Deno.stdout.write(new TextEncoder().encode(value));
+      }
+      ${run}
+    `,
     cwd: process.cwd(),
     env,
-    stdin: 'pipe',
     permissions: {
       net: false,
       read: false,
@@ -77,39 +80,7 @@ export async function runExpressionValue(
     },
   });
 
-  const scripts = `  
-    import {getArgsInput,getInput,getInputWithJson,getBooleanInput} from 'https://x.elwood.studio/a/core/input.ts';
-    function returnValue(value:any) {
-      Deno.stdout.write(new TextEncoder().encode(value));
-    }
-    ${run}
-  `;
-
-  const output: string[] = [];
-
-  return await new Promise((resolve) => {
-    proc.stdout?.on('data', (chunk) => {
-      output.push(chunk.toString().trim());
-    });
-    proc.stderr?.on('data', (chunk) => {
-      console.log(chunk.toString());
-    });
-
-    proc.on('error', (err) => {
-      console.log(err);
-      resolve('');
-    });
-
-    proc.on('close', (code) => {
-      resolve(output.join(''));
-    });
-
-    scripts.split('\n').forEach((line) => {
-      proc.stdin?.write(`${line.trim()}\n`);
-    });
-
-    proc.stdin?.end();
-  });
+  return output;
 }
 
 export async function getNativeExpressionValue<T extends Json = string>(
