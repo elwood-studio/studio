@@ -18,14 +18,14 @@
  *  Command: A request sent from a step container to perform an action in the workflow runner
  */
 
-export { runWorkflow, startRunWorkflow } from './libs/run-workflow';
+export { runWorkflow, startRunWorkflow } from './run/workflow';
 export { createRuntime } from './libs/create-runtime';
 export { handleWorkflowCallback } from './libs/callback';
-export { cli } from './cli/cli';
 export { shouldRunWhen } from './libs/should-run-when';
 export { getExpressionValue } from './libs/expression';
 
 export { FileReporterPlugin } from './plugins/file-reporter';
+export { CleanRunStagePlugin } from './plugins/clean-run-stage';
 
 export * from './types';
 export * from './constants';

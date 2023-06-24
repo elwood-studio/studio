@@ -25,6 +25,7 @@ export async function createContext(): Promise<AppContext> {
     retryBackoff: true,
     retryLimit: 20,
     monitorStateIntervalSeconds: 30,
+    schema: 'elwood',
   });
 
   boss.on('stopped', () => {

@@ -5,13 +5,13 @@ import type {
 import type { JsonObject } from '@elwood/types';
 import { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 
-import type { WorkflowRunnerRuntime, WorkflowRunnerRuntimeRun } from '../types';
-import debug from './debug';
+import type { WorkflowRunnerRuntime, WorkflowRunnerRuntimeRun } from '@/types';
+import debug from '../libs/debug';
 import { RunnerStatus } from '../constants';
-import { getExpressionValue } from './expression';
-import { expandJobMatrixAndAddToRun } from './matrix';
-import { runJob } from './run-job';
-import { shouldRunWhen } from './should-run-when';
+import { getExpressionValue } from '../libs/expression';
+import { expandJobMatrixAndAddToRun } from '../libs/matrix';
+import { runJob } from './job';
+import { shouldRunWhen } from '../libs/should-run-when';
 
 const log = debug('run:workflow');
 
@@ -46,7 +46,9 @@ export async function runWorkflow(
     run.status = RunnerStatus.Running;
 
     const shouldRun = await shouldRunWhen(instructions.when, (expression) =>
-      getExpressionValue(runtime, expression, run.contextValue()),
+      getExpressionValue(expression, run.contextValue(), {
+        secrets: run.secretsManager,
+      }),
     );
 
     // first thing, figure out if we want to run the job

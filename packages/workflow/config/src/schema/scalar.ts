@@ -74,7 +74,24 @@ export const when = joi.alternatives().try(
   }),
 );
 
-export const input = joi.object({}).unknown(true);
+export const input = joi
+  .object()
+  .unknown(true)
+  .pattern(
+    joi
+      .string()
+      .min(1)
+      .max(50)
+      .pattern(/^[a-zA-Z][a-zA-Z0-9-_]*$/),
+    [
+      joi.string(),
+      joi.boolean(),
+      joi.number(),
+      joi.object({
+        run: joi.string().required(),
+      }),
+    ],
+  );
 
 export const matrix = joi
   .alternatives()

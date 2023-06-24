@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import { render as interpolate } from 'ejs';
-import invariant from 'ts-invariant';
+import { invariant } from 'ts-invariant';
 import lodashGet from 'lodash.get';
 
 import type { Json, JsonObject } from '@elwood/types';
@@ -9,13 +9,13 @@ import type { WorkflowRunnerExpression } from '@elwood/workflow-types';
 import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 
 import type { WorkflowRunnerRuntime } from '../types';
+import { spawnRunDeno } from '../libs/spawn-deno';
 
 export type ExpressionOptions = {
   secrets?: WorkflowSecretsManager;
 };
 
 export async function getExpressionValue<T extends Json = string>(
-  runtime: WorkflowRunnerRuntime,
   expression: WorkflowRunnerExpression | string,
   data: JsonObject,
   options: ExpressionOptions = {},
@@ -26,7 +26,6 @@ export async function getExpressionValue<T extends Json = string>(
 
   if (typeof expression === 'string' || Array.isArray(expression)) {
     return getExpressionValue(
-      runtime,
       { run: 'expression', input: { expression } },
       data,
       options,
@@ -41,43 +40,76 @@ export async function getExpressionValue<T extends Json = string>(
     return await getNativeExpressionValue(input.expression, data, options);
   }
 
-  throw new Error(`Invalid expression: ${run}`);
+  return (await runExpressionValue(expression, data, options)) as T;
+}
 
-  // // write the script to a local file
-  // const eid = runtime.uuid('e');
-  // const localRunFile = runtime.workingDir.path(`expression/${eid}.js`);
-  // await runtime.workingDir.writeAsync(
-  //   `expression/${eid}.js`,
-  //   `globalThis.context = ${JSON.stringify(data)}; ${run}`,
-  // );
+export async function runExpressionValue(
+  expr: WorkflowRunnerExpression,
+  data: JsonObject,
+  options: ExpressionOptions,
+): Promise<string> {
+  const { run, input = {} } = expr;
+  const env: JsonObject = {};
 
-  // const logger = new Logger(null);
-  // const [result, container] = await runDocker(
-  //   runtime.docker,
-  //   'denoland/deno:alpine',
-  //   ['deno', 'run', '-A', '-q', '/var/run/script.js'],
-  //   [logger, logger],
-  //   {
-  //     Env: ['NO_COLOR='],
-  //     AttachStderr: true,
-  //     AttachStdout: true,
-  //     Tty: false,
-  //     Volumes: {
-  //       '/var/run': {},
-  //     },
-  //     HostConfig: {
-  //       Binds: [`${localRunFile}:/var/run/script.js`],
-  //     },
-  //   },
-  // );
+  for (const [key, value] of Object.entries(input)) {
+    env[`INPUT_${key.toUpperCase()}`] = await getExpressionValue(
+      value,
+      data,
+      options,
+    );
+  }
 
-  // await container.remove({ force: true });
+  const proc = await spawnRunDeno({
+    script: '-',
+    args: [] as string[],
+    cwd: process.cwd(),
+    env,
+    stdin: 'pipe',
+    permissions: {
+      net: false,
+      read: false,
+      write: false,
+      run: false,
+      ffi: false,
+      unstable: false,
+      sys: false,
+      env: Object.keys(env),
+    },
+  });
 
-  // if (result.StatusCode !== 0) {
-  //   return null;
-  // }
+  const scripts = `  
+    import {getArgsInput,getInput,getInputWithJson,getBooleanInput} from 'https://x.elwood.studio/a/core/input.ts';
+    function returnValue(value:any) {
+      Deno.stdout.write(new TextEncoder().encode(value));
+    }
+    ${run}
+  `;
 
-  // return JSON.parse(logger.getStack().join('')) as T;
+  const output: string[] = [];
+
+  return await new Promise((resolve) => {
+    proc.stdout?.on('data', (chunk) => {
+      output.push(chunk.toString().trim());
+    });
+    proc.stderr?.on('data', (chunk) => {
+      console.log(chunk.toString());
+    });
+
+    proc.on('error', (err) => {
+      console.log(err);
+      resolve('');
+    });
+
+    proc.on('close', (code) => {
+      resolve(output.join(''));
+    });
+
+    scripts.split('\n').forEach((line) => {
+      proc.stdin?.write(`${line.trim()}\n`);
+    });
+
+    proc.stdin?.end();
+  });
 }
 
 export async function getNativeExpressionValue<T extends Json = string>(

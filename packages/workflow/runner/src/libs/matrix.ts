@@ -24,9 +24,9 @@ export async function expandJobMatrixAndAddToRun(
   // if
   if (typeof (matrixValue as WorkflowRunnerExpression).run !== 'undefined') {
     matrixValue = await getExpressionValue(
-      runtime,
       matrixValue as WorkflowRunnerExpression,
       run.contextValue(),
+      { secrets: run.secretsManager },
     );
   }
 
@@ -40,7 +40,9 @@ export async function expandJobMatrixAndAddToRun(
   );
 
   for (const exp of matrixValue) {
-    const value = await getExpressionValue(runtime, exp, run.contextValue());
+    const value = await getExpressionValue(exp, run.contextValue(), {
+      secrets: run.secretsManager,
+    });
 
     if (value) {
       run.addJob(job).context.set('matrix', value);

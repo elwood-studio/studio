@@ -12,8 +12,8 @@ import type {
   WorkflowRunnerRuntime,
 } from '../types';
 import { RunnerStatus } from '../constants';
-import debug from './debug';
-import { shouldRunWhen } from './should-run-when';
+import debug from '../libs/debug';
+import { shouldRunWhen } from '../libs/should-run-when';
 
 const log = debug('run:step');
 const localStageDir = '/var/stage';

@@ -1,5 +1,5 @@
 import type { JsonObject } from '@elwood/types';
-import invariant from 'ts-invariant';
+import { invariant } from 'ts-invariant';
 
 import type {
   WorkflowRunnerRuntime,
@@ -7,7 +7,7 @@ import type {
   WorkflowRunnerRuntimeRun,
 } from '../types';
 
-import { startRunWorkflow } from './run-workflow';
+import { startRunWorkflow } from '../run/workflow';
 
 export async function handleWorkflowCallback(
   runtime: WorkflowRunnerRuntime,

@@ -5,14 +5,10 @@
   "files": [
     "lib"
   ],
-  "bin": {
-    "workflow-runner": "./bin/cli.js"
-  },
   "scripts": {
     "dev": "tsc -b ./tsconfig.json --watch",
     "build": "tsc -b ./tsconfig.json",
-    "test": "jest --runInBand",
-    "cli": "./bin/cli-dev.js"
+    "test": "jest --runInBand"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
@@ -36,8 +32,7 @@
     "ts-node": "^10.9.1",
     "typed-emitter": "^2.1.0",
     "uuid": "^9.0.0",
-    "which": "^3.0.1",
-    "yargs-parser": "^21.1.1"
+    "which": "^3.0.1"
   },
   "devDependencies": {
     "@elwood/types": "workspace:*",
@@ -50,7 +45,6 @@
     "@types/lodash.set": "^4.3.7",
     "@types/uuid": "^9.0.2",
     "@types/which": "^3.0.0",
-    "@types/yargs-parser": "^21.0.0",
     "jest": "^29.5.0",
     "jest-presets": "workspace:*",
     "tsconfig": "workspace:*"
