@@ -13,6 +13,7 @@ import treeHandler from './tree.ts';
 import rawHandler from './raw.ts';
 import blobHandler from './blob.ts';
 import shareHandler from './share.ts';
+import trackHandler from './track.ts';
 
 type Handler = (options: ObjectHandlerOptions) => Promise<void>;
 
@@ -42,6 +43,7 @@ export default fp<ObjectOptions>(async (app, opts) => {
   app.get('/blob/*', withHandlerOptions(blobHandler));
   app.get('/share/*', withHandlerOptions(shareHandler));
   app.get('/raw/*', withHandlerOptions(rawHandler));
+  app.get('/track/*', withHandlerOptions(trackHandler));
 });
 
 export function normalizeRequestPath(raw: string): ObjectRequestPath {

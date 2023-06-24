@@ -2,4 +2,4 @@ export * from './depend';
 export * from './scalar';
 export * from './database';
 export * from './models';
-export * from './fs';
+export * as FileSystem from './fs';

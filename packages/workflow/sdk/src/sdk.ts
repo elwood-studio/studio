@@ -1,8 +1,5 @@
 import type { JsonObject } from '@elwood/types';
-
-import { invariant } from './libs/invariant.ts';
-import type { Fetch } from './types.ts';
-import * as fetch from './libs/fetch.ts';
+import { invariant, http, type Fetch } from '@elwood/common';
 
 export type ElwoodWorkflowSdkOptions = {
   url: string;
@@ -50,7 +47,7 @@ export class ElwoodWorkflowSdk {
   ): Promise<{ tracking_id: string }> {
     invariant(workflow, 'workflow.submit(): workflow is required');
 
-    return await fetch.post<{ tracking_id: string }>(this._fetch, `run`, {
+    return await http.post<{ tracking_id: string }>(this._fetch, `run`, {
       body: {
         workflow,
         input,
@@ -60,7 +57,7 @@ export class ElwoodWorkflowSdk {
   }
 
   async event(type: string, payload: JsonObject = {}) {
-    return await fetch.post<{ event_id: string }>(
+    return await http.post<{ event_id: string }>(
       this._fetch,
       `event/${type}`,
       payload,
@@ -68,6 +65,6 @@ export class ElwoodWorkflowSdk {
   }
 
   async report(trackingId: string): Promise<JsonObject> {
-    return await fetch.get<JsonObject>(this._fetch, `run/${trackingId}`);
+    return await http.get<JsonObject>(this._fetch, `run/${trackingId}`);
   }
 }

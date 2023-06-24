@@ -1,4 +1,4 @@
-import type { ObjectModel, FileSystemTreeNode } from '@elwood/types';
+import type { ObjectModel, FileSystem } from '@elwood/types';
 
 import { getEnv } from './get-env.ts';
 
@@ -33,7 +33,7 @@ export function mapObjectDataToRclonePath(
 export async function fetchAndMapRcloneResultToTree(
   remote: string,
   fs: string,
-): Promise<FileSystemTreeNode[]> {
+): Promise<FileSystem.Node[]> {
   await fetchRclone('/operations/list', {
     body: JSON.stringify({
       remote,

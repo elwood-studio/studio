@@ -1,7 +1,7 @@
 import joi from 'joi';
 
 import { job } from './job';
-import { input } from './input';
+
 import { name, env, extend, when, permission } from './scalar';
 
 export const workflow = joi
@@ -17,9 +17,6 @@ export const workflow = joi
     extends: extend
       .description('The name of the workflow or workflows to extend')
       .example('https://x.elwood.studio/w/echo.yml'),
-    input: input
-      .description('Describe the the shape of the input to the workflow')
-      .optional(),
     when: when
       .description('Conditional for when to run the workflow')
       .example('{%= input.run === true %}')

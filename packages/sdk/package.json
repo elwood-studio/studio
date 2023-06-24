@@ -22,8 +22,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "rimraf ./dist && tsup --watch",
-    "build": "rimraf ./dist && tsup",
+    "dev": "tsup --watch",
+    "build": "tsup --silent",
     "lint": "eslint \"**/*.ts*\""
   },
   "jest": {
@@ -46,6 +46,7 @@
   "dependencies": {
     "@elwood/fs-sdk": "workspace:*",
     "@elwood/workflow-sdk": "workspace:*",
+    "@elwood/common": "workspace:*",
     "@supabase/supabase-js": "^2.26.0",
     "isomorphic-fetch": "^3.0.0"
   }

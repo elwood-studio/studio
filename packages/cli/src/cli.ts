@@ -45,6 +45,10 @@ export async function main(argv: string[]) {
       describe: 'Base URL for the remote API',
       default: 'https://api.elwood.studio',
     })
+    .option('project-id', {
+      type: 'string',
+      describe: 'ID of the Elwood Studio project',
+    })
     .command(
       '$0',
       'Show help',

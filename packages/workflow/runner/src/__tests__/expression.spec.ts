@@ -6,6 +6,7 @@ import {
   getNativeExpressionValue,
   replaceExpressionTokens,
   isExpressionValueFalseLike,
+  runExpressionValue,
 } from '../libs/expression';
 
 describe('library/expression', () => {
@@ -41,6 +42,21 @@ describe('library/expression', () => {
     expect(
       await getNativeExpressionValue('${ foo }', { foo: ['bar'] }, {}),
     ).toEqual(['bar']);
+  });
+
+  test('runExpressionValue', async () => {
+    expect.assertions(1);
+
+    const result = await runExpressionValue(
+      {
+        run: 'console.log("poop")',
+        input: {},
+      },
+      {},
+      {},
+    );
+
+    expect(result).toEqual('poop');
   });
 
   test('replaceExpressionTokens()', async () => {

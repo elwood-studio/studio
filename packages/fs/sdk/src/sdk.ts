@@ -1,3 +1,6 @@
+import type { FileSystem } from '@elwood/types';
+import { http } from '@elwood/common';
+
 import type { Fetch } from './types.ts';
 import { Upload } from './upload.ts';
 import { Remote, RemoteOptions } from './remote.ts';
@@ -42,22 +45,24 @@ export class ElwoodFileSystemSdk {
     });
   }
 
-  async ls(path: string) {
-    return await this._fetch(`tree/${path}`);
+  async ls(path: string): Promise<FileSystem.TreeResult> {
+    return await http.get<FileSystem.TreeResult>(this._fetch, `tree/${path}`);
   }
 
-  async stat(path: string) {
-    return await this._fetch(`blob/${path}`);
+  async stat(path: string): Promise<FileSystem.BlobResult> {
+    return await http.get<FileSystem.BlobResult>(this._fetch, `blob/${path}`);
   }
 
-  async raw(path: string) {
+  async copy(path: string) {
     return await this._fetch(`raw/${path}`);
   }
 
-  async mkdir(path: string) {
-    return await this._fetch(`tree/${path}`, {
-      method: 'POST',
-    });
+  async mkdir(path: string): Promise<FileSystem.TreeResult> {
+    return await http.post<FileSystem.TreeResult>(
+      this._fetch,
+      `tree/${path}`,
+      {},
+    );
   }
 
   async share(path: string) {
@@ -66,7 +71,7 @@ export class ElwoodFileSystemSdk {
     });
   }
 
-  async remote(name: string, options: Omit<RemoteOptions, 'fetch'>) {
+  remote(name: string, options: Omit<RemoteOptions, 'fetch'>): Remote {
     return new Remote(name, {
       ...options,
       fetch: this._fetch,

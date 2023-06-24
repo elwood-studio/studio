@@ -2,9 +2,9 @@ import supa from '@supabase/supabase-js';
 import type { SupabaseClientOptions } from '@supabase/supabase-js';
 import { ElwoodFileSystemSdk } from '@elwood/fs-sdk';
 import { ElwoodWorkflowSdk } from '@elwood/workflow-sdk';
+import { invariant } from '@elwood/common';
 
 import type { Database } from './types.ts';
-import { invariant } from './libs/invariant.ts';
 
 const { SupabaseClient } = supa;
 

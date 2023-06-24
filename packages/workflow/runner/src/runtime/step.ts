@@ -165,14 +165,9 @@ export class RuntimeRunStep implements WorkflowRunnerRuntimeRunStep {
   async getExpressionValue<T extends Json = string>(
     expression: string | WorkflowRunnerExpression,
   ): Promise<T | null> {
-    return await getExpressionValue<T>(
-      this.job.run.runtime,
-      expression,
-      this.contextValue(),
-      {
-        secrets: this.job.run.secretsManager,
-      },
-    );
+    return await getExpressionValue<T>(expression, this.contextValue(), {
+      secrets: this.job.run.secretsManager,
+    });
   }
   async getContainerEnvironment(
     additionalInput: JsonObject = {},

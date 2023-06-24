@@ -22,8 +22,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "rimraf ./dist && tsup --watch",
-    "build": "rimraf ./dist && tsup",
+    "dev": "tsup --watch",
+    "build": "tsup --silent",
     "lint": "eslint \"**/*.ts*\""
   },
   "jest": {
@@ -44,6 +44,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@elwood/common": "workspace:*",
     "crypto-js": "^4.1.1",
     "emittery": "^1.0.1",
     "isomorphic-fetch": "^3.0.0",

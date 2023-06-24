@@ -1,5 +1,5 @@
 import type { Json, JsonObject } from '@elwood/types';
-import type { Fetch } from '../types.ts';
+import type { Fetch } from './types.ts';
 import { invariant } from './invariant.ts';
 
 export async function get<T extends Json = Json>(
@@ -25,4 +25,19 @@ export async function post<T extends Json = Json>(
   });
   invariant(response.ok, 'get(): response is not ok');
   return (await response.json()) as T;
+}
+
+export function provider(fetch: Fetch) {
+  return {
+    async get(info: RequestInfo | URL, init: RequestInit = {}) {
+      return get(fetch, info, init);
+    },
+    async post(
+      info: RequestInfo | URL,
+      body: JsonObject,
+      init: RequestInit = {},
+    ) {
+      return post(fetch, info, body, init);
+    },
+  };
 }

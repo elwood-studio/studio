@@ -68,10 +68,6 @@ export async function register(cli: Argv) {
       const commandArguments = args.arguments ?? [];
 
       switch (args.command) {
-        case 'generate-unlock-key': {
-          await generateUnlockKey(args);
-          break;
-        }
         case 'run': {
           await run({
             ...args,
@@ -134,34 +130,6 @@ export async function register(cli: Argv) {
     },
     report,
   );
-
-  // cli.command<JsonObject>(
-  //   'workflow:generate-unlock-key',
-  //   'Generate a Workflow Unlock Key',
-  //   () => {
-  //     return;
-  //   },
-  //   generateUnlockKey,
-  // );
-
-  // cli.command<SecretOptions>(
-  //   'workflow:secret <name> [value]',
-  //   'Seal or unseal a secret',
-  //   (y) => {
-  //     y.option('unlock-key', {
-  //       alias: 'u',
-  //       type: 'string',
-  //       describe: 'Unlock key',
-  //       demandOption: true,
-  //     });
-  //     y.option('key-name', {
-  //       alias: 'n',
-  //       type: 'string',
-  //       describe: 'Key Name',
-  //     });
-  //   },
-  //   secret,
-  // );
 
   cli.command<ExecuteOptions>(
     'workflow:execute <workflow>',
@@ -255,7 +223,7 @@ export async function run(args: Arguments<RunOptions>) {
 export async function report(args: Arguments<ReportOptions>) {
   invariant(args.trackingId, 'Tracking ID is required');
   const context = args.context as Required<Context>;
-  const result = await context.localClient.workflow.report(args.trackingId);
+  const result = await context.client.workflow.report(args.trackingId);
 
   invariant(result, 'Unable to find workflow report');
 

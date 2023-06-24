@@ -1,13 +1,13 @@
 import type { WorkflowRunnerRuntimeRunJob } from '../types';
 import { RunnerStatus } from '../constants';
-import { createDockerRuntimeContainer } from './docker';
-import debug from './debug';
-import { getExpressionValue } from './expression';
-import { shouldRunWhen } from './should-run-when';
+import { createDockerRuntimeContainer } from '../libs/docker';
+import debug from '../libs/debug';
+import { getExpressionValue } from '../libs/expression';
+import { shouldRunWhen } from '../libs/should-run-when';
 
 const log = debug('run:job');
 
-import { runStep } from './run-step';
+import { runStep } from './step';
 
 export async function runJob(
   job: WorkflowRunnerRuntimeRunJob,
@@ -17,7 +17,9 @@ export async function runJob(
   const run = job.run;
 
   const shouldRun = await shouldRunWhen(job.def.when, async (exp) =>
-    getExpressionValue(runtime, exp, job.contextValue()),
+    getExpressionValue(exp, job.contextValue(), {
+      secrets: run.secretsManager,
+    }),
   );
 
   // is if this step should run
