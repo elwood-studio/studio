@@ -37,7 +37,9 @@ export default async function register(context: AppContext): Promise<void> {
     await run.setup(data.input, data.context);
 
     const shouldRun = await shouldRunWhen(instructions.when, (expression) =>
-      getExpressionValue(runtime, expression, run.contextValue()),
+      getExpressionValue(expression, run.contextValue(), {
+        secrets: secretsManager,
+      }),
     );
 
     // if we should skip then

@@ -1,8 +1,4 @@
-import type {
-  ObjectModel,
-  FileSystemTreeNode,
-  FileSystemTreeResult,
-} from '@elwood/types';
+import type { ObjectModel, FileSystem } from '@elwood/types';
 
 import type { ObjectHandlerOptions } from '@/types.ts';
 import { authExecuteSql } from '@/libs/auth-execute-sql.ts';
@@ -18,7 +14,7 @@ export default async function tree(
 ): Promise<void> {
   const { db, req, res } = options;
   const { type, id, path } = options.params;
-  const nodes: FileSystemTreeNode[] = [];
+  const nodes: FileSystem.Node[] = [];
 
   res.header('Content-Type', 'application/json');
 
@@ -73,7 +69,7 @@ export default async function tree(
           id: item.id,
           name: item.name,
           display_name: item.display_name,
-          type: item.type as FileSystemTreeNode['type'],
+          type: item.type as FileSystem.NodeType,
           size: item.size ?? 0,
           mime_type: item.mime_type ?? 'application/octet-stream',
           is_remote: false,
@@ -83,8 +79,9 @@ export default async function tree(
     );
   }
 
-  const result: FileSystemTreeResult = {
-    nodes,
+  const result: FileSystem.TreeResult = {
+    node: nodes[0],
+    children: nodes,
     breadcrumbs: [],
   };
 

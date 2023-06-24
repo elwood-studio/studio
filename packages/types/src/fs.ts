@@ -1,8 +1,8 @@
 import { JsonObject } from './scalar';
 
-export type FileSystemNodeType = 'tree' | 'blob';
+export type NodeType = 'tree' | 'blob';
 
-export type FileSystemBreadcrumb = {
+export type Breadcrumb = {
   id: string;
   name: string;
   display_name: string;
@@ -10,23 +10,25 @@ export type FileSystemBreadcrumb = {
   depth_from_parent: number;
 };
 
-export type FileSystemTreeNode = {
+export type Node = {
   id: string;
   name: string;
   display_name: string;
-  type: FileSystemNodeType;
+  type: NodeType;
   size: number;
   mime_type: string;
   is_remote: boolean;
   metadata: JsonObject;
 };
 
-export type FileSystemTreeResult = {
-  nodes: FileSystemTreeNode[];
-  breadcrumbs: FileSystemBreadcrumb[];
+export type TreeResult = {
+  node: Node;
+  children: Node[];
+  breadcrumbs: Breadcrumb[];
 };
 
-export type FileSystemBlobResult = {
-  node: FileSystemTreeNode;
-  breadcrumbs: FileSystemBreadcrumb[];
+export type BlobResult = {
+  node: Node;
+  sidecarNodes: Node[];
+  breadcrumbs: Breadcrumb[];
 };

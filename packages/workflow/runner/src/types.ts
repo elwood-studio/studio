@@ -17,7 +17,6 @@ import type {
 } from '@elwood/workflow-types';
 import type { WorkflowSecretsManager } from '@elwood/workflow-secrets';
 import type { JsonObject, Json } from '@elwood/types';
-import yargsParser from 'yargs-parser';
 
 export type WorkflowRunnerConfiguration = {
   dockerSocketPath?: string;
@@ -35,25 +34,6 @@ export type WorkflowRunnerConfiguration = {
     | [WorkflowRunnerRuntimePluginConstructor, JsonObject]
   >;
   staticFiles?: Record<string, string>;
-};
-
-export type WorkflowRunnerCliArguments = yargsParser.Arguments & {
-  homeDir?: string;
-  config?: string;
-  report?: boolean;
-  reportJson?: boolean;
-  dockerSocket?: string;
-  commandPort?: number;
-  workingDir?: string;
-  keychainUnlockKey?: string;
-  endpoint?: string;
-  stdLibUrl?: string;
-  registryUrl?: string;
-  commandContext?: 'local' | 'container';
-  context?: 'local' | 'container';
-  docker?: boolean;
-  input?: JsonObject;
-  staticFiles?: string[];
 };
 
 export interface WorkflowRunnerRuntime {

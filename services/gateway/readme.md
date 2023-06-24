@@ -1,1 +1,1 @@
-# Elwood Studio API Gateway Service
+# Elwood API Gateway Service
