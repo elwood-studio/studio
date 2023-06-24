@@ -22,8 +22,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "rimraf ./dist && tsup --watch",
-    "build": "rimraf ./dist && tsup",
+    "dev": "tsup --watch",
+    "build": "tsup --silent",
     "lint": "eslint \"**/*.ts*\""
   },
   "jest": {
