@@ -1,6 +1,6 @@
 {
   "name": "@elwood/workflow-types",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "main": "./lib/index.ts",
   "types": "./lib/index.d.ts",
   "scripts": {
