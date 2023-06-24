@@ -30,7 +30,7 @@ jobs:
             image: ghcr.io/elwood-studio/gateway
             context: ./services/gateway
             build: false
-            platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+            platforms: linux/amd64,linux/arm64
 
           - name: File System
             dir: ./services/fs
