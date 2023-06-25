@@ -4,7 +4,6 @@ RUN apk add --no-cache libc6-compat python3 make g++ make \
 WORKDIR /app
 COPY ./dist/ /app/dist/
 RUN cd /app \
-    && npm install ssh2 \
     && pkg -t node18-linux -o ./workflow-entry ./dist/entry.js
 
 FROM lukechannings/deno
