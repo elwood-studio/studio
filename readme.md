@@ -21,8 +21,8 @@
 
 ## 📖 Documentation
 
-- [Workflow](./docs/workflow/readme.md)
 - [File System](./docs/fs/readme.md)
+- [Workflow](./docs/workflow/readme.md)
 - [Command Line Interface](./docs/cli/readme.md)
 - [JavaScript SDK](./docs/sdk/js/readme.md)
 

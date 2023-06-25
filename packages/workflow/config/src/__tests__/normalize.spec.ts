@@ -129,12 +129,11 @@ describe('normalize', () => {
         });
         expect(normalizeWhen({ event: ['b', 'c'], all: ['a'] })).toEqual({
           operator: 'and',
-          any: [],
-          all: [
-            normalizeWhenToExpression('a'),
+          any: [
             normalizeWhenToExpression('{%= event === "b" %}'),
             normalizeWhenToExpression('{%= event === "c" %}'),
           ],
+          all: [normalizeWhenToExpression('a')],
         });
       });
     });
