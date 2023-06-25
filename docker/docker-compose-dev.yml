@@ -21,6 +21,8 @@ services:
   # WORKFLOW MANAGER
   workflow:
     container_name: workflow
+    depends_on:
+      - db
     build:
       context: ./services/workflow/
       dockerfile: Dockerfile.dev
