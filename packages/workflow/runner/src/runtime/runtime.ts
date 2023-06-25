@@ -3,7 +3,6 @@ import { EventEmitter } from 'events';
 
 import { v4 as randomUUID } from 'uuid';
 import invariant from 'ts-invariant';
-import Docker from 'dockerode';
 import FileSystem from 'fs-jetpack';
 import axios from 'axios';
 import type { FastifyInstance } from 'fastify';
@@ -36,18 +35,13 @@ export class Runtime implements WorkflowRunnerRuntime {
   readonly #workingDir: typeof FileSystem;
   readonly #commandExecutionRefs: Map<string, [string, string, string]> =
     new Map();
-  readonly #docker: Docker | undefined = undefined;
   readonly #emitter = new EventEmitter() as RuntimeEventsEmitter;
   readonly #plugins: WorkflowRunnerRuntimePlugin[] = [];
 
   #commandServer: FastifyInstance | null = null;
   #actionRegistry: Record<string, WorkflowActionRegistry> = {};
 
-  constructor(
-    public readonly config: WorkflowRunnerConfiguration,
-    docker: Docker | undefined,
-  ) {
-    this.#docker = docker;
+  constructor(public readonly config: WorkflowRunnerConfiguration) {
     this.#workingDir = FileSystem.cwd(config.workingDir);
     this.#workingDir.remove();
     this.#workingDir.dir('.');
@@ -68,11 +62,6 @@ export class Runtime implements WorkflowRunnerRuntime {
 
   get plugins() {
     return this.#plugins;
-  }
-
-  get docker() {
-    invariant(this.#docker, 'Docker not initialized');
-    return this.#docker;
   }
 
   get context() {

@@ -5,8 +5,8 @@ import type {
 
 import debug from '../../libs/debug';
 import { nativeCommands, executeNativeCommand } from '../native';
-import { commandExecuteInContainer } from './container';
 import { commandExecuteLocal } from './local';
+import invariant from 'ts-invariant';
 
 const log = debug('command:execute');
 
@@ -25,33 +25,15 @@ export async function executeCommand(
     return await executeNativeCommand(step, name, args);
   }
 
-  if (runtime.config.commandContext === 'local') {
-    return await commandExecuteLocal({
-      runtime,
-      step,
-      name,
-      args,
-    });
-  }
-
-  const commandProvider = step.job.run.commandProviders.find(
-    (item) => item.name === name,
+  invariant(
+    runtime.config.commandContext === 'local',
+    'only local is supported',
   );
 
-  if (!commandProvider) {
-    log('commandProvider not found', name);
-
-    return {
-      code: 1,
-      stderr: '',
-      stdout: '',
-    };
-  }
-
-  return await commandExecuteInContainer({
-    provider: commandProvider,
+  return await commandExecuteLocal({
     runtime,
     step,
+    name,
     args,
   });
 }

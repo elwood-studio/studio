@@ -1,6 +1,5 @@
 import type { WorkflowRunnerRuntimeRunJob } from '../types';
 import { RunnerStatus } from '../constants';
-import { createDockerRuntimeContainer } from '../libs/docker';
 import debug from '../libs/debug';
 import { getExpressionValue } from '../libs/expression';
 import { shouldRunWhen } from '../libs/should-run-when';
@@ -43,15 +42,7 @@ export async function runJob(
     // }
 
     if (runtime.config.context === 'container') {
-      await job.setup(
-        await createDockerRuntimeContainer({
-          docker: runtime.docker,
-          id: run.id,
-          image: 'denoland/deno:alpine',
-          stageDir: job.stageDir.path(),
-          logsDir: job.logsDir.path(),
-        }),
-      );
+      throw new Error('container context is not supported yet');
     }
 
     if (runtime.config.context === 'local') {

@@ -38,7 +38,6 @@ export type WorkflowRunnerConfiguration = {
 
 export interface WorkflowRunnerRuntime {
   readonly config: WorkflowRunnerConfiguration;
-  readonly docker: Docker;
   readonly workingDir: typeof FSJetpack;
   readonly runs: Map<string, WorkflowRunnerRuntimeRun>;
   readonly commandExecutionRefs: Map<string, [string, string, string]>;

@@ -40,13 +40,13 @@
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
-    "tsup": "^7.0.0",
+    "tsup": "^7.1.0",
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@elwood/common": "workspace:*",
     "@elwood/fs-sdk": "workspace:*",
     "@elwood/workflow-sdk": "workspace:*",
-    "@elwood/common": "workspace:*",
     "@supabase/supabase-js": "^2.26.0",
     "isomorphic-fetch": "^3.0.0"
   }

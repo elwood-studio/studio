@@ -24,7 +24,7 @@ import type {
   RuntimeRunEventsEmitter,
 } from '../types';
 import { RunnerStatus } from '../constants';
-import { createCommandContainer } from '../libs/docker';
+
 import debug from '../libs/debug';
 import { RuntimeRunContext } from './context';
 import { RuntimeRunJob } from './job';
@@ -123,26 +123,12 @@ export class RuntimeRun implements WorkflowRunnerRuntimeRun {
     this.#emitter.on(...args);
   }) as RuntimeRunEventsEmitter['on'];
 
-  async addCommandProvider(...providers: RunnerCommandProvider[]) {
-    for (const provider of providers) {
-      this.#log('adding provider %s', provider.name);
-
-      try {
-        provider.container = await createCommandContainer(
-          this.runtime.docker,
-          this,
-          provider.cmd['container'],
-        );
-        await provider.container.start();
-        this.commandProviders.push(provider);
-      } catch (err) {
-        throw new Error(
-          `Failed to start command provider "${provider.name}": ${
-            (err as Error).message
-          }`,
-        );
-      }
-    }
+  /**
+   * @deprecated
+   * @param providers
+   */
+  async addCommandProvider(..._providers: RunnerCommandProvider[]) {
+    throw new Error('addCommandProvider() is @deprecated');
   }
 
   contextValue() {
