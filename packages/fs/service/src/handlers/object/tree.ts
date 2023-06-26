@@ -20,7 +20,6 @@ export default async function tree(
 
   if (type === 'remote') {
     invariant(id, 'remote is required');
-
     nodes.push(...(await fetchAndMapRcloneResultToTree(id, path)));
   } else {
     let rows: ObjectModel[] = [];
@@ -74,6 +73,15 @@ export default async function tree(
           mime_type: item.mime_type ?? 'application/octet-stream',
           is_remote: false,
           metadata: item.metadata,
+          access: {
+            can_view_children: false,
+            can_view_descendants: false,
+            can_write_blob: false,
+            can_write_tree: false,
+            can_share: false,
+            can_download: false,
+            can_preview: false,
+          },
         };
       }),
     );

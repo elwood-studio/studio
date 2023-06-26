@@ -26,7 +26,7 @@ BEGIN
   _payload := NEW.payload;
 
     INSERT INTO 
-      pgboss.job
+      elwood_boss.job
       (
         "name",
         "singletonkey",

@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@elwood/fs-service": "workspace:*",
-    "esbuild": "^0.18.8",
+    "esbuild": "^0.18.9",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.3"
   }
