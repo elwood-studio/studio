@@ -54,11 +54,16 @@ export function normalizeWhen(
     };
 
     if (w.event) {
-      o.all.push(
-        ...(Array.isArray(w.event) ? w.event : [w.event]).map((e) =>
-          normalizeWhenToExpression(`{%= event === "${e}" %}`),
-        ),
-      );
+      // if event is an array, any true value will return
+      if (Array.isArray(w.event)) {
+        o.any.push(
+          ...w.event.map((e) =>
+            normalizeWhenToExpression(`{%= event === "${e}" %}`),
+          ),
+        );
+      } else {
+        o.all.push(normalizeWhenToExpression(`{%= event === "${w.event}" %}`));
+      }
     }
 
     return o;

@@ -126,6 +126,7 @@ export async function replaceExpressionTokens(
 
   try {
     const ctx = {
+      event: '',
       ...data,
       secret(name: string) {
         invariant(secrets, 'secrets not provided');
@@ -166,12 +167,16 @@ export async function replaceExpressionTokens(
       dirname: function dirname(src: string) {
         return path.dirname(src);
       },
+      get(path: string, defaultValue: Json = null) {
+        return lodashGet(data, path, defaultValue);
+      },
     };
 
     const _str = str.replace(/\{%=/g, '{%').replace(/\{%/g, '{%=');
 
     return await interpolate(_str, ctx, {
       async: true,
+      strict: false,
       openDelimiter: '{',
       closeDelimiter: '}',
       escape(str: string) {

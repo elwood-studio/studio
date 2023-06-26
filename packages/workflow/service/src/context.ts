@@ -7,13 +7,14 @@ import { getEnv } from './libs/get-env.ts';
 const { dbUrl } = getEnv();
 
 export async function createContext(): Promise<AppContext> {
-  console.log('starting boss...');
+  console.log('starting pg...');
 
   // create our own db connection so we can
   // pass it down to event handlers
   const db = new PgDatabase({ connectionString: dbUrl });
-
   await db.open();
+
+  console.log('starting boss...');
 
   // lets get boss going
   const boss = new PgBoss({
@@ -25,7 +26,7 @@ export async function createContext(): Promise<AppContext> {
     retryBackoff: true,
     retryLimit: 20,
     monitorStateIntervalSeconds: 30,
-    schema: 'elwood',
+    schema: 'elwood_boss',
   });
 
   boss.on('stopped', () => {
