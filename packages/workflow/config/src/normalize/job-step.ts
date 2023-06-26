@@ -22,7 +22,10 @@ export function normalizeJobStep(
     name: step.name ?? id,
     input: step.input ?? {},
     output: step.output ?? {},
-    env: normalizeEnv(step.env),
+    env: normalizeEnv({
+      ...(defaults.env ?? {}),
+      ...(step.env ?? {}),
+    }),
     timeoutMinutes: normalizeTimeout(step.timeout),
     permission: normalizePermission(
       step.permission,

@@ -20,7 +20,6 @@ export default async function tree(
 
   if (type === 'remote') {
     invariant(id, 'remote is required');
-
     nodes.push(...(await fetchAndMapRcloneResultToTree(id, path)));
   } else {
     let rows: ObjectModel[] = [];

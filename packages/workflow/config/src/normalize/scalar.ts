@@ -7,7 +7,12 @@ import type {
 } from '@elwood/workflow-types';
 
 export function normalizeEnv(env: WorkflowEnv | undefined): WorkflowRunnerEnv {
-  return env ?? {};
+  return Object.entries(env ?? {}).reduce((acc, [key, value]) => {
+    return {
+      ...acc,
+      [key]: value ?? `{%= env.${key} %}`,
+    };
+  }, {});
 }
 
 export function normalizeTimeout(

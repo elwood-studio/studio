@@ -19,6 +19,7 @@ export type Node = {
   mime_type: string;
   is_remote: boolean;
   metadata: JsonObject;
+  access: NodeAccess;
 };
 
 export type TreeResult = {
@@ -31,4 +32,14 @@ export type BlobResult = {
   node: Node;
   sidecarNodes: Node[];
   breadcrumbs: Breadcrumb[];
+};
+
+export type NodeAccess = {
+  can_view_children: boolean;
+  can_view_descendants: boolean;
+  can_write_blob: boolean;
+  can_write_tree: boolean;
+  can_share: boolean;
+  can_download: boolean;
+  can_preview: boolean;
 };

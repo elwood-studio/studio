@@ -31,6 +31,10 @@
 ### Install
 
 ```bash
+# Mac & Linux
+brew install elwood-studio/tap/elwood
+
+# Node Packages
 pnpm add -g elwood
 yarn add -g elwood
 npm install -g elwood
