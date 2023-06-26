@@ -73,6 +73,15 @@ export default async function tree(
           mime_type: item.mime_type ?? 'application/octet-stream',
           is_remote: false,
           metadata: item.metadata,
+          access: {
+            can_view_children: false,
+            can_view_descendants: false,
+            can_write_blob: false,
+            can_write_tree: false,
+            can_share: false,
+            can_download: false,
+            can_preview: false,
+          },
         };
       }),
     );
