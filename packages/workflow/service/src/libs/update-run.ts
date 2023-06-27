@@ -18,7 +18,7 @@ export async function updateRun(
     `
       UPDATE elwood.run 
       SET 
-        "output" = $2,    
+        "output" = $2
       WHERE 
         $1 IN("job_id")`,
     [[job_id], output],
