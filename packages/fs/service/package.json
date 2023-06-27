@@ -31,10 +31,9 @@
   "devDependencies": {
     "@elwood/types": "workspace:*",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/node": "^18.16.18",
     "@types/pg": "^8.10.2",
     "@vercel/ncc": "^0.36.1",
-    "esbuild": "^0.18.9",
+    "esbuild": "^0.18.10",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",

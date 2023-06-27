@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."event" (
   "trigger_by_user_id" uuid NULL,
   "payload" jsonb NULL DEFAULT '{}',
   "has_processed" boolean NOT NULL DEFAULT FALSE,
+  "job_ids" text[] NULL,
   "processed_at" timestamptz NULL,
   "created_at" timestamptz DEFAULT now(),
   "updated_at" timestamptz DEFAULT now(),

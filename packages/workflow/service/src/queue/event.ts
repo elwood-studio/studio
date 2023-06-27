@@ -28,13 +28,12 @@ export default async function register(context: AppContext): Promise<void> {
   await boss.work<EventWorkInput, Json>('event:*', async (job) => {
     console.log('event:*', job.data);
 
+    const jobIds: Array<string | null> = [];
     const { event_id, payload, expireInSeconds } = job.data;
     const eventType = job.name.replace('event:', '').trim();
-    let result: JsonObject = {};
 
     switch (eventType) {
       case 'ping': {
-        result = { value: 'pong' };
         break;
       }
       default: {
@@ -80,16 +79,13 @@ export default async function register(context: AppContext): Promise<void> {
           context.elwood.object.uri = `elwood://${payload.object_id}`;
         }
 
-        await boss.insert(
-          workflows.map((workflow) => {
-            const tracking_id = input.tracking_id ?? randomUUID();
+        for (const workflow of workflows) {
+          const tracking_id = randomUUID();
 
-            return {
-              name: 'workflow',
-              singletonKey: randomUUID(),
-              expireInSeconds: expireInSeconds ?? 60 * 60 * 2,
-              onComplete: true,
-              data: {
+          jobIds.push(
+            await boss.send(
+              'workflow',
+              {
                 workflow,
                 input: {
                   ...input,
@@ -107,18 +103,27 @@ export default async function register(context: AppContext): Promise<void> {
                 source_name: job.name,
                 source_job_id: job.id,
               },
-            };
-          }),
-        );
+              {
+                singletonKey: randomUUID(),
+                expireInSeconds: expireInSeconds ?? 60 * 60 * 2,
+                onComplete: true,
+              },
+            ),
+          );
+        }
       }
     }
 
     //
-    await db.executeSql(
-      `UPDATE elwood.event SET has_processed = true WHERE id = $1`,
-      [event_id],
+    const r = await db.executeSql(
+      `UPDATE elwood.event SET has_processed = true, job_ids = $2 WHERE id = $1`,
+      [event_id, jobIds],
     );
 
-    return result;
+    console.log(r);
+
+    return {
+      job_ids: jobIds,
+    };
   });
 }
