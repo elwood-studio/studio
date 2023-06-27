@@ -1,6 +1,6 @@
 {
   "name": "@elwood/cli",
-  "version": "0.1.20",
+  "version": "0.1.22",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",

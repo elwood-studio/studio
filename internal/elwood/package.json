@@ -1,6 +1,6 @@
 {
   "name": "elwood",
-  "version": "0.1.20",
+  "version": "0.1.22",
   "repository": "git@github.com:elwood-studio/cli.git",
   "author": "Travis <travis@elwood.studio>",
   "license": "Apache License",
