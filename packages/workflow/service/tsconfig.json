@@ -15,7 +15,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "ignore": ["bin/*.ts", "dist/"],
   "references": []
 }

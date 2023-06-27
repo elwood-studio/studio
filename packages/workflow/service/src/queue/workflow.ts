@@ -27,7 +27,7 @@ export default async function register(context: AppContext): Promise<void> {
 
   // run a specific workflow
   await boss.work<WorkflowQueueData, Json>('workflow', async (job) => {
-    console.log('received workflow job 2', job.data);
+    console.log('received workflow job', job.data);
     const { data } = job;
     const tracking_id =
       job.data.tracking_id ?? job.data.input.tracking_id ?? randomUUID();
@@ -44,13 +44,15 @@ export default async function register(context: AppContext): Promise<void> {
 
     // if we should skip then
     if (!shouldRun) {
+      console.log('workflow skipped');
+
       await run.complete(RunnerStatus.Skipped);
       await run.teardown();
 
       return {
         status: {
           value: RunnerStatus.Skipped,
-          reason: '',
+          reason: `Workflow skipped because "when" expression evaluated to false`,
         },
       };
     }
@@ -69,6 +71,8 @@ export default async function register(context: AppContext): Promise<void> {
     const watcher = setInterval(() => {
       if (run && lockUpdate === false) {
         lockUpdate = true;
+
+        console.log('update tick', run.report.status);
 
         updateRun(context, {
           job_id: job.id,

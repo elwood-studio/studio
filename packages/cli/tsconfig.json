@@ -16,7 +16,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "bin/cli-dev.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "bin/cli-dev.ts"],
   "ignore": ["bin/*.ts", "dist/"],
   "references": [],
   "ts-node": {
