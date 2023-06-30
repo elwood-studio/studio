@@ -9,7 +9,7 @@ import { createContext } from './libs/create-context.ts';
 import { printErrorMessage } from './libs/print-message.ts';
 import { register as registerServe } from './commands/local.ts';
 import { register as registerInit } from './commands/init.ts';
-import { register as registerWorkflow } from './commands/workflow.ts';
+import { register as registerWorkflow } from './commands/workflow/register.ts';
 import { register as registerFs } from './commands/fs.ts';
 import { register as registerCreate } from './commands/create.ts';
 

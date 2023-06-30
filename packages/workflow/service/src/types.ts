@@ -3,7 +3,10 @@ import type {
   WorkflowRunnerRuntimeRun,
   WorkflowRunnerRuntime,
 } from '@elwood/workflow-runner';
-import type { Workflow } from '@elwood/workflow-types';
+import type {
+  Workflow,
+  WorkflowRunnerInstructions,
+} from '@elwood/workflow-types';
 import type { JsonObject, Json } from '@elwood/types';
 import type PgBoss from 'pg-boss';
 
@@ -23,6 +26,7 @@ export type AppContext = {
 
 export type WorkflowQueueData = {
   workflow: Workflow;
+  instructions: WorkflowRunnerInstructions;
   input: JsonObject;
   context: JsonObject;
   tracking_id?: string;

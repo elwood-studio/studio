@@ -9,3 +9,5 @@ export enum FilePaths {
   WorkflowsDir = 'workflows',
   ActionsDir = 'actions',
 }
+
+export type OutputReporter = 'table' | 'json' | 'json-pretty' | 'yaml';

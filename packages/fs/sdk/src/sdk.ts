@@ -23,14 +23,6 @@ export class ElwoodFileSystemSdk {
     return this._upload;
   }
 
-  /**
-   * fetch a response from the file system
-   * using the parent fetch method passed in options
-   * @param operation
-   * @param body
-   * @returns
-   * @link https://rclone.org/rc/#operations-list
-   */
   private async _fetch(
     url: RequestInfo | URL,
     init: RequestInit = {},
@@ -41,7 +33,6 @@ export class ElwoodFileSystemSdk {
         'Content-Type': 'application/json',
         ...(init?.headers ?? {}),
       },
-      body: init?.body ? JSON.stringify(init.body) : undefined,
     });
   }
 

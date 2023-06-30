@@ -16,6 +16,9 @@
     "test": {},
     "@elwood/cli#dev": {
       "dependsOn": ["@elwood/sdk#dev"]
+    },
+    "@elwood/sdk#dev": {
+      "dependsOn": ["@elwood/workflow-sdk#dev", "@elwood/fs-sdk#dev"]
     }
   }
 }

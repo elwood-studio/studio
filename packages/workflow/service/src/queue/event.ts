@@ -1,10 +1,14 @@
 import { randomUUID } from 'crypto';
 
 import type { Json, JsonObject } from '@elwood/types';
+import { Workflow } from '@elwood/workflow-types';
+import { shouldRunWhen, getExpressionValue } from '@elwood/workflow-runner';
+import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
 
-import type { AppContext } from '../types.ts';
+import type { AppContext, WorkflowQueueData } from '../types.ts';
 import { findWorkflow } from '../libs/find-workflow.ts';
 import { getEnv } from '../libs/get-env.ts';
+import { createRun } from '../libs/create-run.ts';
 
 const { gatewayBaseUrl } = getEnv();
 
@@ -37,16 +41,16 @@ export default async function register(context: AppContext): Promise<void> {
         break;
       }
       default: {
-        const workflows = [];
+        const workflows: Workflow[] = [];
 
         if (eventType === 'workflow') {
-          workflows.push(payload.workflow);
+          workflows.push(payload.workflow as Workflow);
         } else {
           workflows.push(...(await findWorkflow()));
         }
 
         const input: JsonObject = payload.input ?? {};
-        const context: JsonObject = {
+        const workflowContext: JsonObject = {
           ...(payload.context ?? {}),
           event: eventType,
           elwood: {
@@ -74,42 +78,62 @@ export default async function register(context: AppContext): Promise<void> {
             'SELECT * FROM elwood.object WHERE id = $1',
             [payload.object_id],
           );
-          context.elwood.has_object = true;
-          context.elwood.object = rows.rows[0];
-          context.elwood.object.uri = `elwood://${payload.object_id}`;
+          workflowContext.elwood.has_object = true;
+          workflowContext.elwood.object = rows.rows[0];
+          workflowContext.elwood.object.uri = `elwood://${payload.object_id}`;
         }
 
         for (const workflow of workflows) {
           const tracking_id = randomUUID();
-
-          jobIds.push(
-            await boss.send(
-              'workflow',
-              {
-                workflow,
-                input: {
-                  ...input,
-                  tracking_id,
-                },
-                context: {
-                  ...context,
-                  elwood: {
-                    ...context.elwood,
-                    tracking_id,
-                  },
-                },
-                source: 'event',
-                source_id: job.data.event_id,
-                source_name: job.name,
-                source_job_id: job.id,
-              },
-              {
-                singletonKey: randomUUID(),
-                expireInSeconds: expireInSeconds ?? 60 * 60 * 2,
-                onComplete: true,
-              },
-            ),
+          const instructions = await normalizeWorkflowToInstructions(
+            workflow as Workflow,
           );
+
+          const shouldRun = await shouldRunWhen(
+            instructions.when,
+            (expression) => getExpressionValue(expression, workflowContext),
+          );
+
+          // if we shouldn't run, just ignore
+          if (!shouldRun) {
+            continue;
+          }
+
+          const jobData: WorkflowQueueData = {
+            workflow,
+            instructions,
+            input: {
+              ...input,
+              tracking_id,
+            },
+            context: {
+              ...workflowContext,
+              elwood: {
+                ...workflowContext.elwood,
+                tracking_id,
+              },
+            },
+            source: 'event',
+            source_id: job.data.event_id,
+            source_name: job.name,
+            source_job_id: job.id,
+          };
+
+          const jobId = await boss.send('workflow', jobData, {
+            expireInSeconds: expireInSeconds ?? 60 * 60 * 2,
+            onComplete: true,
+          });
+
+          if (!jobId) {
+            continue;
+          }
+
+          await createRun(context, {
+            tracking_id,
+            data: jobData,
+          });
+
+          jobIds.push(jobId);
         }
       }
     }
@@ -119,8 +143,6 @@ export default async function register(context: AppContext): Promise<void> {
       `UPDATE elwood.event SET has_processed = true, job_ids = $2 WHERE id = $1`,
       [event_id, jobIds],
     );
-
-    console.log(r);
 
     return {
       job_ids: jobIds,

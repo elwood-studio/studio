@@ -3,12 +3,8 @@ import { randomUUID } from 'crypto';
 import type { Json } from '@elwood/types';
 import {
   type WorkflowRunnerRuntimeRunReport,
-  shouldRunWhen,
   startRunWorkflow,
-  getExpressionValue,
-  RunnerStatus,
 } from '@elwood/workflow-runner';
-import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
 
 import type { AppContext, WorkflowQueueData } from '../types.ts';
 import { startRun } from '../libs/start-run.ts';
@@ -31,31 +27,10 @@ export default async function register(context: AppContext): Promise<void> {
     const { data } = job;
     const tracking_id =
       job.data.tracking_id ?? job.data.input.tracking_id ?? randomUUID();
-    const instructions = await normalizeWorkflowToInstructions(data.workflow);
+    const instructions = data.instructions;
     const run = runtime.addRun(instructions, secretsManager);
 
     await run.setup(data.input, data.context);
-
-    const shouldRun = await shouldRunWhen(instructions.when, (expression) =>
-      getExpressionValue(expression, run.contextValue(), {
-        secrets: secretsManager,
-      }),
-    );
-
-    // if we should skip then
-    if (!shouldRun) {
-      console.log('workflow skipped');
-
-      await run.complete(RunnerStatus.Skipped);
-      await run.teardown();
-
-      return {
-        status: {
-          value: RunnerStatus.Skipped,
-          reason: `Workflow skipped because "when" expression evaluated to false`,
-        },
-      };
-    }
 
     // send run to the database
     // a run with this tracking_id might already exist
@@ -121,7 +96,7 @@ export default async function register(context: AppContext): Promise<void> {
     await completeRun(context, {
       job_id: request.id,
       state,
-      output: response,
+      report: response,
       completed_at: completedOn,
     });
   });

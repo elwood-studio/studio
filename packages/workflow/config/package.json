@@ -34,7 +34,7 @@
     "jest-presets": "workspace:*",
     "joi-to-json": "^3.1.2",
     "tsconfig": "workspace:*",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.6"
   },
   "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"

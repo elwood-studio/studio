@@ -10,35 +10,18 @@ export type ElwoodWorkflowSdkOptions = {
 export class ElwoodWorkflowSdk {
   constructor(private readonly options: ElwoodWorkflowSdkOptions) {}
 
-  /**
-   * fetch a response from the file system
-   * using the parent fetch method passed in options
-   * @param operation
-   * @param body
-   * @returns
-   * @link https://rclone.org/rc/#operations-list
-   */
-  private async _fetch(
+  private _fetch = async (
     info: RequestInfo | URL,
     init: RequestInit = {},
-  ): Promise<Response> {
-    const response = await this.options.fetch(
-      `${this.options.url}/workflow/v1/${info}`,
-      {
-        method: init?.method ?? 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(init?.headers ?? {}),
-        },
+  ): Promise<Response> => {
+    return await this.options.fetch(`${this.options.url}/workflow/v1/${info}`, {
+      ...init,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(init?.headers ?? {}),
       },
-    );
-
-    invariant(response.ok, 'workflow.submit(): response is not ok');
-
-    const result = await response.json();
-
-    return result as Response;
-  }
+    });
+  };
 
   async run(
     workflow: string | JsonObject,
@@ -66,5 +49,13 @@ export class ElwoodWorkflowSdk {
 
   async report(trackingId: string): Promise<JsonObject> {
     return await http.get<JsonObject>(this._fetch, `run/${trackingId}`);
+  }
+
+  async config(id: string | undefined): Promise<JsonObject> {
+    if (id) {
+      return await http.get<JsonObject>(this._fetch, `config/${id}`);
+    }
+
+    return await http.get<JsonObject>(this._fetch, `config`);
   }
 }

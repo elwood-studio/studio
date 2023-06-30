@@ -6,6 +6,8 @@ import { createWorkflowInput, resolveWorkflow } from '@elwood/workflow-config';
 
 import type { AppContext } from '../types.ts';
 import { createEvent } from '../libs/create-event.ts';
+import { cancelRun } from '../libs/cancel-run.ts';
+import { invariant } from '@/libs/invariant.ts';
 
 export type RunHandlerOptions = {
   context: AppContext;
@@ -31,6 +33,16 @@ export default fp<RunHandlerOptions>(async (app, opts): Promise<void> => {
     res.send({
       ok: true,
       tracking_id: trackingId,
+    });
+  });
+
+  app.delete('/run/:tracking_id', async (req, res) => {
+    const { tracking_id } = req.params as { tracking_id?: string };
+    invariant(tracking_id, 'Missing tracking_id');
+    await cancelRun(opts.context, tracking_id);
+
+    res.send({
+      ok: true,
     });
   });
 });

@@ -103,3 +103,39 @@ export type LocalConfig = DeepPartial<{
     schemas: string[];
   };
 }>;
+
+export type WorkflowOptions = WorkflowRunOptions &
+  WorkflowReportOptions &
+  WorkflowExecuteOptions &
+  WorkflowSecretOptions & {
+    command?: 'run' | 'report' | 'generate-unlock-key' | 'secret' | 'execute';
+    arguments: string[];
+  };
+
+export type WorkflowRunOptions = {
+  workflow?: string;
+  input?: string[];
+  force?: boolean;
+  event?: string;
+};
+
+export type WorkflowReportOptions = {
+  trackingId?: string;
+  output: 'table' | 'json' | 'json-pretty' | 'yaml';
+};
+
+export type WorkflowSecretOptions = {
+  unlockKey?: string;
+  keyName?: string;
+  name?: string;
+  value?: string;
+};
+
+export type WorkflowExecuteOptions = {
+  wait?: boolean;
+  input?: string[];
+  workflow?: string;
+  output?: WorkflowReportOptions['output'];
+  force?: boolean;
+  event?: string;
+};

@@ -68,6 +68,7 @@ export async function createContext(args: Arguments): Promise<Context> {
     {
       auth: {
         persistSession: false,
+        autoRefreshToken: false,
       },
       global: {
         headers: {
@@ -83,6 +84,7 @@ export async function createContext(args: Arguments): Promise<Context> {
     {
       auth: {
         persistSession: false,
+        autoRefreshToken: false,
       },
     },
   );

@@ -18,15 +18,6 @@ export type WorkflowDefaults = {
   permission?: WorkflowPermission;
   env?: WorkflowEnv;
 };
-
-export type WorkflowInput = {
-  prompt?: WorkflowInputPrompt[];
-  validate?: WorkflowInputValidate;
-  defaults?: JsonObject;
-  required?: string[];
-  additional?: boolean;
-};
-
 export type WorkflowInputValidate = JsonSchema;
 
 export type WorkflowCommands = Record<string, WorkflowCommand>;
@@ -104,11 +95,15 @@ export type WorkflowPermission =
       unstable: boolean;
     }>;
 
+export type WorkflowInput = JsonObject;
+export type WorkflowOutput = JsonObject;
+
 export interface WorkflowJobStepBase {
   name?: string;
+  description?: string;
   when?: WorkflowWhen;
-  input?: JsonObject;
-  output?: JsonObject;
+  input?: WorkflowInput;
+  output?: WorkflowOutput;
   env?: WorkflowEnv;
   permission?: WorkflowPermission;
   timeout?: WorkflowTimeout;
