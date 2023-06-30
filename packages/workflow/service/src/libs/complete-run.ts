@@ -4,11 +4,12 @@ import {
 } from '@elwood/workflow-runner';
 
 import type { AppContext } from '../types.ts';
+import { JsonObject } from '@elwood/types';
 
 type CompleteRunOptions = {
   job_id: string;
   state: string;
-  output: WorkflowRunnerRuntimeRunReport;
+  report: WorkflowRunnerRuntimeRunReport;
   completed_at: string;
 };
 
@@ -17,10 +18,11 @@ export async function completeRun(
   options: CompleteRunOptions,
 ): Promise<void> {
   const { db } = context;
-  const { job_id, output, completed_at } = options;
+  const { job_id, report, completed_at } = options;
+  const output = getOutputFromReport(report);
   let state = options.state;
 
-  switch (output.status.value) {
+  switch (report.status.value) {
     case RunnerStatus.Error: {
       state = 'failed';
       break;
@@ -40,9 +42,30 @@ export async function completeRun(
       SET 
         "state" = $2, 
         "output" = $3,
-        "completed_at" = $4 
+        "report" = $4,
+        "completed_at" = $5 
       WHERE 
         $1 IN("job_id")`,
-    [[job_id], state, output, completed_at],
+    [[job_id], state, output, report, completed_at],
   );
+}
+
+export function getOutputFromReport(
+  report: WorkflowRunnerRuntimeRunReport | undefined,
+): JsonObject {
+  if (!report) {
+    return {};
+  }
+
+  return report.jobs.reduce((acc, job) => {
+    return {
+      ...acc,
+      [job.name]: Object.values(job.steps).reduce((acc, step) => {
+        return {
+          ...acc,
+          [step.name]: step.output ?? {},
+        };
+      }, {} as JsonObject),
+    };
+  }, {} as JsonObject);
 }

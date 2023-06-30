@@ -35,7 +35,7 @@ export async function startRun(
       );
     } else {
       await db.executeSql(
-        `UPDATE elwood.run SET job_id = jobs || $2, state = 'active' WHERE id = $1`,
+        `UPDATE elwood.run SET job_id = job_id || $2, state = 'active' WHERE id = $1`,
         [tracking_id, [job_id]],
       );
     }

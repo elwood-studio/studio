@@ -1,5 +1,7 @@
 import joi from 'joi';
 
+import type { WorkflowJobStep } from '@elwood/workflow-types';
+
 import {
   name,
   when,
@@ -12,8 +14,9 @@ import {
 } from './scalar';
 
 export const step = joi
-  .object({
+  .object<WorkflowJobStep>({
     name: name.optional(),
+    description: joi.string().optional(),
     when: when.optional(),
     input: input.optional(),
     output: joi.object().optional(),

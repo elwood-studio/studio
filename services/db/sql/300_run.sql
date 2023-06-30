@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."run" (
   "instructions" jsonb NULL DEFAULT '{}',
   "input" jsonb NULL DEFAULT '{}',
   "output" jsonb NULL DEFAULT '{}',
+  "report" jsonb NULL DEFAULT '{}',
   "job_id" uuid[] NULL, 
   "completed_at" timestamptz NULL,
   "created_at" timestamptz DEFAULT now(),

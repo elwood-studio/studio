@@ -1,1 +1,0 @@
-# Elwood Guides

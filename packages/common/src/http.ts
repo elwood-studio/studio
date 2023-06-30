@@ -15,12 +15,12 @@ export async function get<T extends Json = Json>(
 export async function post<T extends Json = Json>(
   fetch: Fetch,
   info: RequestInfo | URL,
-  body: JsonObject,
+  body: JsonObject = {},
   init: RequestInit = {},
 ): Promise<T> {
   const response = await fetch(info, {
     ...init,
-    body: JSON.stringify(body),
+    body: JSON.stringify(body ?? {}),
     method: 'POST',
   });
   invariant(response.ok, 'get(): response is not ok');

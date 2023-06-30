@@ -3,6 +3,7 @@ import * as path from 'path';
 import { render as interpolate } from 'ejs';
 import { invariant } from 'ts-invariant';
 import lodashGet from 'lodash.get';
+import * as mime from 'mime';
 
 import type { Json, JsonObject } from '@elwood/types';
 import type { WorkflowRunnerExpression } from '@elwood/workflow-types';
@@ -151,7 +152,7 @@ export async function replaceExpressionTokens(
       toJsonInput: function toJsonInput(src: JsonObject) {
         return `json:${JSON.stringify(src)}`;
       },
-      getStepOutput: function getStepOutput(
+      stepOutput: function getStepOutput(
         step: string,
         name: string,
         defaultValue: unknown = null,
@@ -169,6 +170,9 @@ export async function replaceExpressionTokens(
       },
       get(path: string, defaultValue: Json = null) {
         return lodashGet(data, path, defaultValue);
+      },
+      mimeType(src: string) {
+        return mime.getType(path.extname(src).substring(1));
       },
     };
 

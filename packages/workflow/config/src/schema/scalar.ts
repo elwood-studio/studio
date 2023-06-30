@@ -1,5 +1,7 @@
 import joi from 'joi';
 
+import type { WorkflowInput, WorkflowPermission } from '@elwood/workflow-types';
+
 export const name = joi
   .string()
   .min(2)
@@ -26,7 +28,7 @@ export const permissionItem = joi
   .alternatives()
   .try(joi.boolean(), joi.string(), joi.array().items(joi.string()));
 
-export const permission = joi.alternatives().try(
+export const permission = joi.alternatives<WorkflowPermission>().try(
   joi.string(),
   joi.boolean(),
   joi
@@ -75,7 +77,7 @@ export const when = joi.alternatives().try(
 );
 
 export const input = joi
-  .object()
+  .object<WorkflowInput>()
   .unknown(true)
   .pattern(
     joi
