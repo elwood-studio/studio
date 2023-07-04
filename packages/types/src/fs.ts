@@ -19,13 +19,13 @@ export type Node = {
   mime_type: string;
   is_remote: boolean;
   metadata: JsonObject;
-  access: NodeAccess;
 };
 
 export type TreeResult = {
   node: Node;
   children: Node[];
   breadcrumbs: Breadcrumb[];
+  access: NodeAccess;
 };
 
 export type BlobResult = {

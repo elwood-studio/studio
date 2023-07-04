@@ -8,6 +8,6 @@ port=$RCLONE_PORT
 mkdir -p $data_dir/local;
 
 # start rclone damon
-rclone rcd $data_dir --rc-web-gui --rc-addr :$port --rc-no-auth &
+cd $data_dir && rclone rcd $data_dir --rc-addr :$port --rc-no-auth &
 
 exec "$@"

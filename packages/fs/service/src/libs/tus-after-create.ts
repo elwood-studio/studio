@@ -29,17 +29,17 @@ export async function tusAfterCreate(options: TusAfterCreateOptions) {
   const sql = `
     UPDATE elwood.object 
     SET 
-      "state" = 'READY',
-      content_hash = $2
+      "state" = $3,
+      "content_hash" = $2
     WHERE 
-      id = $1
+      "id" = $1
     `;
 
   const result = await authExecuteSql({
     client: db,
     token: authToken,
     sql,
-    params: [id, content_hash],
+    params: [id, content_hash, 'READY'],
   });
 
   invariant(result.rowCount === 1, 'Expected exactly one row to be updated');

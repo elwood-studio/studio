@@ -7,8 +7,13 @@ import type { AuthToken } from '@/types.ts';
 
 const { jwtSecret } = getEnv();
 
-export function getAuthToken(token: string | undefined): AuthToken {
+export function getAuthToken(token: string | AuthToken | undefined): AuthToken {
   invariant(token, 'token is required');
+
+  if (typeof token === 'object') {
+    return token as AuthToken;
+  }
+
   const jwt = verify(token.replace('Bearer ', ''), jwtSecret);
   return jwt as AuthToken;
 }

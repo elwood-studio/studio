@@ -27,6 +27,7 @@ export async function run(args: Arguments<WorkflowRunOptions>) {
       if (args.force !== false) {
         workflow.when = true;
       }
+
       result = await context.client.workflow.run(workflow, input);
     } else {
       throw new Error('Unable to run workflow or submit event');

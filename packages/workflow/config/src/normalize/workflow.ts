@@ -15,6 +15,8 @@ export async function normalizeWorkflowToInstructions(
   return {
     meta: workflow.meta ?? undefined,
     id,
+    name: workflow.name,
+    description: workflow.description ?? '',
     jobs: Object.keys(workflow.jobs).map((name) => {
       return normalizeJob(
         { ...workflow.jobs[name], name },

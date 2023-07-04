@@ -7,6 +7,8 @@ export type WorkflowRunnerConfiguration = JsonObject;
 export interface WorkflowRunnerInstructions {
   meta?: WorkflowMeta;
   id: string;
+  name: string;
+  description: string;
   jobs: WorkflowRunnerJob[];
   when: WorkflowRunnerWhen;
   timeoutMinutes: number | null;

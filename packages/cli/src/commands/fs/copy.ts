@@ -7,90 +7,9 @@ import fs from 'fs-jetpack';
 import mime from 'mime';
 import ora from 'ora';
 
-import type { Argv, Arguments } from '../types.ts';
+import type { FsCopyOptions, Arguments } from '../../types.ts';
 
-type TopOptions = {
-  command?: 'upload' | 'download';
-  arguments: string[];
-};
-
-type CopyOptions = {
-  source?: string;
-  destination?: string;
-  recursive?: boolean;
-};
-
-type SyncOptions = {
-  source?: string;
-};
-
-export async function register(cli: Argv) {
-  cli.command<TopOptions>(
-    'fs <command> [...arguments]',
-    false,
-    () => {
-      return;
-    },
-    async (args: Arguments<TopOptions>) => {
-      const commandArguments = args.arguments ?? [];
-
-      switch (args.command) {
-        case 'upload': {
-          await copy({
-            ...args,
-            source: commandArguments[0],
-            destination: commandArguments[1],
-          });
-          break;
-        }
-        case 'download': {
-          await sync({
-            ...args,
-            source: commandArguments[0],
-          });
-          break;
-        }
-      }
-    },
-  );
-
-  cli.command<CopyOptions>(
-    'fs:upload <source> <destination>',
-    'upload a file or folder',
-    (y) => {
-      y.option('recursive', {
-        alias: 'r',
-        type: 'boolean',
-        default: false,
-      });
-    },
-    copy,
-  );
-
-  cli.command<SyncOptions>(
-    'fs:download <source>',
-    'download a file or folder',
-    () => {
-      return;
-    },
-    sync,
-  );
-
-  cli.command(
-    'fs:share',
-    'share a file',
-    () => {
-      return;
-    },
-    async (_args: Arguments) => {
-      return;
-    },
-  );
-
-  cli.hide('fs');
-}
-
-export async function copy(args: Arguments<CopyOptions>) {
+export async function copy(args: Arguments<FsCopyOptions>) {
   const { source, destination, context } = args;
 
   invariant(source, 'source is required');
@@ -103,7 +22,7 @@ export async function copy(args: Arguments<CopyOptions>) {
 
   invariant(client, 'client is required');
 
-  spin.text = 'Resolving files...';
+  context.spin.text = 'Resolving files...';
 
   for (const src of sources) {
     if (isGlob(src)) {
@@ -150,8 +69,4 @@ export async function copy(args: Arguments<CopyOptions>) {
   });
 
   await client.fileSystem.upload.start();
-}
-
-export async function sync(_args: Arguments<SyncOptions>) {
-  return;
 }

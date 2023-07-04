@@ -1,7 +1,7 @@
 import type { FileSystem } from '@elwood/types';
 import { http } from '@elwood/common';
 
-import type { Fetch } from './types.ts';
+import type { Fetch, MkdirOptions } from './types.ts';
 import { Upload } from './upload.ts';
 import { Remote, RemoteOptions } from './remote.ts';
 
@@ -23,18 +23,16 @@ export class ElwoodFileSystemSdk {
     return this._upload;
   }
 
-  private async _fetch(
-    url: RequestInfo | URL,
-    init: RequestInit = {},
-  ): Promise<Response> {
+  private _fetch = async (url: RequestInfo | URL, init: RequestInit = {}) => {
     return await this.options.fetch(`${this.options.url}/fs/v1/${url}`, {
+      ...init,
       method: init?.method ?? 'get',
       headers: {
         'Content-Type': 'application/json',
         ...(init?.headers ?? {}),
       },
     });
-  }
+  };
 
   async ls(path: string): Promise<FileSystem.TreeResult> {
     return await http.get<FileSystem.TreeResult>(this._fetch, `tree/${path}`);
@@ -48,11 +46,14 @@ export class ElwoodFileSystemSdk {
     return await this._fetch(`raw/${path}`);
   }
 
-  async mkdir(path: string): Promise<FileSystem.TreeResult> {
+  async mkdir(
+    path: string,
+    opts: MkdirOptions = {},
+  ): Promise<FileSystem.TreeResult> {
     return await http.post<FileSystem.TreeResult>(
       this._fetch,
       `tree/${path}`,
-      {},
+      opts,
     );
   }
 

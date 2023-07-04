@@ -26,6 +26,18 @@ export const service = [
     plugins: [],
   },
   {
+    name: 'fs-v1-open-docs',
+    url: `http://${host}/docs`,
+    routes: [
+      {
+        name: 'fs-v1-open-docs',
+        strip_path: true,
+        paths: ['/fs/v1/docs'],
+      },
+    ],
+    plugins: [],
+  },
+  {
     name: 'fs-v1-all',
     url: `http://${host}/`,
     routes: [

@@ -1,7 +1,7 @@
 import { invariant } from 'ts-invariant';
 
 import type { Arguments, Context, WorkflowReportOptions } from '../../types.ts';
-import { outputReport } from '../../libs/workflow.ts';
+import { outputReport } from '../../libs/output.ts';
 
 export async function report(args: Arguments<WorkflowReportOptions>) {
   invariant(args.trackingId, 'Tracking ID is required');

@@ -25,15 +25,12 @@ export type AppContext = {
 };
 
 export type WorkflowQueueData = {
-  workflow: Workflow;
   instructions: WorkflowRunnerInstructions;
   input: JsonObject;
   context: JsonObject;
   tracking_id?: string;
   source?: 'event';
   source_id?: string;
-  source_name?: string;
-  source_job_id?: string;
 };
 
 interface Db {

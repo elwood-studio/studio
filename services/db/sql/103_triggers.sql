@@ -5,13 +5,26 @@ CREATE OR REPLACE FUNCTION elwood.trigger_after_object()
 	LANGUAGE PLPGSQL
 	AS
 $$
+DECLARE
+  objectType text;
+  eventType text;
 BEGIN
+
+  objectType := LOWER(NEW.type::text);
+  eventType := LOWER(TG_OP);
 
   IF NEW.type = 'TREE' THEN 
     NEW.state = 'READY';
   END IF;
 
   IF NEW.state = 'READY' THEN
+
+    -- if it was in pending state and now it is 
+    -- ready, then it was actually create, not updated
+    IF OLD.STATE = 'PENDING' THEN 
+      eventType := 'created';
+    END IF;
+
     INSERT INTO 
       elwood.event
       (
@@ -22,7 +35,7 @@ BEGIN
       ) 
     VALUES
       (
-        ARRAY['object', NEW.type, LOWER(TG_OP)],
+        ARRAY['object', objectType, eventType],
         json_build_object(
           'object_id', NEW.id,
           'new', NEW,

@@ -32,5 +32,19 @@ export type ObjectHandlerOptions = {
   authToken: AuthToken | undefined;
 };
 
+export type RcloneListItem = {
+  Path: string;
+  Name: string;
+  Size: number;
+  MimeType: string;
+  ModTime: string;
+  IsDir: boolean;
+  Hashes: {
+    md5: string;
+    sha1: string;
+    sha256: string;
+  };
+};
+
 export type { Client } from 'pg';
 export type { FastifyReply, FastifyRequest } from 'fastify';
