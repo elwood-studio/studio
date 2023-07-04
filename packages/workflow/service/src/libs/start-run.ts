@@ -24,7 +24,14 @@ export async function startRun(
 
       await db.executeSql(
         `INSERT INTO elwood.run ("id", "state", "event_id", "trigger", "name", "input", "job_id") VALUES ($1,'active',$2,$3,$4,$5,$6)`,
-        [tracking_id, data.source_id, type, 'name', data.input, [job_id]],
+        [
+          tracking_id,
+          data.source_id,
+          type,
+          data.instructions.name,
+          data.input,
+          [job_id],
+        ],
       );
     } else {
       await db.executeSql(
