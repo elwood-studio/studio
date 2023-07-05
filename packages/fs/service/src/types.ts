@@ -30,6 +30,11 @@ export type AuthToken<T extends JsonObject = JsonObject> = T & {
   role?: string;
 };
 
+export type PossibleAuthToken<T extends JsonObject = JsonObject> =
+  | AuthToken<T>
+  | string
+  | undefined;
+
 export type ObjectHandlerOptions = {
   db: Client;
   req: FastifyRequest;

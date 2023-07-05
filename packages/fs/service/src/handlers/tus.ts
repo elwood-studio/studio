@@ -43,6 +43,23 @@ export default fp<TusOptions>(async (app, opts) => {
         console.log('Upload Create Failed');
         console.log(err.message);
         console.log(err.stack);
+
+        res.setHeader('upload-error', 'Upload Create Failed');
+
+        if (err.message.includes('duplicate key')) {
+          res.setHeader(
+            'upload-error',
+            'File with provided name already exists in this folder',
+          );
+        }
+        if (err.message.includes('parent_id')) {
+          res.setHeader(
+            'upload-error',
+            'Parent folder does not exist or you do not have access to it',
+          );
+        }
+
+        throw new Error('Upload Create Failed');
       }
 
       return res;
@@ -66,6 +83,8 @@ export default fp<TusOptions>(async (app, opts) => {
         console.log('Upload Finish Failed');
         console.log(err.message);
         console.log(err.stack);
+
+        throw new Error('Upload Finish Failed');
       }
 
       return res;

@@ -1,7 +1,9 @@
 import { Client } from 'pg';
+import { invariant } from '@elwood/common';
 
-import { invariant } from './invariant.ts';
 import { authExecuteSql } from './auth-execute-sql.ts';
+import { pathToParentId } from './path-to-parent-id.ts';
+import { ParentFolderDoesNotExist } from './errors.ts';
 
 export type TusBeforeCreateOptions = {
   db: Client;
@@ -11,6 +13,7 @@ export type TusBeforeCreateOptions = {
     object_id?: string;
     name?: string;
     parent_id?: string;
+    parent?: string;
     display_name?: string;
     size?: number;
     mime_type?: string;
@@ -22,6 +25,7 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
   const { db, id, authToken } = options;
   const {
     object_id,
+    parent,
     parent_id,
     name,
     display_name,
@@ -83,6 +87,16 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
     'Can not create object',
   );
 
+  invariant(
+    parent || parent_id,
+    'parent or parent_id is required',
+    ParentFolderDoesNotExist,
+  );
+
+  const _parent_id =
+    parent_id ??
+    (await pathToParentId(String(parent), db, authToken as string));
+
   const sql = `
     INSERT INTO elwood.object (
       state,
@@ -106,7 +120,7 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
     params: [
       name ?? display_name,
       display_name,
-      parent_id,
+      _parent_id,
       {
         upload_id: id,
       },

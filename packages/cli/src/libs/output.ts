@@ -101,8 +101,8 @@ export function outputTree(
       for (const node of result.children) {
         tbl.push([
           node.type === 'TREE' ? `${chalk.bold(node.name)}/` : node.name,
-          node.type === 'BLOB' ? String(node.size) : '',
-          node.type === 'BLOB' ? node.mime_type : '',
+          node.type === 'BLOB' ? chalk.dim(String(node.size)) : '',
+          node.type === 'BLOB' ? chalk.dim(node.mime_type) : '',
         ]);
       }
 
