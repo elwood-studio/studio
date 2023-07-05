@@ -9,6 +9,7 @@ import {
 } from '@/libs/fetch-rclone.ts';
 import { invariant } from '@/libs/invariant.ts';
 import { getRemoteConfig } from '@/libs/rclone-remote.ts';
+import { pathToParentId } from '@/libs/path-to-parent-id.ts';
 
 export default async function tree(
   options: ObjectHandlerOptions,
@@ -42,7 +43,7 @@ export async function list(options: ObjectHandlerOptions): Promise<void> {
     case 'name': {
       const [_node, _nodes] = await treeForObjectId(
         options,
-        await pathToParentId(options, path),
+        await pathToParentId(path, options.db, options.authToken),
       );
 
       node = _node;
@@ -132,7 +133,7 @@ export async function treeForObjectId(
       display_name: '@',
       type: 'TREE',
       size: 0,
-      mime_type: 'application/octet-stream',
+      mime_type: 'inode/directory',
       is_remote: false,
       metadata: {},
     };
@@ -219,49 +220,9 @@ async function createTree(
     req: options.req,
     params: parent_id ? [name, parent_id] : [name],
     sql: parent_id
-      ? `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id") VALUES ($1, $1, 'TREE'::elwood.object_type, $2) ON CONFLICT("name","parent_id") DO UPDATE set name = $1 RETURNING "id"`
-      : `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id") VALUES ($1, $1, 'TREE'::elwood.object_type, NULL) ON CONFLICT("name","parent_id") DO UPDATE set name = $1  RETURNING "id"`,
+      ? `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id", "mime_type") VALUES ($1, $1, 'TREE'::elwood.object_type, $2, 'inode/directory') ON CONFLICT("name","parent_id") DO UPDATE set name = $1 RETURNING "id"`
+      : `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id", "mime_type") VALUES ($1, $1, 'TREE'::elwood.object_type, NULL, 'inode/directory') ON CONFLICT("name","parent_id") DO UPDATE set name = $1  RETURNING "id"`,
   });
 
   return sth.rows[0] as ObjectModel;
-}
-
-export async function pathToParentId(
-  options: ObjectHandlerOptions,
-  path: string,
-): Promise<string | null> {
-  const { db, req } = options;
-
-  // break apart the path
-  const parts = path
-    .trim()
-    .replace(/^\//, '')
-    .split('/')
-    .filter((part) => part.length > 0);
-
-  if (parts.length === 0) {
-    return null;
-  }
-
-  let parent_id: string | null = null;
-
-  for (const part of parts) {
-    const col = uuid.validate(part) ? 'id' : 'name';
-    const currentSth = await authExecuteSql<ObjectModel>({
-      client: db,
-      req,
-      params: parent_id === null ? [part] : [part, parent_id],
-      sql:
-        parent_id === null
-          ? `SELECT * FROM elwood.object WHERE "${col}" = $1  AND "parent_id" is null`
-          : `SELECT * FROM elwood.object WHERE "${col}" = $1 AND "parent_id" = $2`,
-    });
-
-    invariant(currentSth.rowCount !== 0, `Folder "${part}" does not exists`);
-
-    const row = currentSth.rows[0] as ObjectModel;
-    parent_id = row.id;
-  }
-
-  return parent_id;
 }

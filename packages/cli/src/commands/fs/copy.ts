@@ -49,6 +49,7 @@ export async function copy(args: Arguments<FsCopyOptions>) {
         display_name: name,
         mime_type: type,
         size: String(stat.size ?? 0),
+        parent: destination,
       },
       uploadSize: stat.size,
     });
@@ -66,6 +67,12 @@ export async function copy(args: Arguments<FsCopyOptions>) {
 
   client.fileSystem.upload.on('finished', () => {
     spin.stop();
+  });
+
+  client.fileSystem.upload.on('error', (evt) => {
+    spin.fail(
+      `Failed to upload ${evt.upload.options.metadata?.name}, because "${evt.message}"`,
+    );
   });
 
   await client.fileSystem.upload.start();

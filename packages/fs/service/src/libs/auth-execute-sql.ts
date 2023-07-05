@@ -3,7 +3,7 @@ import { type Client, QueryResult, QueryResultRow } from 'pg';
 
 import type { Json } from '@elwood/types';
 
-import type { AuthToken } from '../types.ts';
+import type { PossibleAuthToken } from '../types.ts';
 import { invariant } from './invariant.ts';
 import { getAuthToken, getAuthTokenFromRequest } from './get-auth-token.ts';
 
@@ -13,7 +13,7 @@ interface AuthExecuteSqlOptionsBase {
   params: Json[];
 }
 interface AuthExecuteSqlOptionsWithToken extends AuthExecuteSqlOptionsBase {
-  token: string | AuthToken | undefined;
+  token: PossibleAuthToken;
   req?: never;
 }
 interface AuthExecuteSqlOptionsWithRequest extends AuthExecuteSqlOptionsBase {

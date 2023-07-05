@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."object" (
 ALTER TABLE elwood.object ENABLE ROW LEVEL SECURITY;
 
 CREATE UNIQUE INDEX idx_root_user_id ON elwood.object("root_user_id");
-CREATE UNIQUE INDEX idx_parent_id_name ON elwood.object("parent_id", "name");
+CREATE UNIQUE INDEX idx_parent_id_name ON elwood.object("parent_id", "name") NULLS NOT DISTINCT;
 CREATE INDEX idx_parent_id ON elwood.object("parent_id");
 CREATE INDEX idx_name ON elwood.object("name");
 

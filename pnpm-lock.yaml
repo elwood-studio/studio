@@ -273,6 +273,9 @@ importers:
 
   packages/fs/service:
     dependencies:
+      '@elwood/common':
+        specifier: workspace:*
+        version: link:../../common
       '@fastify/postgres':
         specifier: ^5.2.0
         version: 5.2.0(pg@8.11.1)

@@ -43,6 +43,7 @@ type Events = {
     id: string;
     upload: TusUpload;
     error: Error;
+    message: string;
   };
   progress: {
     id: string;
@@ -83,6 +84,12 @@ export class Upload extends Emittery<Events> {
 
   #onError = (id: string, err: Error) => {
     const cur = this.getUploadState(id);
+    const e = err as Error & {
+      originalResponse: {
+        getHeader(name: string): string | null;
+      };
+    };
+
     this.#uploads.set(id, {
       id,
       upload: cur.upload,
@@ -93,6 +100,7 @@ export class Upload extends Emittery<Events> {
       id,
       upload: cur.upload,
       error: err,
+      message: e.originalResponse.getHeader('upload-error') ?? e.message,
     });
     this.#processNext();
   };
