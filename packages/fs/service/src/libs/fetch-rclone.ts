@@ -38,7 +38,7 @@ export function mapRcloneListItemToNode(item: RcloneListItem): FileSystem.Node {
     id: item.Hashes?.sha256 ?? item.Hashes?.md5,
     name: item.Name,
     display_name: item.Name,
-    type: item.IsDir ? 'tree' : 'blob',
+    type: item.IsDir ? 'TREE' : 'BLOB',
     size: item.Size ?? 0,
     mime_type: item.MimeType,
     is_remote: true,

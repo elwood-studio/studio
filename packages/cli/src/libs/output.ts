@@ -76,11 +76,34 @@ export function outputTree(
     }
     default: {
       const tbl = new Table({
-        head: ['Name', 'Size', 'Mime'],
+        chars: {
+          top: ' ',
+          'top-mid': '',
+          'top-left': '',
+          'top-right': '',
+          bottom: ' ',
+          'bottom-mid': '',
+          'bottom-left': '',
+          'bottom-right': '',
+          left: '├─',
+          'left-mid': '',
+          mid: '',
+          'mid-mid': '',
+          right: '',
+          'right-mid': '',
+          middle: ' ',
+        },
+        style: {
+          'padding-left': 1,
+        },
       });
 
       for (const node of result.children) {
-        tbl.push([node.name, '', '']);
+        tbl.push([
+          node.type === 'TREE' ? `${chalk.bold(node.name)}/` : node.name,
+          node.type === 'BLOB' ? String(node.size) : '',
+          node.type === 'BLOB' ? node.mime_type : '',
+        ]);
       }
 
       console.log(tbl.toString());

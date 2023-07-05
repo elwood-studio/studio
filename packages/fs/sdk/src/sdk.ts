@@ -35,7 +35,8 @@ export class ElwoodFileSystemSdk {
   };
 
   async ls(path: string): Promise<FileSystem.TreeResult> {
-    return await http.get<FileSystem.TreeResult>(this._fetch, `tree/${path}`);
+    const _path = path === '/' ? '' : path;
+    return await http.get<FileSystem.TreeResult>(this._fetch, `tree/${_path}`);
   }
 
   async stat(path: string): Promise<FileSystem.BlobResult> {

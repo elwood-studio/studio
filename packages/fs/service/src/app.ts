@@ -13,9 +13,9 @@ import errorPlugin from '@/handlers/error.ts';
 import remotePlugin from '@/handlers/remote.ts';
 
 // config stuff in one place
-const { port, host, dbUrl, externalHost } = getEnv();
+const { dbUrl, externalHost } = getEnv();
 
-export async function createApp(): Promise<Client> {
+export async function createApp(): Promise<fastify.FastifyInstance> {
   const app = fastify({ logger: true });
   const db = new Client({
     connectionString: dbUrl,
@@ -72,24 +72,7 @@ export async function createApp(): Promise<Client> {
     res.send('pong');
   });
 
-  await db.connect();
+  app.decorate('db', db);
 
-  await new Promise((resolve, reject) => {
-    app.listen(
-      {
-        port,
-        host,
-      },
-      function (err) {
-        if (err) {
-          console.log(err);
-          return reject(err);
-        }
-
-        resolve(null);
-      },
-    );
-  });
-
-  return db;
+  return app;
 }

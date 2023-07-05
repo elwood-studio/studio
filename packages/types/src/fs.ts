@@ -1,6 +1,6 @@
 import { JsonObject } from './scalar';
 
-export type NodeType = 'tree' | 'blob';
+export type NodeType = 'TREE' | 'BLOB' | 'LINK';
 
 export type Breadcrumb = {
   id: string;

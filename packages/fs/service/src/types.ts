@@ -2,6 +2,12 @@ import type { Client } from 'pg';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { JsonObject } from '@elwood/types';
 
+declare module 'fastify' {
+  interface FastifyInstance {
+    db: Client;
+  }
+}
+
 export type Config = {
   remotes?: Record<
     string,
