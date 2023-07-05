@@ -1,6 +1,6 @@
 {
   "name": "@elwood/types",
-  "version": "0.1.22",
+  "version": "0.1.24",
   "main": "./lib",
   "files": [
     "./lib"

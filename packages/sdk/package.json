@@ -1,6 +1,6 @@
 {
   "name": "@elwood/sdk",
-  "version": "0.1.22",
+  "version": "0.1.24",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
