@@ -15,7 +15,6 @@ export type TusBeforeCreateOptions = {
     size?: number;
     mime_type?: string;
     sidecar_type?: boolean;
-    skip_workflows?: boolean;
   };
 };
 
@@ -29,7 +28,6 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
     size,
     mime_type,
     sidecar_type,
-    skip_workflows,
   } = options.metadata;
 
   // if there's already an object
@@ -94,11 +92,10 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
       metadata,
       mime_type,
       size,
-      sidecar_type,
-      skip_workflows
+      sidecar_type
     )
     VALUES (
-      'PENDING', $1, $2, $3, $4, $5, $6, $7, $8
+      'PENDING', $1, $2, $3, $4, $5, $6, $7
     );
   `;
 
@@ -116,7 +113,6 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
       mime_type,
       size,
       sidecar_type,
-      !!skip_workflows,
     ],
   });
 

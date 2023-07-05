@@ -6,6 +6,7 @@ import * as toml from '@iarna/toml';
 import fs from 'fs-jetpack';
 import { invariant } from 'ts-invariant';
 import { parse } from 'dotenv';
+import ora from 'ora';
 import { ElwoodSdk } from '@elwood/sdk';
 
 import type {
@@ -20,11 +21,13 @@ import { LocalConfig } from '../types.js';
 
 export async function createContext(args: Arguments): Promise<Context> {
   const workingDir = createWorkingDirContext(args.rootDir ?? process.cwd());
+  const spin = ora('');
 
   // if this is an init work flow
   // we don't need to load the local client
   if (args._.length === 0 || args._[0] === 'init') {
     return {
+      spin,
       workingDir,
     };
   }
@@ -95,6 +98,7 @@ export async function createContext(args: Arguments): Promise<Context> {
   }
 
   return {
+    spin,
     client: local ? localClient : remoteClient,
     settings,
     localEnv,

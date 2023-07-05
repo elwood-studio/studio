@@ -15,9 +15,15 @@ export type RunHandlerOptions = {
 
 export default fp<RunHandlerOptions>(async (app, opts): Promise<void> => {
   app.post('/run', async (req, res) => {
-    const { workflow, input, tracking_id } = req.body as {
+    const {
+      workflow,
+      instructions,
+      input = {},
+      tracking_id,
+    } = req.body as {
       workflow: string;
       input: JsonObject;
+      instructions?: JsonObject;
       tracking_id?: string;
     };
     const trackingId = tracking_id ?? input.tracking_id ?? randomUUID();
@@ -26,7 +32,8 @@ export default fp<RunHandlerOptions>(async (app, opts): Promise<void> => {
       type: 'workflow',
       payload: {
         input: createWorkflowInput(input, { trackingId }),
-        workflow: await resolveWorkflow(workflow),
+        workflow: workflow && (await resolveWorkflow(workflow)),
+        instructions,
       },
     });
 

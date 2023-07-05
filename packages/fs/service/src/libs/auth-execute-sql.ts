@@ -3,6 +3,7 @@ import { type Client, QueryResult, QueryResultRow } from 'pg';
 
 import type { Json } from '@elwood/types';
 
+import type { AuthToken } from '../types.ts';
 import { invariant } from './invariant.ts';
 import { getAuthToken, getAuthTokenFromRequest } from './get-auth-token.ts';
 
@@ -12,7 +13,7 @@ interface AuthExecuteSqlOptionsBase {
   params: Json[];
 }
 interface AuthExecuteSqlOptionsWithToken extends AuthExecuteSqlOptionsBase {
-  token: string | undefined;
+  token: string | AuthToken | undefined;
   req?: never;
 }
 interface AuthExecuteSqlOptionsWithRequest extends AuthExecuteSqlOptionsBase {
@@ -24,7 +25,7 @@ export type AuthExecuteSqlOptions =
   | AuthExecuteSqlOptionsWithToken
   | AuthExecuteSqlOptionsWithRequest;
 
-export async function authExecuteSql<T extends QueryResultRow = Json>(
+export async function authExecuteSql<T extends QueryResultRow = QueryResultRow>(
   options: AuthExecuteSqlOptions,
 ): Promise<QueryResult<T>> {
   const { client, sql, params, req, token } = options;
@@ -38,7 +39,7 @@ export async function authExecuteSql<T extends QueryResultRow = Json>(
       jwt,
     ]);
 
-    const result = await client.query(sql, params);
+    const result = await client.query<T>(sql, params);
 
     await client.query(`SELECT set_config('request.jwt', NULL, true)`, []);
     await client.query('COMMIT');

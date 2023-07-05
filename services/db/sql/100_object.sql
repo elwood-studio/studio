@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "elwood"."object" (
 
     -- remote info for this object
     -- and where it is stored. not all objects have
-    "backend_urn" text[] NULL,
+    "remote_urn" text[] NULL,
 
     -- timestamps for stuff
     "created_at" timestamptz DEFAULT now(),

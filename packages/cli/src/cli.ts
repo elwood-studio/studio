@@ -10,7 +10,7 @@ import { printErrorMessage } from './libs/print-message.ts';
 import { register as registerServe } from './commands/local.ts';
 import { register as registerInit } from './commands/init.ts';
 import { register as registerWorkflow } from './commands/workflow/register.ts';
-import { register as registerFs } from './commands/fs.ts';
+import { register as registerFs } from './commands/fs/register.ts';
 import { register as registerCreate } from './commands/create.ts';
 
 export async function main(argv: string[]) {
@@ -33,6 +33,14 @@ export async function main(argv: string[]) {
       type: 'string',
       describe: 'Change the root directory of the project.',
       default: '.',
+      coerce(arg) {
+        if (typeof arg !== 'string') {
+          // eslint-disable-next-line turbo/no-undeclared-env-vars
+          return process.env.ELWOOD_ROOT_DIR ?? '.';
+        }
+
+        return arg;
+      },
     })
     .option('local', {
       alias: 'l',
@@ -49,6 +57,7 @@ export async function main(argv: string[]) {
       type: 'string',
       describe: 'ID of the Elwood Studio project',
     })
+    .normalize('root-dir')
     .command(
       '$0',
       'Show help',
@@ -75,8 +84,8 @@ export async function main(argv: string[]) {
 
   registerServe(cli);
   registerInit(cli);
-  registerFs(cli);
   registerWorkflow(cli);
+  registerFs(cli);
   registerCreate(cli);
 
   try {

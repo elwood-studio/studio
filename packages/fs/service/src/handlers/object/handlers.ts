@@ -1,5 +1,6 @@
 import fp from 'fastify-plugin';
 import { Client } from 'pg';
+import * as uuid from 'uuid';
 
 import { getAuthTokenFromRequest } from '@/libs/get-auth-token.ts';
 import type {
@@ -38,8 +39,13 @@ export default fp<ObjectOptions>(async (app, opts) => {
     };
   }
 
+  app.route({
+    method: ['GET', 'POST', 'DELETE'],
+    url: '/tree/*',
+    handler: withHandlerOptions(treeHandler),
+  });
+
   app.get('/tree', withHandlerOptions(treeHandler));
-  app.get('/tree/*', withHandlerOptions(treeHandler));
   app.get('/blob/*', withHandlerOptions(blobHandler));
   app.get('/share/*', withHandlerOptions(shareHandler));
   app.get('/raw/*', withHandlerOptions(rawHandler));
@@ -53,14 +59,22 @@ export function normalizeRequestPath(raw: string): ObjectRequestPath {
   if (pathParts[0].startsWith(':')) {
     return {
       type: 'remote',
-      id: pathParts[0],
+      id: pathParts[0].substring(1),
+      path: path.length === 0 ? '/' : path,
+    };
+  }
+
+  if (uuid.validate(pathParts[0])) {
+    return {
+      type: 'oid',
+      id: pathParts[0].length > 0 ? pathParts[0] : null,
       path,
     };
   }
 
   return {
-    type: 'oid',
-    id: pathParts[0].length > 0 ? pathParts[0] : null,
-    path,
+    type: 'name',
+    id: null,
+    path: pathParts.join('/'),
   };
 }

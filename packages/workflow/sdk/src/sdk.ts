@@ -31,11 +31,9 @@ export class ElwoodWorkflowSdk {
     invariant(workflow, 'workflow.submit(): workflow is required');
 
     return await http.post<{ tracking_id: string }>(this._fetch, `run`, {
-      body: {
-        workflow,
-        input,
-        tracking_id: trackingId,
-      },
+      workflow,
+      input,
+      tracking_id: trackingId,
     });
   }
 

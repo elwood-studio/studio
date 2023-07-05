@@ -18,7 +18,13 @@ export async function createRun(
       INSERT INTO elwood.run 
         ("id", "state", "event_id", "trigger", "name", "input") VALUES 
         ($1, 'created', $2, $3, $4, $5)`,
-      [tracking_id, data.source_id, 'EVENT', data.workflow.name, data.input],
+      [
+        tracking_id,
+        data.source_id,
+        'EVENT',
+        data.instructions.name,
+        data.input,
+      ],
     );
   } catch (err) {
     console.log((err as Error).message);

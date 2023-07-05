@@ -30,7 +30,7 @@
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/lodash.set": "^4.3.7",
     "@types/uuid": "^9.0.2",
-    "jest": "^29.5.0",
+    "jest": "^29.6.0",
     "jest-presets": "workspace:*",
     "joi-to-json": "^3.1.2",
     "tsconfig": "workspace:*",

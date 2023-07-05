@@ -28,7 +28,7 @@ export async function startRun(
           tracking_id,
           data.source_id,
           type,
-          data.workflow.name,
+          data.instructions.name,
           data.input,
           [job_id],
         ],

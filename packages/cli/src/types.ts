@@ -1,3 +1,4 @@
+import type { Ora } from 'ora';
 import type {
   Argv as BaseArgv,
   ArgumentsCamelCase as BaseArguments,
@@ -29,6 +30,7 @@ export type Context = {
   settings?: Settings;
   client?: ElwoodSdk;
   workingDir: ContextWorkingDir;
+  spin: Ora;
 };
 
 export type ContextWorkingDir = {
@@ -119,9 +121,11 @@ export type WorkflowRunOptions = {
   event?: string;
 };
 
+export type Output = 'table' | 'json' | 'json-pretty' | 'yaml';
+
 export type WorkflowReportOptions = {
   trackingId?: string;
-  output: 'table' | 'json' | 'json-pretty' | 'yaml';
+  output: Output;
 };
 
 export type WorkflowSecretOptions = {
@@ -138,4 +142,32 @@ export type WorkflowExecuteOptions = {
   output?: WorkflowReportOptions['output'];
   force?: boolean;
   event?: string;
+};
+
+export type FsOptions = FsCopyOptions &
+  FsListOptions &
+  FsMkdirOptions &
+  FsSyncOptions & {
+    command?: 'upload' | 'download';
+    arguments: string[];
+  };
+
+export type FsCopyOptions = {
+  source?: string;
+  destination?: string;
+  recursive?: boolean;
+};
+
+export type FsSyncOptions = {
+  source?: string;
+};
+
+export type FsMkdirOptions = {
+  parents?: string;
+  path?: string;
+};
+
+export type FsListOptions = {
+  path?: string;
+  output?: Output;
 };

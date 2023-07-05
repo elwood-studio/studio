@@ -11,7 +11,8 @@ import type {
   Context,
   WorkflowExecuteOptions,
 } from '../../types.ts';
-import { getInput, getWorkflow, outputReport } from '../../libs/workflow.ts';
+import { getInput, getWorkflow } from '../../libs/workflow.ts';
+import { outputReport } from '../../libs/output.ts';
 
 export async function execute(
   args: Arguments<WorkflowExecuteOptions>,
