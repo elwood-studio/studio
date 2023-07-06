@@ -58,10 +58,15 @@ export class ElwoodFileSystemSdk {
     );
   }
 
-  async share(path: string) {
-    return await this._fetch(`share/${path}`, {
-      method: 'POST',
-    });
+  async share(
+    path: string,
+    input: FileSystem.ShareInput = {},
+  ): Promise<FileSystem.ShareResult> {
+    return await http.post<FileSystem.ShareResult>(
+      this._fetch,
+      `share/${path}`,
+      input,
+    );
   }
 
   remote(name: string, options: Omit<RemoteOptions, 'fetch'>): Remote {

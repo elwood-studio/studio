@@ -43,3 +43,22 @@ export type NodeAccess = {
   can_download: boolean;
   can_preview: boolean;
 };
+
+export type ShareInput = {
+  can_view_children?: boolean;
+  can_view_descendants?: boolean;
+  can_write_blob?: boolean;
+  can_write_tree?: boolean;
+  can_share?: boolean;
+  can_download?: boolean;
+  can_preview?: boolean;
+  is_public?: boolean;
+  password?: string;
+  description?: string;
+};
+
+export type ShareResult = {
+  id: string;
+  url: string;
+  token: string;
+};

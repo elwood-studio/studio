@@ -17,6 +17,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?search_path=elwood
       EXTERNAL_HOST: localhost:8000
+      SHARE_JWT_SECRET: ${SHARE_JWT_SECRET}
 
   # WORKFLOW MANAGER
   workflow:

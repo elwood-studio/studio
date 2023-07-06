@@ -6,12 +6,14 @@ import type {
   FsSyncOptions,
   FsListOptions,
   FsMkdirOptions,
+  FsShareOptions,
 } from '../../types.ts';
 
 import { copy } from './copy.ts';
 import { sync } from './sync.ts';
 import { mkdir } from './mkdir.ts';
 import { ls } from './ls.ts';
+import { share } from './share.ts';
 
 export async function register(cli: Argv) {
   cli.command<FsOptions>(
@@ -65,15 +67,16 @@ export async function register(cli: Argv) {
     sync,
   );
 
-  cli.command(
-    'fs:share',
+  cli.command<FsShareOptions>(
+    'fs:share <path>',
     'share a file',
-    () => {
-      return;
+    (y) => {
+      y.option('password', {
+        alias: 'p',
+        type: 'string',
+      });
     },
-    async (_args: Arguments) => {
-      return;
-    },
+    share,
   );
 
   cli.command<FsMkdirOptions>(

@@ -20,7 +20,7 @@ export interface Database {
           id: string;
           is_public: boolean;
           object_id: string;
-          share_password: string | null;
+          share_password_secret_id: string | null;
           state: Database['elwood']['Enums']['access_state'];
           type: Database['elwood']['Enums']['access_type'];
           updated_at: string | null;
@@ -42,7 +42,7 @@ export interface Database {
           id?: string;
           is_public?: boolean;
           object_id: string;
-          share_password?: string | null;
+          share_password_secret_id?: string | null;
           state?: Database['elwood']['Enums']['access_state'];
           type?: Database['elwood']['Enums']['access_type'];
           updated_at?: string | null;
@@ -64,7 +64,7 @@ export interface Database {
           id?: string;
           is_public?: boolean;
           object_id?: string;
-          share_password?: string | null;
+          share_password_secret_id?: string | null;
           state?: Database['elwood']['Enums']['access_state'];
           type?: Database['elwood']['Enums']['access_type'];
           updated_at?: string | null;
@@ -84,21 +84,21 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'object_added_by_user_id';
-            columns: ['added_by_user_id'];
-            referencedRelation: 'account';
-            referencedColumns: ['id'];
-          },
-          {
             foreignKeyName: 'object_user_id';
             columns: ['user_id'];
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'object_user_id';
-            columns: ['user_id'];
-            referencedRelation: 'account';
+            foreignKeyName: 'share_password_secret_id';
+            columns: ['share_password_secret_id'];
+            referencedRelation: 'secrets';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'share_password_secret_id';
+            columns: ['share_password_secret_id'];
+            referencedRelation: 'decrypted_secrets';
             referencedColumns: ['id'];
           },
         ];
@@ -106,28 +106,37 @@ export interface Database {
       event: {
         Row: {
           created_at: string | null;
+          has_processed: boolean;
           id: string;
           job_ids: string[] | null;
           payload: Json | null;
+          processed_at: string | null;
           trigger: string | null;
+          trigger_by_user_id: string | null;
           type: string[];
           updated_at: string | null;
         };
         Insert: {
           created_at?: string | null;
+          has_processed?: boolean;
           id?: string;
           job_ids?: string[] | null;
           payload?: Json | null;
+          processed_at?: string | null;
           trigger?: string | null;
+          trigger_by_user_id?: string | null;
           type: string[];
           updated_at?: string | null;
         };
         Update: {
           created_at?: string | null;
+          has_processed?: boolean;
           id?: string;
           job_ids?: string[] | null;
           payload?: Json | null;
+          processed_at?: string | null;
           trigger?: string | null;
+          trigger_by_user_id?: string | null;
           type?: string[];
           updated_at?: string | null;
         };
@@ -139,10 +148,10 @@ export interface Database {
           created_at: string | null;
           created_by_user_id: string | null;
           current_version: number;
+          data: Json | null;
           display_name: string;
           id: string;
           last_accessed_at: string | null;
-          local_urn: string[] | null;
           metadata: Json | null;
           mime_type: string | null;
           name: string;
@@ -151,7 +160,6 @@ export interface Database {
           root_user_id: string | null;
           sidecar_type: string | null;
           size: number | null;
-          skip_workflows: boolean;
           state: Database['elwood']['Enums']['object_state'];
           type: Database['elwood']['Enums']['object_type'];
           updated_at: string | null;
@@ -161,10 +169,10 @@ export interface Database {
           created_at?: string | null;
           created_by_user_id?: string | null;
           current_version?: number;
+          data?: Json | null;
           display_name: string;
           id?: string;
           last_accessed_at?: string | null;
-          local_urn?: string[] | null;
           metadata?: Json | null;
           mime_type?: string | null;
           name: string;
@@ -173,7 +181,6 @@ export interface Database {
           root_user_id?: string | null;
           sidecar_type?: string | null;
           size?: number | null;
-          skip_workflows?: boolean;
           state?: Database['elwood']['Enums']['object_state'];
           type?: Database['elwood']['Enums']['object_type'];
           updated_at?: string | null;
@@ -183,10 +190,10 @@ export interface Database {
           created_at?: string | null;
           created_by_user_id?: string | null;
           current_version?: number;
+          data?: Json | null;
           display_name?: string;
           id?: string;
           last_accessed_at?: string | null;
-          local_urn?: string[] | null;
           metadata?: Json | null;
           mime_type?: string | null;
           name?: string;
@@ -195,7 +202,6 @@ export interface Database {
           root_user_id?: string | null;
           sidecar_type?: string | null;
           size?: number | null;
-          skip_workflows?: boolean;
           state?: Database['elwood']['Enums']['object_state'];
           type?: Database['elwood']['Enums']['object_type'];
           updated_at?: string | null;
@@ -205,12 +211,6 @@ export interface Database {
             foreignKeyName: 'object_created_by_user_id';
             columns: ['created_by_user_id'];
             referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'object_created_by_user_id';
-            columns: ['created_by_user_id'];
-            referencedRelation: 'account';
             referencedColumns: ['id'];
           },
           {
@@ -225,183 +225,98 @@ export interface Database {
             referencedRelation: 'users';
             referencedColumns: ['id'];
           },
-          {
-            foreignKeyName: 'object_root_user_id';
-            columns: ['root_user_id'];
-            referencedRelation: 'account';
-            referencedColumns: ['id'];
-          },
         ];
       };
-      project: {
+      remote: {
         Row: {
           created_at: string | null;
-          description: string | null;
-          display_name: string | null;
           id: string;
           name: string;
-          type: Database['elwood']['Enums']['project_type'];
+          options: Json;
+          parameters: Json;
+          type: string;
           updated_at: string | null;
         };
         Insert: {
           created_at?: string | null;
-          description?: string | null;
-          display_name?: string | null;
           id?: string;
           name: string;
-          type?: Database['elwood']['Enums']['project_type'];
+          options?: Json;
+          parameters?: Json;
+          type: string;
           updated_at?: string | null;
         };
         Update: {
           created_at?: string | null;
-          description?: string | null;
-          display_name?: string | null;
           id?: string;
           name?: string;
-          type?: Database['elwood']['Enums']['project_type'];
+          options?: Json;
+          parameters?: Json;
+          type?: string;
           updated_at?: string | null;
         };
         Relationships: [];
       };
-      project_members: {
+      run: {
         Row: {
+          completed_at: string | null;
           created_at: string | null;
-          id: string;
-          project_id: string;
-          updated_at: string | null;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string | null;
-          id?: string;
-          project_id: string;
-          updated_at?: string | null;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string | null;
-          id?: string;
-          project_id?: string;
-          updated_at?: string | null;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'project_members_project_id';
-            columns: ['project_id'];
-            referencedRelation: 'project';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'project_members_user_id';
-            columns: ['user_id'];
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'project_members_user_id';
-            columns: ['user_id'];
-            referencedRelation: 'account';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      project_object: {
-        Row: {
-          created_at: string | null;
-          id: string;
-          object_id: string;
-          project_id: string;
-          updated_at: string | null;
-        };
-        Insert: {
-          created_at?: string | null;
-          id?: string;
-          object_id: string;
-          project_id: string;
-          updated_at?: string | null;
-        };
-        Update: {
-          created_at?: string | null;
-          id?: string;
-          object_id?: string;
-          project_id?: string;
-          updated_at?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'project_object_object_id';
-            columns: ['object_id'];
-            referencedRelation: 'object';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'project_object_project_id';
-            columns: ['project_id'];
-            referencedRelation: 'project';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      workflow_run: {
-        Row: {
-          created_at: string | null;
+          data: Json | null;
           description: string | null;
+          event_id: string | null;
+          has_failed: boolean;
           id: string;
           input: Json | null;
           instructions: Json | null;
-          job_ids: string[] | null;
+          job_id: string[] | null;
           name: string;
+          output: Json | null;
+          report: Json | null;
           state: string;
-          trigger: Database['elwood']['Enums']['workflow_run_trigger'];
+          trigger: Database['elwood']['Enums']['run_trigger'];
           updated_at: string | null;
         };
         Insert: {
+          completed_at?: string | null;
           created_at?: string | null;
+          data?: Json | null;
           description?: string | null;
+          event_id?: string | null;
+          has_failed?: boolean;
           id?: string;
           input?: Json | null;
           instructions?: Json | null;
-          job_ids?: string[] | null;
+          job_id?: string[] | null;
           name: string;
+          output?: Json | null;
+          report?: Json | null;
           state?: string;
-          trigger?: Database['elwood']['Enums']['workflow_run_trigger'];
+          trigger?: Database['elwood']['Enums']['run_trigger'];
           updated_at?: string | null;
         };
         Update: {
+          completed_at?: string | null;
           created_at?: string | null;
+          data?: Json | null;
           description?: string | null;
+          event_id?: string | null;
+          has_failed?: boolean;
           id?: string;
           input?: Json | null;
           instructions?: Json | null;
-          job_ids?: string[] | null;
+          job_id?: string[] | null;
           name?: string;
+          output?: Json | null;
+          report?: Json | null;
           state?: string;
-          trigger?: Database['elwood']['Enums']['workflow_run_trigger'];
+          trigger?: Database['elwood']['Enums']['run_trigger'];
           updated_at?: string | null;
         };
         Relationships: [];
       };
     };
     Views: {
-      account: {
-        Row: {
-          id: string | null;
-          root_dir_id: string | null;
-          username: string | null;
-        };
-        Insert: {
-          id?: string | null;
-          root_dir_id?: never;
-          username?: never;
-        };
-        Update: {
-          id?: string | null;
-          root_dir_id?: never;
-          username?: never;
-        };
-        Relationships: [];
-      };
+      [_ in never]: never;
     };
     Functions: {
       can_create_object: {
@@ -443,7 +358,7 @@ export interface Database {
     };
     Enums: {
       access_state: 'PENDING' | 'ACTIVE' | 'DISABLED';
-      access_type: 'MEMBER' | 'LINK';
+      access_type: 'USER' | 'LINK';
       object_state:
         | 'CREATING'
         | 'PENDING'
@@ -451,9 +366,8 @@ export interface Database {
         | 'PROCESSING'
         | 'FAILED'
         | 'READY';
-      object_type: 'TREE' | 'BLOB' | 'LINK';
-      project_type: 'SCRATCH' | 'STANDARD';
-      workflow_run_trigger: 'EVENT' | 'USER';
+      object_type: 'TREE' | 'BLOB' | 'LINK' | 'BACKEND';
+      run_trigger: 'EVENT' | 'USER';
     };
     CompositeTypes: {
       create_object_input: {

@@ -1,6 +1,8 @@
-import { invariant } from './invariant.ts';
-import type { AuthToken, Client } from '../types.ts';
+import { invariant } from '@elwood/common';
+
+import type { AuthToken, Client } from '@/types.ts';
 import { authExecuteSql } from './auth-execute-sql.ts';
+import { JsonObject } from '@elwood/types';
 
 export async function getRemoteConfig(
   db: Client,
@@ -24,6 +26,13 @@ export async function getRemoteConfig(
   invariant(remote.rowCount === 1, 'Remote not found');
   const { type, parameters } = remote.rows[0];
 
+  return createRemoteConfigString(type, parameters);
+}
+
+export function createRemoteConfigString(
+  type: string,
+  parameters: JsonObject = {},
+): string {
   const params = Object.entries(parameters).reduce((acc, [key, value]) => {
     return [...acc, `${key}=${value}`];
   }, [] as string[]);

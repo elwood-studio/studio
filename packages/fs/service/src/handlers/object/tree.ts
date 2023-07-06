@@ -1,5 +1,6 @@
-import type { ObjectModel, FileSystem } from '@elwood/types';
 import * as uuid from 'uuid';
+import type { ObjectModel, FileSystem } from '@elwood/types';
+import { invariant } from '@elwood/common';
 
 import type { ObjectHandlerOptions, AuthToken } from '@/types.ts';
 import { authExecuteSql } from '@/libs/auth-execute-sql.ts';
@@ -7,9 +8,8 @@ import {
   fetchAndMapRcloneListToTree,
   fetchAndMapRcloneStatToNode,
 } from '@/libs/fetch-rclone.ts';
-import { invariant } from '@/libs/invariant.ts';
 import { getRemoteConfig } from '@/libs/rclone-remote.ts';
-import { pathToParentId } from '@/libs/path-to-parent-id.ts';
+import { pathToObjectId } from '@/libs/path-to-object-id.ts';
 
 export default async function tree(
   options: ObjectHandlerOptions,
@@ -24,7 +24,7 @@ export default async function tree(
   }
 }
 
-export async function list(options: ObjectHandlerOptions): Promise<void> {
+async function list(options: ObjectHandlerOptions): Promise<void> {
   const { res } = options;
   const { type, path } = options.params;
   const nodes: FileSystem.Node[] = [];
@@ -43,7 +43,7 @@ export async function list(options: ObjectHandlerOptions): Promise<void> {
     case 'name': {
       const [_node, _nodes] = await treeForObjectId(
         options,
-        await pathToParentId(path, options.db, options.authToken),
+        await pathToObjectId(path, options.db, options.authToken),
       );
 
       node = _node;
@@ -78,7 +78,7 @@ export async function list(options: ObjectHandlerOptions): Promise<void> {
   res.send(result);
 }
 
-export async function nodesFromRemote(
+async function nodesFromRemote(
   options: ObjectHandlerOptions,
 ): Promise<[FileSystem.Node, FileSystem.Node[]]> {
   invariant(options.params.id, 'remote is required');
@@ -109,7 +109,7 @@ function mapObjectToNode(item: ObjectModel): FileSystem.Node {
   };
 }
 
-export async function treeForObjectId(
+async function treeForObjectId(
   options: ObjectHandlerOptions,
   id: string | null,
 ): Promise<[FileSystem.Node, FileSystem.Node[]]> {
@@ -151,7 +151,7 @@ export async function treeForObjectId(
   return [node, (childrenSth.rows ?? []).map(mapObjectToNode)];
 }
 
-export async function create(options: ObjectHandlerOptions): Promise<void> {
+async function create(options: ObjectHandlerOptions): Promise<void> {
   const { db, req, res } = options;
   const { type, path } = options.params;
   const { parents: createParents = false } = req.body as {

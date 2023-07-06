@@ -2,7 +2,7 @@ import { Client } from 'pg';
 import { invariant } from '@elwood/common';
 
 import { authExecuteSql } from './auth-execute-sql.ts';
-import { pathToParentId } from './path-to-parent-id.ts';
+import { pathToObjectId } from './path-to-object-id.ts';
 import { ParentFolderDoesNotExist } from './errors.ts';
 
 export type TusBeforeCreateOptions = {
@@ -95,7 +95,7 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
 
   const _parent_id =
     parent_id ??
-    (await pathToParentId(String(parent), db, authToken as string));
+    (await pathToObjectId(String(parent), db, authToken as string));
 
   const sql = `
     INSERT INTO elwood.object (

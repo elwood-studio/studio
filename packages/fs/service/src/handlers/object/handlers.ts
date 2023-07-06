@@ -39,20 +39,25 @@ export default fp<ObjectOptions>(async (app, opts) => {
     };
   }
 
+  app.get('/tree', withHandlerOptions(treeHandler));
   app.route({
     method: ['GET', 'POST', 'DELETE'],
     url: '/tree/*',
     handler: withHandlerOptions(treeHandler),
   });
 
-  app.get('/tree', withHandlerOptions(treeHandler));
+  app.route({
+    method: ['GET', 'POST', 'DELETE'],
+    url: '/share/*',
+    handler: withHandlerOptions(shareHandler),
+  });
+
   app.get('/blob/*', withHandlerOptions(blobHandler));
-  app.get('/share/*', withHandlerOptions(shareHandler));
   app.get('/raw/*', withHandlerOptions(rawHandler));
   app.get('/track/*', withHandlerOptions(trackHandler));
 });
 
-export function normalizeRequestPath(raw: string): ObjectRequestPath {
+function normalizeRequestPath(raw: string): ObjectRequestPath {
   const pathParts = raw.split('/');
   const path = pathParts.slice(1).join('/');
 

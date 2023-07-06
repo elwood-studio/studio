@@ -1,16 +1,15 @@
-import type { ObjectModel } from '@elwood/types';
 import * as uuid from 'uuid';
+import type { ObjectModel } from '@elwood/types';
+import { invariant } from '@elwood/common';
 
 import type { Client, PossibleAuthToken } from '@/types.ts';
 import { authExecuteSql } from '@/libs/auth-execute-sql.ts';
-import { invariant } from '@/libs/invariant.ts';
 
-export async function pathToParentId(
+export async function pathToObjectId(
   path: string,
   db: Client,
   authToken: PossibleAuthToken,
 ): Promise<string | null> {
-  // break apart the path
   const parts = path
     .trim()
     .replace(/^\//, '')
