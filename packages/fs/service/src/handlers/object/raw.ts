@@ -1,8 +1,8 @@
 import { basename } from 'node:path';
+import { invariant } from '@elwood/common';
 
 import type { ObjectHandlerOptions } from '@/types.ts';
 import { streamRCloneDownload } from '@/libs/stream-rclone.ts';
-import { invariant } from '@/libs/invariant.ts';
 
 export default async function raw(options: ObjectHandlerOptions) {
   const { params, req, res, authToken } = options;
@@ -19,5 +19,9 @@ export default async function raw(options: ObjectHandlerOptions) {
     );
   }
 
-  await streamRCloneDownload('name', params.path, res);
+  await streamRCloneDownload({
+    remote: '',
+    fs: '',
+    res
+  });
 }

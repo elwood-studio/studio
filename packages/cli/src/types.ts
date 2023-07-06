@@ -147,6 +147,7 @@ export type WorkflowExecuteOptions = {
 export type FsOptions = FsCopyOptions &
   FsListOptions &
   FsMkdirOptions &
+  FsShareOptions &
   FsSyncOptions & {
     command?: 'upload' | 'download';
     arguments: string[];
@@ -170,4 +171,9 @@ export type FsMkdirOptions = {
 export type FsListOptions = {
   path?: string;
   output?: Output;
+};
+
+export type FsShareOptions = {
+  path?: string;
+  password?: string;
 };

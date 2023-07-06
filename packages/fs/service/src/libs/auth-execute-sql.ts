@@ -2,9 +2,9 @@ import { type FastifyRequest } from 'fastify';
 import { type Client, QueryResult, QueryResultRow } from 'pg';
 
 import type { Json } from '@elwood/types';
+import { invariant } from '@elwood/common';
 
-import type { PossibleAuthToken } from '../types.ts';
-import { invariant } from './invariant.ts';
+import type { PossibleAuthToken } from '@/types.ts';
 import { getAuthToken, getAuthTokenFromRequest } from './get-auth-token.ts';
 
 interface AuthExecuteSqlOptionsBase {

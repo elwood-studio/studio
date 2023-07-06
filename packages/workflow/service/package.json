@@ -33,7 +33,7 @@
     "@elwood/workflow-runner": "workspace:*",
     "@elwood/workflow-secrets": "workspace:*",
     "@elwood/workflow-types": "workspace:*",
-    "@types/node": "^20.3.3",
+    "@types/node": "^20.4.0",
     "@types/pg": "^8.10.2",
     "@vercel/ncc": "^0.36.1",
     "esbuild": "^0.18.11",

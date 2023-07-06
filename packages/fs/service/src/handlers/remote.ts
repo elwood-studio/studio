@@ -1,8 +1,8 @@
 import fp from 'fastify-plugin';
 import { Client } from 'pg';
+import { invariant } from '@elwood/common';
 
 import type { Config } from '@/types.ts';
-import { invariant } from '@/libs/invariant.ts';
 import { getAuthTokenFromRequest } from '@/libs/get-auth-token.ts';
 
 export type ProxyOptions = {

@@ -1,6 +1,6 @@
 
 CREATE TYPE elwood.access_type AS ENUM (
-    'MEMBER',
+    'USER',
     'LINK'
 );
 
@@ -12,7 +12,7 @@ CREATE TYPE elwood.access_state AS ENUM (
 
 CREATE TABLE IF NOT EXISTS "elwood"."access" (
     "id" uuid NOT NULL DEFAULT extensions.uuid_generate_v4(),
-    "type" elwood.access_type NOT NULL DEFAULT 'MEMBER',    
+    "type" elwood.access_type NOT NULL DEFAULT 'USER',    
     "user_id" uuid NULL,
     "object_id" uuid NOT NULL,
     "state" elwood.access_state NOT NULL DEFAULT 'ACTIVE',
@@ -30,8 +30,9 @@ CREATE TABLE IF NOT EXISTS "elwood"."access" (
     "added_by_user_id" uuid NULL,
     "description" text NULL,
     "is_public" boolean NOT NULL DEFAULT false,
-    "share_password" text NULL,
+    "share_password_secret_id" uuid NULL,
 
+    CONSTRAINT "share_password_secret_id" FOREIGN KEY ("share_password_secret_id") REFERENCES "vault"."secrets"("id"),
     CONSTRAINT "access_object_id" FOREIGN KEY ("object_id") REFERENCES "elwood"."object"("id"),
     CONSTRAINT "object_user_id" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id"),
     CONSTRAINT "object_added_by_user_id" FOREIGN KEY ("added_by_user_id") REFERENCES "auth"."users"("id"),

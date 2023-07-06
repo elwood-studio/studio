@@ -1,8 +1,7 @@
-import { rename, mkdir } from 'fs/promises';
 import { Client } from 'pg';
 import { sync as md5 } from 'md5-file';
+import { invariant } from '@elwood/common';
 
-import { invariant } from './invariant.ts';
 import { authExecuteSql } from './auth-execute-sql.ts';
 
 export type TusAfterCreateOptions = {
@@ -30,7 +29,8 @@ export async function tusAfterCreate(options: TusAfterCreateOptions) {
     UPDATE elwood.object 
     SET 
       "state" = $3,
-      "content_hash" = $2
+      "content_hash" = $2,
+      "remote_urn" = $4
     WHERE 
       "id" = $1
     `;
@@ -39,11 +39,8 @@ export async function tusAfterCreate(options: TusAfterCreateOptions) {
     client: db,
     token: authToken,
     sql,
-    params: [id, content_hash, 'READY'],
+    params: [id, content_hash, 'READY', ['storage', uploadId]],
   });
 
   invariant(result.rowCount === 1, 'Expected exactly one row to be updated');
-
-  await mkdir(`/data/cache`, { recursive: true });
-  await rename(`/data/uploads/${uploadId}`, `/data/cache/${id}`);
 }

@@ -1,7 +1,8 @@
+import * as authHeader from 'auth-header';
 import { verify } from 'jsonwebtoken';
 import { type FastifyRequest } from 'fastify';
+import { invariant } from '@elwood/common';
 
-import { invariant } from './invariant.ts';
 import { getEnv } from './get-env.ts';
 import type { AuthToken, PossibleAuthToken } from '@/types.ts';
 
@@ -14,7 +15,17 @@ export function getAuthToken(token: PossibleAuthToken): AuthToken {
     return token as AuthToken;
   }
 
-  const jwt = verify(token.replace('Bearer ', ''), jwtSecret);
+  const auth = authHeader.parse(token);
+
+  if (
+    auth.scheme != 'Bearer' ||
+    !auth.token ||
+    typeof auth.token !== 'string'
+  ) {
+    return {};
+  }
+
+  const jwt = verify(auth.token, jwtSecret);
   return jwt as AuthToken;
 }
 
