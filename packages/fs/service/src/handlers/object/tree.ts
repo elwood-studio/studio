@@ -1,4 +1,3 @@
-import * as uuid from 'uuid';
 import type { ObjectModel, FileSystem } from '@elwood/types';
 import { invariant } from '@elwood/common';
 
@@ -10,6 +9,7 @@ import {
 } from '@/libs/fetch-rclone.ts';
 import { getRemoteConfig } from '@/libs/rclone-remote.ts';
 import { pathToObjectId } from '@/libs/path-to-object-id.ts';
+import { createTreeFromPath } from '@/libs/create-tree.ts';
 
 export async function tree(options: ObjectHandlerOptions): Promise<void> {
   switch (options.req.method) {
@@ -158,69 +158,16 @@ export async function create(options: ObjectHandlerOptions): Promise<void> {
 
   invariant(type === 'name', 'Only named paths are supported');
 
-  // break apart the path
-  const parts = path
-    .trim()
-    .replace(/^\//, '')
-    .split('/')
-    .filter((part) => part.length > 0);
-
-  invariant(parts.length > 0, 'Path must be at least one part');
-
-  const last = parts.pop() ?? '';
-  const acc: string[] = [];
-  let parent_id: string | null = null;
-
-  for (const part of parts) {
-    acc.push(part);
-
-    const col = uuid.validate(part) ? 'id' : 'name';
-    const currentSth = await authExecuteSql<ObjectModel>({
+  const obj = await createTreeFromPath({
+    path,
+    createParents,
+    authSqlOptions: {
       client: db,
       req,
-      params: parent_id === null ? [part] : [part, parent_id],
-      sql:
-        parent_id === null
-          ? `SELECT * FROM elwood.object WHERE "${col}" = $1  AND "parent_id" is null`
-          : `SELECT * FROM elwood.object WHERE "${col}" = $1 AND "parent_id" = $2`,
-    });
-
-    // if this folder already exists
-    // we can skip to the next
-    if (currentSth.rowCount !== 0) {
-      const row = currentSth.rows[0] as ObjectModel;
-      parent_id = row.id;
-      continue;
-    }
-
-    invariant(
-      createParents || parts.length === 1,
-      `Folder "${part}" at path "${acc.join('/')}" does not exists`,
-    );
-
-    parent_id = (await createTree(options, part, parent_id)).id;
-  }
-
-  const obj = await createTree(options, last, parent_id);
+    },
+  });
 
   res.send({
     id: obj.id,
   });
-}
-
-export async function createTree(
-  options: ObjectHandlerOptions,
-  name: string,
-  parent_id: string | null,
-): Promise<ObjectModel> {
-  const sth = await authExecuteSql<ObjectModel>({
-    client: options.db,
-    req: options.req,
-    params: parent_id ? [name, parent_id] : [name],
-    sql: parent_id
-      ? `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id", "mime_type") VALUES ($1, $1, 'TREE'::elwood.object_type, $2, 'inode/directory') ON CONFLICT("name","parent_id") DO UPDATE set name = $1 RETURNING "id"`
-      : `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id", "mime_type") VALUES ($1, $1, 'TREE'::elwood.object_type, NULL, 'inode/directory') ON CONFLICT("name","parent_id") DO UPDATE set name = $1  RETURNING "id"`,
-  });
-
-  return sth.rows[0] as ObjectModel;
 }

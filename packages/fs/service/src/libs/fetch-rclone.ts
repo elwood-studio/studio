@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import type { ObjectModel, FileSystem } from '@elwood/types';
 
 import type { RcloneListItem } from '@/types.ts';

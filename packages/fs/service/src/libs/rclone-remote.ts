@@ -62,7 +62,7 @@ export function createRemoteConfigString(
   const params = Object.entries(parameters).reduce((acc, [key, value]) => {
     return [...acc, `${key}=${value}`];
   }, [] as string[]);
-  const str = [type, ...params].join('');
+  const str = [type, ...params].join(',');
 
   return [':', str, ':'].join('');
 }

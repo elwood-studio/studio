@@ -43,9 +43,9 @@ export class ElwoodFileSystemSdk {
     return await http.get<FileSystem.BlobResult>(this._fetch, `blob/${path}`);
   }
 
-  async copy(src: string, dest: string) {
-    return await http.post(this._fetch, `blob/${dest}`, {
-      src,
+  async copy(source: string, dest: string): Promise<FileSystem.CopyResult> {
+    return await http.post<FileSystem.CopyResult>(this._fetch, `blob/${dest}`, {
+      source,
     });
   }
 

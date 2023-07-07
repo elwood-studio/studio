@@ -62,3 +62,7 @@ export type ShareResult = {
   url: string;
   token: string;
 };
+
+export type CopyResult = {
+  id: string;
+};

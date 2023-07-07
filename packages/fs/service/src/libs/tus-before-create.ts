@@ -1,6 +1,6 @@
-import { Client } from 'pg';
 import { invariant } from '@elwood/common';
 
+import type { Client } from '@/types.ts';
 import { authExecuteSql } from './auth-execute-sql.ts';
 import { pathToObjectId } from './path-to-object-id.ts';
 import { ParentFolderDoesNotExist } from './errors.ts';

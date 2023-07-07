@@ -1,13 +1,14 @@
 import fp from 'fastify-plugin';
-import { Client } from 'pg';
 import * as uuid from 'uuid';
 
 import { getAuthTokenFromRequest } from '@/libs/get-auth-token.ts';
 import type {
+  Client,
   ObjectRequestPath,
   ObjectHandlerOptions,
   FastifyRequest,
   FastifyReply,
+  PgBoss,
 } from '@/types.ts';
 
 import { tree } from './tree.ts';
@@ -20,10 +21,11 @@ type Handler = (options: ObjectHandlerOptions) => Promise<void>;
 
 export type ObjectOptions = {
   db: Client;
+  boss: PgBoss;
 };
 
 export default fp<ObjectOptions>(async (app, opts) => {
-  const { db } = opts;
+  const { db, boss } = opts;
 
   function withHandlerOptions(callback: Handler) {
     return async (req: FastifyRequest, res: FastifyReply) => {
@@ -31,6 +33,7 @@ export default fp<ObjectOptions>(async (app, opts) => {
 
       return await callback({
         db,
+        boss,
         req,
         res,
         params: normalizeRequestPath(wildcard ?? ''),

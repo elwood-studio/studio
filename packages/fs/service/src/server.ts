@@ -3,16 +3,22 @@ import type { FastifyInstance } from 'fastify';
 import { getEnv } from './libs/get-env.ts';
 import { createApp } from './app.ts';
 
-let _app: FastifyInstance;
+let _app: FastifyInstance | null = null;
 
 const { port, host } = getEnv();
 
 export async function startFileSystemService() {
+  if (_app) {
+    return;
+  }
+
   _app = await createApp();
 
-  await _app.db.connect();
-
   await new Promise((resolve, reject) => {
+    if (!_app) {
+      return reject(new Error('App not initialized'));
+    }
+
     _app.listen(
       {
         port,
@@ -20,7 +26,6 @@ export async function startFileSystemService() {
       },
       function (err) {
         if (err) {
-          console.log(err);
           return reject(err);
         }
 
@@ -32,7 +37,8 @@ export async function startFileSystemService() {
 
 export async function stopFileSystemService() {
   if (_app) {
-    _app.db && (await _app.db.end());
+    _app.db && (await _app.db.close());
     await _app.close();
+    _app = null;
   }
 }

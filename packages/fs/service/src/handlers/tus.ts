@@ -15,6 +15,7 @@ import { tusAfterCreate } from '@/libs/tus-after-create.ts';
 import { failUpload } from '@/libs/fail-upload.ts';
 import { getEnv, getS3Env } from '@/libs/get-env.ts';
 import { HttpError } from '@/libs/errors.ts';
+import { createStorageFilepath } from '@/libs/storage-filepath.ts';
 
 const { storageProvider, dataDir } = getEnv();
 
@@ -33,18 +34,11 @@ export default fp<TusOptions>(async (app, opts) => {
     respectForwardedHeaders: false,
     datastore: await createTusDataStore(),
     namingFunction(req) {
-      const d = new Date();
-
       const { display_name = '' } = Metadata.parse(
         String(req.headers['upload-metadata'] ?? ''),
       );
 
-      return join(
-        d.getFullYear().toString(),
-        (d.getMonth() + 1).toString().padStart(2, '0'),
-        d.getDate().toString().padStart(2, '0'),
-        `${randomBytes(16).toString('hex')}${extname(display_name ?? '')}`,
-      );
+      return createStorageFilepath(display_name ?? '');
     },
     async onUploadCreate(req, res, upload) {
       console.log('onUploadCreate');

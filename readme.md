@@ -43,7 +43,7 @@ npm install -g elwood
 ### Usage
 
 ```bash
-# initialize a new Elwood project
+# initialize a new workspace
 elwood init
 
 # start a local server using docker-compose
@@ -52,14 +52,14 @@ elwood start
 # Upload a file
 elwood fs:upload https://x.elwood.studio/p/bunny.mp4 /bunny.mp4
 
-# Queue a workflow job to generate an MP3 on our bunny video
+# Create a workflow run to generate an MP3 of the bunny video
 elwood workflow:run demo.yml --input.src="/bunny.mp4" --input.dest="/bunny.mp3" --wait
 
 # Download the MP3
 elwood fs:download /bunny.mp3
 
 # Create a link to the file with a password
-elwood fs:share link /bunny.mp3 --with-password=test
+elwood fs:share link /bunny.mp3 --password=test
 
 # stop local server
 elwood stop

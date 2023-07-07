@@ -1,5 +1,4 @@
-import { Client } from 'pg';
-
+import type { Client } from '@/types.ts';
 import { authExecuteSql } from './auth-execute-sql.ts';
 
 export type FailUploadOptions = {

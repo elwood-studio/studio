@@ -1,9 +1,8 @@
 import { URL } from 'node:url';
 import fp from 'fastify-plugin';
-import { Client } from 'pg';
 import { invariant } from '@elwood/common';
 
-import type { Config } from '@/types.ts';
+import type { Client, Config } from '@/types.ts';
 import { getAuthTokenFromRequest } from '@/libs/get-auth-token.ts';
 import { getEnv } from '@/libs/get-env.ts';
 import { streamRcloneRequest } from '@/libs/stream-rclone.ts';
