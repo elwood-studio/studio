@@ -7,14 +7,13 @@ import { FileStore } from '@tus/file-store';
 import type { GCSStore } from '@tus/gcs-store';
 import type { S3Store } from '@tus/s3-store';
 import { type IncomingMessage } from 'http';
-import { Client } from 'pg';
-import { invariant } from '@elwood/common';
 import type { Json } from '@elwood/types';
 
+import type { Client } from '@/types.ts';
 import { tusBeforeCreate } from '@/libs/tus-before-create.ts';
 import { tusAfterCreate } from '@/libs/tus-after-create.ts';
 import { failUpload } from '@/libs/fail-upload.ts';
-import { getEnv } from '@/libs/get-env.ts';
+import { getEnv, getS3Env } from '@/libs/get-env.ts';
 import { HttpError } from '@/libs/errors.ts';
 
 const { storageProvider, dataDir } = getEnv();
@@ -138,30 +137,21 @@ export default fp<TusOptions>(async (app, opts) => {
 });
 
 async function createTusDataStore(): Promise<Store> {
+  console.log(`tus: storage provider "${storageProvider}"`);
+
   switch (storageProvider) {
     case 's3': {
-      const {
-        AWS_BUCKET,
-        AWS_REGION,
-        AWS_ACCESS_KEY_ID,
-        AWS_SECRET_ACCESS_KEY,
-      } = process.env ?? {};
-
-      invariant(AWS_BUCKET, 'AWS_BUCKET is required');
-      invariant(AWS_REGION, 'AWS_REGION is required');
-      invariant(AWS_ACCESS_KEY_ID, 'AWS_ACCESS_KEY_ID is required');
-      invariant(AWS_SECRET_ACCESS_KEY, 'AWS_SECRET_ACCESS_KEY is required');
-
       const s3 = await import('@tus/s3-store');
+      const env = getS3Env();
 
       return new s3.S3Store({
         partSize: 8 * 1024 * 1024,
         s3ClientConfig: {
-          bucket: AWS_BUCKET,
-          region: AWS_REGION,
+          bucket: env.bucket,
+          region: env.region,
           credentials: {
-            accessKeyId: AWS_ACCESS_KEY_ID,
-            secretAccessKey: AWS_SECRET_ACCESS_KEY,
+            accessKeyId: env.key,
+            secretAccessKey: env.secret,
           },
         },
       });

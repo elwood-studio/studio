@@ -1,7 +1,6 @@
-import { Client } from 'pg';
-import { sync as md5 } from 'md5-file';
 import { invariant } from '@elwood/common';
 
+import type { Client } from '@/types.ts';
 import { authExecuteSql } from './auth-execute-sql.ts';
 
 export type TusAfterCreateOptions = {
@@ -24,7 +23,6 @@ export async function tusAfterCreate(options: TusAfterCreateOptions) {
 
   invariant(id, 'Expected to find an object with the given upload_id');
 
-  const content_hash = md5(`/data/uploads/${uploadId}`);
   const sql = `
     UPDATE elwood.object 
     SET 
@@ -39,7 +37,7 @@ export async function tusAfterCreate(options: TusAfterCreateOptions) {
     client: db,
     token: authToken,
     sql,
-    params: [id, content_hash, 'READY', ['storage', uploadId]],
+    params: [id, '', 'READY', ['storage', uploadId]],
   });
 
   invariant(result.rowCount === 1, 'Expected exactly one row to be updated');

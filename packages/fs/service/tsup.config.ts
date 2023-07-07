@@ -4,7 +4,7 @@ export default defineConfig((options: Options) => ({
   treeshake: true,
   splitting: true,
   entry: ['src/**/*.ts'],
-  format: ['cjs', 'esm'],
+  format: ['esm'],
   dts: true,
   minify: true,
   clean: true,

@@ -43,8 +43,10 @@ export class ElwoodFileSystemSdk {
     return await http.get<FileSystem.BlobResult>(this._fetch, `blob/${path}`);
   }
 
-  async copy(path: string) {
-    return await this._fetch(`raw/${path}`);
+  async copy(src: string, dest: string) {
+    return await http.post(this._fetch, `blob/${dest}`, {
+      src,
+    });
   }
 
   async mkdir(

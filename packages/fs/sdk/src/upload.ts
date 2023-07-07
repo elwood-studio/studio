@@ -138,6 +138,7 @@ export class Upload extends Emittery<Events> {
     file: UploadFile,
     options: UploadFileOptions = {},
   ): Promise<string> {
+    const metadata = options.metadata ?? {};
     const headers: Record<string, string> = { apikey: this.options.key };
     const token =
       (await this.options.getAuthenticationToken()) ?? this.options.key;
@@ -146,11 +147,19 @@ export class Upload extends Emittery<Events> {
       headers.Authorization = `Bearer ${token}`;
     }
 
+    if (metadata.mime_type) {
+      metadata.contentType = metadata.mime_type;
+    }
+    if (file instanceof File || file instanceof Blob) {
+      metadata.contentType = file.type;
+    }
+
     const id = crypto
       .MD5(`${Math.random()}-${options.metadata?.name}`)
       .toString();
     const upload = new tus.Upload(file, {
       ...options,
+      metadata,
       async fingerprint() {
         return id;
       },

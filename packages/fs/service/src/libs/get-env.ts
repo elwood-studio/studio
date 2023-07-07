@@ -59,3 +59,27 @@ export function getEnv(): Env {
     process.exit(1);
   }
 }
+
+export type S3Env = {
+  bucket: string;
+  region: string;
+  key: string;
+  secret: string;
+};
+
+export function getS3Env(): S3Env {
+  const { AWS_BUCKET, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } =
+    process.env ?? {};
+
+  invariant(AWS_BUCKET, 'AWS_BUCKET is required');
+  invariant(AWS_REGION, 'AWS_REGION is required');
+  invariant(AWS_ACCESS_KEY_ID, 'AWS_ACCESS_KEY_ID is required');
+  invariant(AWS_SECRET_ACCESS_KEY, 'AWS_SECRET_ACCESS_KEY is required');
+
+  return {
+    bucket: AWS_BUCKET,
+    region: AWS_REGION,
+    key: AWS_ACCESS_KEY_ID,
+    secret: AWS_SECRET_ACCESS_KEY,
+  };
+}

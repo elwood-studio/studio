@@ -9,7 +9,7 @@ import { streamRCloneDownload } from '@/libs/stream-rclone.ts';
 
 const { shareJwtSecret } = getEnv();
 
-export default async function track(options: ObjectHandlerOptions) {
+export async function track(options: ObjectHandlerOptions) {
   const { params, req, res } = options;
   const { path } = params;
 
@@ -65,7 +65,9 @@ export default async function track(options: ObjectHandlerOptions) {
   });
 }
 
-function getAuthHeader(value: string | undefined): [string, string] | null {
+export function getAuthHeader(
+  value: string | undefined,
+): [string, string] | null {
   if (!value) {
     return null;
   }

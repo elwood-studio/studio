@@ -11,9 +11,7 @@ import {
 import { getRemoteConfig } from '@/libs/rclone-remote.ts';
 import { pathToObjectId } from '@/libs/path-to-object-id.ts';
 
-export default async function tree(
-  options: ObjectHandlerOptions,
-): Promise<void> {
+export async function tree(options: ObjectHandlerOptions): Promise<void> {
   switch (options.req.method) {
     case 'GET':
       return await list(options);
@@ -24,7 +22,7 @@ export default async function tree(
   }
 }
 
-async function list(options: ObjectHandlerOptions): Promise<void> {
+export async function list(options: ObjectHandlerOptions): Promise<void> {
   const { res } = options;
   const { type, path } = options.params;
   const nodes: FileSystem.Node[] = [];
@@ -78,7 +76,7 @@ async function list(options: ObjectHandlerOptions): Promise<void> {
   res.send(result);
 }
 
-async function nodesFromRemote(
+export async function nodesFromRemote(
   options: ObjectHandlerOptions,
 ): Promise<[FileSystem.Node, FileSystem.Node[]]> {
   invariant(options.params.id, 'remote is required');
@@ -96,7 +94,7 @@ async function nodesFromRemote(
   return [node, await fetchAndMapRcloneListToTree(remoteStr, `/${path}`)];
 }
 
-function mapObjectToNode(item: ObjectModel): FileSystem.Node {
+export function mapObjectToNode(item: ObjectModel): FileSystem.Node {
   return {
     id: item.id,
     name: item.name,
@@ -109,7 +107,7 @@ function mapObjectToNode(item: ObjectModel): FileSystem.Node {
   };
 }
 
-async function treeForObjectId(
+export async function treeForObjectId(
   options: ObjectHandlerOptions,
   id: string | null,
 ): Promise<[FileSystem.Node, FileSystem.Node[]]> {
@@ -151,7 +149,7 @@ async function treeForObjectId(
   return [node, (childrenSth.rows ?? []).map(mapObjectToNode)];
 }
 
-async function create(options: ObjectHandlerOptions): Promise<void> {
+export async function create(options: ObjectHandlerOptions): Promise<void> {
   const { db, req, res } = options;
   const { type, path } = options.params;
   const { parents: createParents = false } = req.body as {
@@ -210,7 +208,7 @@ async function create(options: ObjectHandlerOptions): Promise<void> {
   });
 }
 
-async function createTree(
+export async function createTree(
   options: ObjectHandlerOptions,
   name: string,
   parent_id: string | null,
