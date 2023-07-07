@@ -1,6 +1,5 @@
-import { dirname, extname, join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { mkdirSync } from 'node:fs';
-import { randomBytes } from 'node:crypto';
 import fp from 'fastify-plugin';
 import { Server, Upload, Metadata } from '@tus/server';
 import { FileStore } from '@tus/file-store';

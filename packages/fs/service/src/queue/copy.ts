@@ -1,6 +1,4 @@
-import { randomUUID } from 'node:crypto';
-import { basename, join } from 'node:path';
-import { mkdir, readdir } from 'node:fs/promises';
+import { basename } from 'node:path';
 import { invariant } from '@elwood/common';
 
 import type { PgBoss, Client } from '@/types.ts';
