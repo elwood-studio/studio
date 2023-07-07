@@ -1,10 +1,12 @@
-import type { Client } from 'pg';
+import type { Pool, QueryResult, QueryResultRow } from 'pg';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { JsonObject } from '@elwood/types';
+import type { JsonObject, Json } from '@elwood/types';
+import type PgBoss from 'pg-boss';
 
 declare module 'fastify' {
   interface FastifyInstance {
     db: Client;
+    boss: PgBoss;
   }
 }
 
@@ -37,6 +39,7 @@ export type PossibleAuthToken<T extends JsonObject = JsonObject> =
 
 export type ObjectHandlerOptions = {
   db: Client;
+  boss: PgBoss;
   req: FastifyRequest;
   res: FastifyReply;
   params: ObjectRequestPath;
@@ -57,5 +60,32 @@ export type RcloneListItem = {
   };
 };
 
-export type { Client } from 'pg';
+export interface DatabaseOptions {
+  application_name?: string;
+  database?: string;
+  user?: string;
+  password?: string;
+  host?: string;
+  port?: number;
+  schema?: string;
+  ssl?: Json;
+  connectionString?: string;
+  max?: number;
+  db?: Client;
+}
+
+export interface Client {
+  opened: boolean;
+  pool: Pool;
+
+  open(): Promise<void>;
+  close(): Promise<void>;
+  executeSql(text: string, values: Json[]): Promise<QueryResult<Json>>;
+  query<T extends QueryResultRow = QueryResultRow>(
+    sql: string,
+    params?: Json[],
+  ): Promise<QueryResult<T>>;
+}
+
 export type { FastifyReply, FastifyRequest } from 'fastify';
+export type { default as PgBoss } from 'pg-boss';

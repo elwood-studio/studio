@@ -21,9 +21,11 @@
     }
   },
   "scripts": {
-    "lint": "eslint \"**/*.ts*\"",
-    "dev": "tsup --watch",
-    "build": "tsup --silent"
+    "lint": "eslint \"src/**/*.ts*\"",
+    "dev": "pnpm run \"/^build:.*/\" --watch",
+    "build": "pnpm run \"/^build:.*/\"",
+    "build:js": "tsup --silent",
+    "build:ts": "tsc --project tsconfig.json"
   },
   "files": [
     "dist"
@@ -45,6 +47,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "pg-boss": "8.4.2",
     "@elwood/common": "workspace:*",
     "@fastify/postgres": "^5.2.0",
     "@fastify/static": "^6.10.2",

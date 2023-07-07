@@ -4,7 +4,7 @@ import { invariant } from '@elwood/common';
 import type { ObjectHandlerOptions } from '@/types.ts';
 import { streamRCloneDownload } from '@/libs/stream-rclone.ts';
 
-export default async function raw(options: ObjectHandlerOptions) {
+export async function raw(options: ObjectHandlerOptions) {
   const { params, req, res, authToken } = options;
   const { dl } = req.query as {
     dl?: boolean;
@@ -22,6 +22,6 @@ export default async function raw(options: ObjectHandlerOptions) {
   await streamRCloneDownload({
     remote: '',
     fs: '',
-    res
+    res,
   });
 }

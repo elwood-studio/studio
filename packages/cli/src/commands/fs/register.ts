@@ -7,6 +7,7 @@ import type {
   FsListOptions,
   FsMkdirOptions,
   FsShareOptions,
+  FsUploadOptions,
 } from '../../types.ts';
 
 import { copy } from './copy.ts';
@@ -14,6 +15,7 @@ import { sync } from './sync.ts';
 import { mkdir } from './mkdir.ts';
 import { ls } from './ls.ts';
 import { share } from './share.ts';
+import { upload } from './upload.ts';
 
 export async function register(cli: Argv) {
   cli.command<FsOptions>(
@@ -26,8 +28,17 @@ export async function register(cli: Argv) {
       const commandArguments = args.arguments ?? [];
 
       switch (args.command) {
-        case 'upload': {
+        case 'copy': {
           await copy({
+            ...args,
+            source: commandArguments[0],
+            destination: commandArguments[1],
+          });
+          break;
+        }
+
+        case 'upload': {
+          await upload({
             ...args,
             source: commandArguments[0],
             destination: commandArguments[1],
@@ -45,14 +56,24 @@ export async function register(cli: Argv) {
     },
   );
 
-  cli.command<FsCopyOptions>(
+  cli.command<FsUploadOptions>(
     'fs:upload <source> <destination>',
     'upload a file or folder',
+    () => {
+      return;
+    },
+    upload,
+  );
+
+  cli.command<FsCopyOptions>(
+    'fs:copy <source> <destination>',
+    'copy a file or folder',
     (y) => {
-      y.option('recursive', {
-        alias: 'r',
+      y.option('wait', {
+        alias: 'w',
         type: 'boolean',
         default: false,
+        description: 'Wait for the copy operation to complete before exiting',
       });
     },
     copy,

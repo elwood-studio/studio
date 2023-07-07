@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
+    "babel-jest": "^29.6.1",
     "ts-jest": "^29.1.1"
   }
 }

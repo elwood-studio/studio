@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --silent",
-    "lint": "eslint \"**/*.ts*\""
+    "lint": "eslint \"src/**/*.ts*\""
   },
   "jest": {
     "preset": "jest-presets/jest/node"

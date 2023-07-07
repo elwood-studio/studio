@@ -1,25 +1,31 @@
 import { type FastifyRequest } from 'fastify';
-import { type Client, QueryResult, QueryResultRow } from 'pg';
+import { QueryResult, QueryResultRow } from 'pg';
 
 import type { Json } from '@elwood/types';
 import { invariant } from '@elwood/common';
 
-import type { PossibleAuthToken } from '@/types.ts';
+import type { Client, PossibleAuthToken } from '@/types.ts';
 import { getAuthToken, getAuthTokenFromRequest } from './get-auth-token.ts';
 
-interface AuthExecuteSqlOptionsBase {
+export interface AuthExecuteSqlOptionsBase {
   client: Client;
   sql: string;
   params: Json[];
 }
-interface AuthExecuteSqlOptionsWithToken extends AuthExecuteSqlOptionsBase {
+export interface AuthExecuteSqlOptionsWithToken
+  extends AuthExecuteSqlOptionsBase {
   token: PossibleAuthToken;
   req?: never;
 }
-interface AuthExecuteSqlOptionsWithRequest extends AuthExecuteSqlOptionsBase {
+export interface AuthExecuteSqlOptionsWithRequest
+  extends AuthExecuteSqlOptionsBase {
   req: FastifyRequest;
   token?: never;
 }
+
+export type AuthExecuteSqlAuthOptions =
+  | Omit<AuthExecuteSqlOptionsWithToken, 'sql' | 'params'>
+  | Omit<AuthExecuteSqlOptionsWithRequest, 'sql' | 'params'>;
 
 export type AuthExecuteSqlOptions =
   | AuthExecuteSqlOptionsWithToken

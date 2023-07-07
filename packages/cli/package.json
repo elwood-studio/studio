@@ -29,7 +29,8 @@
   ],
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup --silent"
+    "build": "tsup --silent",
+    "test": "jest --runInBand"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
@@ -51,7 +52,7 @@
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.1",
     "mime": "^3.0.0",
-    "ora": "^6.3.1",
+    "ora": "5.4.1",
     "stacktracey": "^2.1.8",
     "ts-invariant": "^0.10.3",
     "yaml": "^2.3.1",

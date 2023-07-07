@@ -20,7 +20,7 @@
     }
   },
   "scripts": {
-    "lint": "eslint \"**/*.ts*\"",
+    "lint": "eslint \"src/**/*.ts*\"",
     "dev": "tsup --watch",
     "build": "tsup --silent"
   },

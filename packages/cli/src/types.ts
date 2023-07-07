@@ -148,15 +148,21 @@ export type FsOptions = FsCopyOptions &
   FsListOptions &
   FsMkdirOptions &
   FsShareOptions &
+  FsUploadOptions &
   FsSyncOptions & {
-    command?: 'upload' | 'download';
+    command?: 'upload' | 'download' | 'copy';
     arguments: string[];
   };
 
 export type FsCopyOptions = {
   source?: string;
   destination?: string;
-  recursive?: boolean;
+  wait?: boolean;
+};
+
+export type FsUploadOptions = {
+  source?: string;
+  destination?: string;
 };
 
 export type FsSyncOptions = {

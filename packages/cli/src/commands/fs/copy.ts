@@ -1,79 +1,41 @@
-import { basename, extname } from 'node:path';
-import { createReadStream, statSync } from 'node:fs';
-import { glob } from 'glob';
-import isGlob from 'is-glob';
 import { invariant } from 'ts-invariant';
 import fs from 'fs-jetpack';
-import mime from 'mime';
 import ora from 'ora';
 
 import type { FsCopyOptions, Arguments } from '../../types.ts';
+import { upload } from './upload.ts';
 
 export async function copy(args: Arguments<FsCopyOptions>) {
-  const { source, destination, context } = args;
-
-  invariant(source, 'source is required');
-  invariant(destination, 'destination is required');
-
-  const sources = source.split(',');
-  const files: string[] = [];
-  const spin = ora('Sending workflow...').start();
+  const { source, destination, wait, context } = args;
+  const spin = ora('Starting copy...').start();
   const client = context?.client;
 
   invariant(client, 'client is required');
+  invariant(source, 'source is required');
+  invariant(destination, 'destination is required');
 
-  context.spin.text = 'Resolving files...';
-
-  for (const src of sources) {
-    if (isGlob(src)) {
-      files.push(...glob.sync(src));
-    } else {
-      invariant(await fs.existsAsync(src), `Source "${src}" does not exist`);
-      files.push(src);
-    }
+  // if it's a local file
+  // send it to upload
+  if (!source.includes('://')) {
+    return await upload(args);
   }
 
-  // filter our our directories
-  const finalFiles = files.filter((file) => fs.inspect(file)?.type === 'file');
+  spin.text = 'Sending copy...';
 
-  spin.text = `Found ${finalFiles.length} files, uploading...`;
+  const r = await client.fileSystem.copy(source, destination);
 
-  for (const file of finalFiles) {
-    const stat = statSync(file);
-    const name = basename(file);
-    const type = mime.getType(extname(file)) ?? 'application/octet-stream';
-
-    await client.fileSystem.upload.add(createReadStream(file), {
-      metadata: {
-        name,
-        display_name: name,
-        mime_type: type,
-        size: String(stat.size ?? 0),
-        parent: destination,
-      },
-      uploadSize: stat.size,
-    });
+  if (wait !== true) {
+    spin.succeed(`File copy operation to ${destination} has been queued`);
+    return;
   }
 
-  spin.text = 'Starting uploads...';
+  let complete = false;
 
-  client.fileSystem.upload.on('progress', (evt) => {
-    spin.text = `Uploaded ${evt.bytesSent} of (${evt.bytesTotal}`;
-  });
+  while (complete === false) {
+    const _ = await client.fileSystem.stat(r.id);
 
-  client.fileSystem.upload.on('success', (evt) => {
-    spin.succeed(`Uploaded ${evt.upload.options.metadata?.name} `);
-  });
+    complete = true;
+  }
 
-  client.fileSystem.upload.on('finished', () => {
-    spin.stop();
-  });
-
-  client.fileSystem.upload.on('error', (evt) => {
-    spin.fail(
-      `Failed to upload ${evt.upload.options.metadata?.name}, because "${evt.message}"`,
-    );
-  });
-
-  await client.fileSystem.upload.start();
+  spin.succeed(`File copied to ${destination}!`);
 }

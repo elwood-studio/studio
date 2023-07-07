@@ -1,29 +1,31 @@
 import fp from 'fastify-plugin';
-import { Client } from 'pg';
 import * as uuid from 'uuid';
 
 import { getAuthTokenFromRequest } from '@/libs/get-auth-token.ts';
 import type {
+  Client,
   ObjectRequestPath,
   ObjectHandlerOptions,
   FastifyRequest,
   FastifyReply,
+  PgBoss,
 } from '@/types.ts';
 
-import treeHandler from './tree.ts';
-import rawHandler from './raw.ts';
-import blobHandler from './blob.ts';
-import shareHandler from './share.ts';
-import trackHandler from './track.ts';
+import { tree } from './tree.ts';
+import { raw } from './raw.ts';
+import { blob } from './blob.ts';
+import { share } from './share.ts';
+import { track } from './track.ts';
 
 type Handler = (options: ObjectHandlerOptions) => Promise<void>;
 
 export type ObjectOptions = {
   db: Client;
+  boss: PgBoss;
 };
 
 export default fp<ObjectOptions>(async (app, opts) => {
-  const { db } = opts;
+  const { db, boss } = opts;
 
   function withHandlerOptions(callback: Handler) {
     return async (req: FastifyRequest, res: FastifyReply) => {
@@ -31,6 +33,7 @@ export default fp<ObjectOptions>(async (app, opts) => {
 
       return await callback({
         db,
+        boss,
         req,
         res,
         params: normalizeRequestPath(wildcard ?? ''),
@@ -39,22 +42,27 @@ export default fp<ObjectOptions>(async (app, opts) => {
     };
   }
 
-  app.get('/tree', withHandlerOptions(treeHandler));
+  app.get('/tree', withHandlerOptions(tree));
   app.route({
     method: ['GET', 'POST', 'DELETE'],
     url: '/tree/*',
-    handler: withHandlerOptions(treeHandler),
+    handler: withHandlerOptions(tree),
   });
 
   app.route({
     method: ['GET', 'POST', 'DELETE'],
     url: '/share/*',
-    handler: withHandlerOptions(shareHandler),
+    handler: withHandlerOptions(share),
   });
 
-  app.get('/blob/*', withHandlerOptions(blobHandler));
-  app.get('/raw/*', withHandlerOptions(rawHandler));
-  app.get('/track/*', withHandlerOptions(trackHandler));
+  app.route({
+    method: ['GET', 'POST', 'DELETE'],
+    url: '/blob/*',
+    handler: withHandlerOptions(blob),
+  });
+
+  app.get('/raw/*', withHandlerOptions(raw));
+  app.get('/track/*', withHandlerOptions(track));
 });
 
 function normalizeRequestPath(raw: string): ObjectRequestPath {

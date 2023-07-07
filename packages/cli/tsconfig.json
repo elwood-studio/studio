@@ -8,7 +8,6 @@
     "allowImportingTsExtensions": true,
     "moduleResolution": "node16",
     "module": "Node16",
-    "jsx": "react",
     "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./dist",
@@ -16,7 +15,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "bin/cli-dev.ts"],
+  "include": ["src/**/*.ts", "bin/cli-dev.ts"],
   "ignore": ["bin/*.ts", "dist/"],
   "references": [],
   "ts-node": {

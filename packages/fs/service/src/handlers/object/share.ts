@@ -10,7 +10,7 @@ import { getEnv } from '@/libs/get-env.ts';
 
 const { shareUrlTpl, shareJwtSecret } = getEnv();
 
-export default async function share(options: ObjectHandlerOptions) {
+export async function share(options: ObjectHandlerOptions) {
   const { req, res } = options;
 
   switch (req.method) {
@@ -21,7 +21,7 @@ export default async function share(options: ObjectHandlerOptions) {
   }
 }
 
-async function create(options: ObjectHandlerOptions): Promise<void> {
+export async function create(options: ObjectHandlerOptions): Promise<void> {
   invariant(options.req.body, 'Missing body');
 
   const object_id = await pathToObjectId(
@@ -37,8 +37,6 @@ async function create(options: ObjectHandlerOptions): Promise<void> {
     options.authToken,
     object_id,
   );
-
-  console.log(access);
 
   invariant(access.can_share, 'Can not share object');
 

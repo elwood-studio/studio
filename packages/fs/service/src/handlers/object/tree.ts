@@ -1,4 +1,3 @@
-import * as uuid from 'uuid';
 import type { ObjectModel, FileSystem } from '@elwood/types';
 import { invariant } from '@elwood/common';
 
@@ -10,10 +9,9 @@ import {
 } from '@/libs/fetch-rclone.ts';
 import { getRemoteConfig } from '@/libs/rclone-remote.ts';
 import { pathToObjectId } from '@/libs/path-to-object-id.ts';
+import { createTreeFromPath } from '@/libs/create-tree.ts';
 
-export default async function tree(
-  options: ObjectHandlerOptions,
-): Promise<void> {
+export async function tree(options: ObjectHandlerOptions): Promise<void> {
   switch (options.req.method) {
     case 'GET':
       return await list(options);
@@ -24,7 +22,7 @@ export default async function tree(
   }
 }
 
-async function list(options: ObjectHandlerOptions): Promise<void> {
+export async function list(options: ObjectHandlerOptions): Promise<void> {
   const { res } = options;
   const { type, path } = options.params;
   const nodes: FileSystem.Node[] = [];
@@ -78,7 +76,7 @@ async function list(options: ObjectHandlerOptions): Promise<void> {
   res.send(result);
 }
 
-async function nodesFromRemote(
+export async function nodesFromRemote(
   options: ObjectHandlerOptions,
 ): Promise<[FileSystem.Node, FileSystem.Node[]]> {
   invariant(options.params.id, 'remote is required');
@@ -96,7 +94,7 @@ async function nodesFromRemote(
   return [node, await fetchAndMapRcloneListToTree(remoteStr, `/${path}`)];
 }
 
-function mapObjectToNode(item: ObjectModel): FileSystem.Node {
+export function mapObjectToNode(item: ObjectModel): FileSystem.Node {
   return {
     id: item.id,
     name: item.name,
@@ -109,7 +107,7 @@ function mapObjectToNode(item: ObjectModel): FileSystem.Node {
   };
 }
 
-async function treeForObjectId(
+export async function treeForObjectId(
   options: ObjectHandlerOptions,
   id: string | null,
 ): Promise<[FileSystem.Node, FileSystem.Node[]]> {
@@ -151,7 +149,7 @@ async function treeForObjectId(
   return [node, (childrenSth.rows ?? []).map(mapObjectToNode)];
 }
 
-async function create(options: ObjectHandlerOptions): Promise<void> {
+export async function create(options: ObjectHandlerOptions): Promise<void> {
   const { db, req, res } = options;
   const { type, path } = options.params;
   const { parents: createParents = false } = req.body as {
@@ -160,69 +158,16 @@ async function create(options: ObjectHandlerOptions): Promise<void> {
 
   invariant(type === 'name', 'Only named paths are supported');
 
-  // break apart the path
-  const parts = path
-    .trim()
-    .replace(/^\//, '')
-    .split('/')
-    .filter((part) => part.length > 0);
-
-  invariant(parts.length > 0, 'Path must be at least one part');
-
-  const last = parts.pop() ?? '';
-  const acc: string[] = [];
-  let parent_id: string | null = null;
-
-  for (const part of parts) {
-    acc.push(part);
-
-    const col = uuid.validate(part) ? 'id' : 'name';
-    const currentSth = await authExecuteSql<ObjectModel>({
+  const obj = await createTreeFromPath({
+    path,
+    createParents,
+    authSqlOptions: {
       client: db,
       req,
-      params: parent_id === null ? [part] : [part, parent_id],
-      sql:
-        parent_id === null
-          ? `SELECT * FROM elwood.object WHERE "${col}" = $1  AND "parent_id" is null`
-          : `SELECT * FROM elwood.object WHERE "${col}" = $1 AND "parent_id" = $2`,
-    });
-
-    // if this folder already exists
-    // we can skip to the next
-    if (currentSth.rowCount !== 0) {
-      const row = currentSth.rows[0] as ObjectModel;
-      parent_id = row.id;
-      continue;
-    }
-
-    invariant(
-      createParents || parts.length === 1,
-      `Folder "${part}" at path "${acc.join('/')}" does not exists`,
-    );
-
-    parent_id = (await createTree(options, part, parent_id)).id;
-  }
-
-  const obj = await createTree(options, last, parent_id);
+    },
+  });
 
   res.send({
     id: obj.id,
   });
-}
-
-async function createTree(
-  options: ObjectHandlerOptions,
-  name: string,
-  parent_id: string | null,
-): Promise<ObjectModel> {
-  const sth = await authExecuteSql<ObjectModel>({
-    client: options.db,
-    req: options.req,
-    params: parent_id ? [name, parent_id] : [name],
-    sql: parent_id
-      ? `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id", "mime_type") VALUES ($1, $1, 'TREE'::elwood.object_type, $2, 'inode/directory') ON CONFLICT("name","parent_id") DO UPDATE set name = $1 RETURNING "id"`
-      : `INSERT INTO elwood.object ("name", "display_name", "type", "parent_id", "mime_type") VALUES ($1, $1, 'TREE'::elwood.object_type, NULL, 'inode/directory') ON CONFLICT("name","parent_id") DO UPDATE set name = $1  RETURNING "id"`,
-  });
-
-  return sth.rows[0] as ObjectModel;
 }
