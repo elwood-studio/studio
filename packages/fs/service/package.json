@@ -1,7 +1,16 @@
 {
   "name": "@elwood/fs-service",
   "version": "0.1.27",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/fs/service",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0",
   "type": "module",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",

@@ -13,6 +13,16 @@
   "jest": {
     "preset": "jest-presets/jest/node"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/workflow/runner",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0",
   "dependencies": {
     "@elwood/workflow-config": "workspace:*",
     "@elwood/workflow-secrets": "workspace:*",
@@ -50,7 +60,6 @@
     "jest-presets": "workspace:*",
     "tsconfig": "workspace:*"
   },
-  "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6",
   "jest-junit": {
     "suiteName": "Workflow / Runner",

@@ -2,6 +2,16 @@
   "name": "@elwood/workflow-config",
   "version": "0.1.27",
   "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/workflow/config",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0",
   "files": [
     "lib",
     "schema.json"
@@ -36,6 +46,5 @@
     "tsconfig": "workspace:*",
     "typescript": "^5.1.6"
   },
-  "license": "MIT",
   "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"
 }
