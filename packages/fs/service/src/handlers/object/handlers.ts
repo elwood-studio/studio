@@ -10,12 +10,14 @@ import type {
   FastifyReply,
   PgBoss,
 } from '@/types.ts';
+import * as schemas from '@/schemas/index.ts';
 
 import { tree } from './tree.ts';
 import { raw } from './raw.ts';
 import { blob } from './blob.ts';
 import { share } from './share.ts';
 import { track } from './track.ts';
+import { RouteOptions } from 'fastify';
 
 type Handler = (options: ObjectHandlerOptions) => Promise<void>;
 
@@ -25,45 +27,106 @@ export type ObjectOptions = {
 };
 
 export default fp<ObjectOptions>(async (app, opts) => {
-  const { db, boss } = opts;
+  const _treeHandler = withHandlerOptions(tree, opts);
+  const _shareHandler = withHandlerOptions(share, opts);
+  const _blobHandler = withHandlerOptions(blob, opts);
+  const _rawHandler = withHandlerOptions(raw, opts);
+  const _trackHandler = withHandlerOptions(track, opts);
 
-  function withHandlerOptions(callback: Handler) {
-    return async (req: FastifyRequest, res: FastifyReply) => {
-      const { '*': wildcard } = req.params as { '*'?: string };
+  const routes: RouteOptions[] = [
+    // tree
+    {
+      method: 'GET',
+      url: '/tree',
+      handler: _treeHandler,
+    },
+    {
+      method: 'GET',
+      url: '/tree/*',
+      handler: _treeHandler,
+    },
+    {
+      method: 'POST',
+      url: '/tree/*',
+      handler: _treeHandler,
+    },
+    {
+      method: 'DELETE',
+      url: '/tree/*',
+      handler: _treeHandler,
+    },
 
-      return await callback({
-        db,
-        boss,
-        req,
-        res,
-        params: normalizeRequestPath(wildcard ?? ''),
-        authToken: getAuthTokenFromRequest(req),
-      });
-    };
-  }
+    // share
+    {
+      method: 'GET',
+      url: '/share/*',
+      handler: _shareHandler,
+    },
+    {
+      method: 'POST',
+      url: '/share/*',
+      handler: _shareHandler,
+    },
+    {
+      method: 'DELETE',
+      url: '/share/*',
+      handler: _shareHandler,
+    },
 
-  app.get('/tree', withHandlerOptions(tree));
-  app.route({
-    method: ['GET', 'POST', 'DELETE'],
-    url: '/tree/*',
-    handler: withHandlerOptions(tree),
+    // blob
+    {
+      method: 'GET',
+      url: '/blob/*',
+      handler: _blobHandler,
+    },
+    {
+      method: 'POST',
+      url: '/blob/*',
+      handler: _blobHandler,
+      schema: schemas.blob.post,
+    },
+    {
+      method: 'DELETE',
+      url: '/blob/*',
+      handler: _blobHandler,
+    },
+
+    // raw
+    {
+      method: 'GET',
+      url: '/raw/*',
+      handler: _rawHandler,
+    },
+
+    // track
+    {
+      method: 'GET',
+      url: '/track/*',
+      handler: _trackHandler,
+    },
+  ];
+
+  routes.forEach((opts: RouteOptions) => {
+    app.route(opts);
   });
-
-  app.route({
-    method: ['GET', 'POST', 'DELETE'],
-    url: '/share/*',
-    handler: withHandlerOptions(share),
-  });
-
-  app.route({
-    method: ['GET', 'POST', 'DELETE'],
-    url: '/blob/*',
-    handler: withHandlerOptions(blob),
-  });
-
-  app.get('/raw/*', withHandlerOptions(raw));
-  app.get('/track/*', withHandlerOptions(track));
 });
+
+function withHandlerOptions(callback: Handler, options: ObjectOptions) {
+  const { db, boss } = options;
+
+  return async (req: FastifyRequest, res: FastifyReply) => {
+    const { '*': wildcard } = req.params as { '*'?: string };
+
+    return await callback({
+      db,
+      boss,
+      req,
+      res,
+      params: normalizeRequestPath(wildcard ?? ''),
+      authToken: getAuthTokenFromRequest(req),
+    });
+  };
+}
 
 function normalizeRequestPath(raw: string): ObjectRequestPath {
   const pathParts = raw.split('/');

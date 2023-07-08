@@ -57,6 +57,7 @@ export async function main(argv: string[]) {
       type: 'string',
       describe: 'ID of the Elwood Studio project',
     })
+    .epilog('For more information, visit https://elwood.studio')
     .normalize('root-dir')
     .command(
       '$0',

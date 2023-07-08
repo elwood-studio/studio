@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import type { Arguments, FsShareOptions } from '../../types.ts';
 import { printSuccessMessage } from '../../libs/print-message.ts';
 

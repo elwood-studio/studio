@@ -1,6 +1,6 @@
 import { spawn, type ChildProcess, StdioNull, StdioPipe } from 'child_process';
 
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import which from 'which';
 import { JsonObject } from '@elwood/types';
 import type { WorkflowRunnerPermission } from '@elwood/workflow-types';

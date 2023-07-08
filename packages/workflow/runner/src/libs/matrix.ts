@@ -3,7 +3,7 @@ import type {
   WorkflowRunnerExpression,
 } from '@elwood/workflow-types';
 import type { JsonObject, Json } from '@elwood/types';
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type { WorkflowRunnerRuntimeRun, WorkflowRunnerRuntime } from '../types';
 import { getExpressionValue } from './expression';

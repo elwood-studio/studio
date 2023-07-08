@@ -49,11 +49,11 @@ elwood init
 # start a local server using docker-compose
 elwood start
 
-# Upload a file
-elwood fs:upload https://x.elwood.studio/p/bunny.mp4 /bunny.mp4
+# Copy a file from the internet to the workspace
+elwood fs:copy https://x.elwood.studio/p/bunny.mp4 /bunny.mp4
 
 # Create a workflow run to generate an MP3 of the bunny video
-elwood workflow:run demo.yml --input.src="/bunny.mp4" --input.dest="/bunny.mp3" --wait
+elwood workflow:run mp3.yml --input.src="/bunny.mp4" --input.dest="/bunny.mp3" --wait
 
 # Download the MP3
 elwood fs:download /bunny.mp3

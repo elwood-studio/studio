@@ -46,6 +46,7 @@
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
+    "@elwood/common": "workspace:*",
     "@elwood/sdk": "workspace:*",
     "@elwood/workflow-config": "workspace:*",
     "@elwood/workflow-runner": "workspace:*",
@@ -57,14 +58,13 @@
     "docker-compose": "^0.24.1",
     "dotenv": "^16.3.1",
     "fs-jetpack": "^5.1.0",
-    "glob": "^10.3.1",
+    "glob": "^10.3.2",
     "is-glob": "^4.0.3",
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.1",
     "mime": "^3.0.0",
     "ora": "5.4.1",
     "stacktracey": "^2.1.8",
-    "ts-invariant": "^0.10.3",
     "yaml": "^2.3.1",
     "yargs": "^17.7.2"
   },

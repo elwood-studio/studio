@@ -10,6 +10,7 @@ import {
 import { getRemoteConfig } from '@/libs/rclone-remote.ts';
 import { pathToObjectId } from '@/libs/path-to-object-id.ts';
 import { createTreeFromPath } from '@/libs/create-tree.ts';
+import { mapObjectModelToNode } from '@/libs/get-object.ts';
 
 export async function tree(options: ObjectHandlerOptions): Promise<void> {
   switch (options.req.method) {
@@ -41,7 +42,13 @@ export async function list(options: ObjectHandlerOptions): Promise<void> {
     case 'name': {
       const [_node, _nodes] = await treeForObjectId(
         options,
-        await pathToObjectId(path, options.db, options.authToken),
+        await pathToObjectId({
+          path,
+          authSqlOptions: {
+            client: options.db,
+            token: options.authToken,
+          },
+        }),
       );
 
       node = _node;
@@ -94,19 +101,6 @@ export async function nodesFromRemote(
   return [node, await fetchAndMapRcloneListToTree(remoteStr, `/${path}`)];
 }
 
-export function mapObjectToNode(item: ObjectModel): FileSystem.Node {
-  return {
-    id: item.id,
-    name: item.name,
-    display_name: item.display_name,
-    type: item.type as FileSystem.NodeType,
-    size: item.size ?? 0,
-    mime_type: item.mime_type ?? 'application/octet-stream',
-    is_remote: false,
-    metadata: item.metadata,
-  };
-}
-
 export async function treeForObjectId(
   options: ObjectHandlerOptions,
   id: string | null,
@@ -123,7 +117,7 @@ export async function treeForObjectId(
 
     invariant(sth.rows[0], 'Object not found');
 
-    node = mapObjectToNode(sth.rows[0]);
+    node = mapObjectModelToNode(sth.rows[0]);
   } else {
     node = {
       id: '<root>',
@@ -134,6 +128,7 @@ export async function treeForObjectId(
       mime_type: 'inode/directory',
       is_remote: false,
       metadata: {},
+      state: 'READY',
     };
   }
 
@@ -146,7 +141,7 @@ export async function treeForObjectId(
       : `SELECT * FROM elwood.object WHERE "parent_id" is null`,
   });
 
-  return [node, (childrenSth.rows ?? []).map(mapObjectToNode)];
+  return [node, (childrenSth.rows ?? []).map(mapObjectModelToNode)];
 }
 
 export async function create(options: ObjectHandlerOptions): Promise<void> {

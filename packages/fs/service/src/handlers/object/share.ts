@@ -24,11 +24,13 @@ export async function share(options: ObjectHandlerOptions) {
 export async function create(options: ObjectHandlerOptions): Promise<void> {
   invariant(options.req.body, 'Missing body');
 
-  const object_id = await pathToObjectId(
-    options.params.path,
-    options.db,
-    options.authToken,
-  );
+  const object_id = await pathToObjectId({
+    path: options.params.path,
+    authSqlOptions: {
+      client: options.db,
+      token: options.authToken,
+    },
+  });
 
   invariant(object_id, 'Object not found');
 

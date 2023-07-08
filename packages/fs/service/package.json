@@ -74,7 +74,6 @@
     "md5-file": "^5.0.0",
     "pg": "^8.11.1",
     "pg-boss": "8.4.2",
-    "ts-invariant": "^0.10.3",
     "uuid": "^9.0.0"
   },
   "peerDependencies": {

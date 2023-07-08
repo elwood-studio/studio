@@ -6,7 +6,7 @@ import type {
 import debug from '../../libs/debug';
 import { nativeCommands, executeNativeCommand } from '../native';
 import { commandExecuteLocal } from './local';
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 const log = debug('command:execute');
 

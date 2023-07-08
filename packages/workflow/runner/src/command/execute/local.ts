@@ -7,7 +7,7 @@ import type {
   ExecuteStepCommandOutput,
 } from '../../types';
 import debug from '../../libs/debug';
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 export type CommandExecuteLocalOptions = {
   runtime: WorkflowRunnerRuntime;

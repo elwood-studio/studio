@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import fs from 'fs-jetpack';
 import ora from 'ora';
 

@@ -1,6 +1,4 @@
-# Elwood
-
-## Packages
+# Elwood Packages
 
 - [Workflow](./workflow) Automate your media pipeline
 - [File System](./fs/) File System

@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type { Context } from '../types.ts';
 import { buildDockerCompose } from './docker-compose.ts';

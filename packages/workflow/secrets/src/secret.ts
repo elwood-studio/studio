@@ -5,7 +5,7 @@ import {
 } from './types';
 import { unsealSecret } from './unseal';
 import { sealSecret } from './seal';
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 enum Status {
   Sealed,

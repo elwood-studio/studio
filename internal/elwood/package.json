@@ -1,9 +1,7 @@
 {
   "name": "elwood",
   "version": "0.1.27",
-  "repository": "git@github.com:elwood-studio/cli.git",
   "author": "Travis <travis@elwood.studio>",
-  "license": "Apache License",
   "bin": "./bin.js",
   "type": "module",
   "files": [
@@ -13,6 +11,16 @@
     "@elwood/cli": "workspace:*"
   },
   "scripts": {
-    "build": "cp  ../../packages/cli/readme.md ."
-  }
+    "build": "cp ../../packages/cli/readme.md ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/cli",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0"
 }

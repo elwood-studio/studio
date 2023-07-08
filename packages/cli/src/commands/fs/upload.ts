@@ -3,7 +3,7 @@ import { URL, fileURLToPath } from 'node:url';
 import { createReadStream, statSync } from 'node:fs';
 import { glob } from 'glob';
 import isGlob from 'is-glob';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import fs from 'fs-jetpack';
 import mime from 'mime';
 import ora from 'ora';

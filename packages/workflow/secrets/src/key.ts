@@ -1,4 +1,4 @@
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import type { WorkflowSecretsManager, WorkflowSecretsKey } from './types';
 import { unsealKey } from './unseal';
 import { sealKey } from './seal';

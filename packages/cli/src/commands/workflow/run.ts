@@ -1,5 +1,5 @@
 import ora from 'ora';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type { Arguments, Context, WorkflowRunOptions } from '../../types.ts';
 import { printErrorMessage, printMessage } from '../../libs/print-message.ts';

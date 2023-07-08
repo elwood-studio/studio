@@ -1,6 +1,6 @@
 import { isAbsolute, join } from 'path';
 
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import type { JsonObject } from '@elwood/types';
 import type { WorkflowRunnerPermission } from '@elwood/workflow-types';
 

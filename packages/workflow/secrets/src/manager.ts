@@ -1,4 +1,4 @@
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import sodium from 'libsodium-wrappers';
 
 import type {

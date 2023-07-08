@@ -31,14 +31,6 @@ export default async function register(
     try {
       const url = job.data.source;
       const uploadId = createStorageFilepath(basename(url));
-
-      console.log({
-        fs: createStorageRemoteConfig(),
-        remote: `${bucket}/${uploadId}`,
-        url,
-        autoFilename: false,
-      });
-
       const response = await fetchRclone('/operations/copyurl', {
         body: JSON.stringify({
           fs: createStorageRemoteConfig(),

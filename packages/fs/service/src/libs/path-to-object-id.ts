@@ -2,14 +2,21 @@ import * as uuid from 'uuid';
 import type { ObjectModel } from '@elwood/types';
 import { invariant } from '@elwood/common';
 
-import type { Client, PossibleAuthToken } from '@/types.ts';
-import { authExecuteSql } from '@/libs/auth-execute-sql.ts';
+import {
+  authExecuteSql,
+  AuthExecuteSqlAuthOptions,
+} from '@/libs/auth-execute-sql.ts';
+
+export type PathToObjectIdInput = {
+  path: string;
+  authSqlOptions: AuthExecuteSqlAuthOptions;
+};
 
 export async function pathToObjectId(
-  path: string,
-  db: Client,
-  authToken: PossibleAuthToken,
+  input: PathToObjectIdInput,
 ): Promise<string | null> {
+  const { path, authSqlOptions } = input;
+
   const parts = path
     .trim()
     .replace(/^\//, '')
@@ -25,8 +32,7 @@ export async function pathToObjectId(
   for (const part of parts) {
     const col = uuid.validate(part) ? 'id' : 'name';
     const currentSth = await authExecuteSql<ObjectModel>({
-      client: db,
-      token: authToken,
+      ...authSqlOptions,
       params: parent_id === null ? [part] : [part, parent_id],
       sql:
         parent_id === null
