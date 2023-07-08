@@ -15,5 +15,15 @@
   "devDependencies": {
     "tsconfig": "workspace:*"
   },
-  "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6"
+  "gitHead": "48010a3ebcddc947777266e6c4e6907241792fb6",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/types",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0"
 }

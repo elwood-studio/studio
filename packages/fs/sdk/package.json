@@ -20,7 +20,16 @@
   "files": [
     "dist"
   ],
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/fs/sdk",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --silent",

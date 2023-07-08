@@ -3,6 +3,16 @@
   "version": "0.1.26",
   "main": "./lib/index.ts",
   "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwood-studio/elwood.git"
+  },
+  "homepage": "https://github.com/elwood-studio/elwood/tree/main/packages/workflow/types",
+  "bugs": {
+    "url": "https://github.com/elwood-studio/elwood/issues",
+    "email": "security@elwood.studio"
+  },
+  "license": "Apache-2.0",
   "scripts": {
     "build": "tsc -b ./tsconfig.json",
     "dev": "tsc -b ./tsconfig --watch",
