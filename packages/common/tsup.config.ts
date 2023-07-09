@@ -8,7 +8,7 @@ export default defineConfig((options: Options) => ({
   dts: true,
   minify: false,
   clean: true,
-  legacyOutput: true,
+  legacyOutput: false,
   external: [],
   platform: 'node',
   tsconfig: './tsconfig.json',

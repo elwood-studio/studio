@@ -1,10 +1,8 @@
 # Elwood Documentation
 
-- [Getting Started](./getting-started/readme.md)
-- [File System](./fs/readme.md)
-- [Workflow](./workflow/readme.md)
-- [Command Line Interface](./cli/readme.md)
-- [JavaScript SDK](./sdk/js/readme.md)
+- [File System](./fs.md)
+- [Workflow](./workflow.md)
+- [Command Line Interface](./cli.md)
 
 **More documentation is coming soon.** Ping us on [Discord](https://discord.gg/ZxWKPeABNG) if you have any questions.
 
