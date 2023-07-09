@@ -1,6 +1,6 @@
 {
   "name": "elwood",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "author": "Travis <travis@elwood.studio>",
   "bin": "./bin.js",
   "type": "module",
