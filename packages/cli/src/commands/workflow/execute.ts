@@ -1,5 +1,5 @@
 import ora from 'ora';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import { normalizeWorkflowToInstructions } from '@elwood/workflow-config';
 

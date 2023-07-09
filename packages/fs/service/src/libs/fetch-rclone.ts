@@ -42,6 +42,7 @@ export function mapRcloneListItemToNode(item: RcloneListItem): FileSystem.Node {
     mime_type: item.MimeType,
     is_remote: true,
     metadata: {},
+    state: 'READY',
   };
 }
 

@@ -1,5 +1,5 @@
 import type { JsonObject } from '@elwood/types';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type {
   WorkflowRunnerRuntime,

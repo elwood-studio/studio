@@ -43,7 +43,7 @@
     "@elwood/workflow-runner": "workspace:*",
     "@elwood/workflow-secrets": "workspace:*",
     "@elwood/workflow-types": "workspace:*",
-    "@types/node": "^20.4.0",
+    "@types/node": "^20.4.1",
     "@types/pg": "^8.10.2",
     "@vercel/ncc": "^0.36.1",
     "esbuild": "^0.18.11",
@@ -58,7 +58,7 @@
     "fast-json-stringify": "^5.7.0",
     "fastify": "^4.19.2",
     "fastify-plugin": "^4.5.0",
-    "glob": "^10.3.1",
+    "glob": "^10.3.3",
     "pg": "^8.11.1",
     "pg-boss": "8.4.2",
     "ssh2": "^1.14.0"

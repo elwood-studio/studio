@@ -12,14 +12,19 @@ import proxyPlugin from '@/handlers/proxy.ts';
 import objectPlugin from '@/handlers/object/handlers.ts';
 import errorPlugin from '@/handlers/error.ts';
 import remotePlugin from '@/handlers/remote.ts';
-import registerUploadQueue from '@/queue/upload.ts';
 import registerCopyQueue from '@/queue/copy.ts';
+import { invariant } from '@elwood/common';
 
 // config stuff in one place
-const { dbUrl, externalHost } = getEnv();
+const { dbUrl, externalHost, storageProvider } = getEnv();
 
 export async function createApp(): Promise<fastify.FastifyInstance> {
   console.log('Creating app...');
+
+  invariant(
+    ['local', 's3'].includes(storageProvider),
+    'Only "local" and "s3" storage providers are supported',
+  );
 
   const app = fastify({ logger: true });
   const db = new PgDatabase({
@@ -57,7 +62,6 @@ export async function createApp(): Promise<fastify.FastifyInstance> {
 
   // register our queues
   await registerCopyQueue(boss, db);
-  await registerUploadQueue(boss, db);
 
   // swagger stuff, because we love docs
   app.register(swagger, {

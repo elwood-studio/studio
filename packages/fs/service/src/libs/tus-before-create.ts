@@ -95,7 +95,10 @@ export async function tusBeforeCreate(options: TusBeforeCreateOptions) {
 
   const _parent_id =
     parent_id ??
-    (await pathToObjectId(String(parent), db, authToken as string));
+    (await pathToObjectId({
+      path: String(parent),
+      authSqlOptions: { client: db, token: authToken },
+    }));
 
   const sql = `
     INSERT INTO elwood.object (

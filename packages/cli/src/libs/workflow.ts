@@ -1,5 +1,5 @@
 import { extname, join } from 'node:path';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import fs from 'fs-jetpack';
 
 import type { JsonObject } from '@elwood/types';

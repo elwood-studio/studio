@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import { Writable } from 'node:stream';
 import ora from 'ora';
 import type { Json } from '@elwood/types';

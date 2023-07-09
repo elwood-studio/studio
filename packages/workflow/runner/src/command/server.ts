@@ -4,7 +4,7 @@ import fastify, {
   FastifyReply,
 } from 'fastify';
 
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type { WorkflowRunnerRuntime } from '../types';
 import debug from '../libs/debug';

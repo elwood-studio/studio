@@ -67,7 +67,7 @@ export async function register(cli: Argv) {
 
   cli.command<FsCopyOptions>(
     'fs:copy <source> <destination>',
-    'copy a file or folder',
+    'copy a local or remote file to a destination',
     (y) => {
       y.option('wait', {
         alias: 'w',
@@ -80,7 +80,7 @@ export async function register(cli: Argv) {
   );
 
   cli.command<FsSyncOptions>(
-    'fs:download <source>',
+    'fs:download <source> [destination]',
     'download a file or folder',
     () => {
       return;
@@ -89,12 +89,13 @@ export async function register(cli: Argv) {
   );
 
   cli.command<FsShareOptions>(
-    'fs:share <path>',
+    'fs:share <type> <path>',
     'share a file',
     (y) => {
       y.option('password', {
         alias: 'p',
         type: 'string',
+        description: 'Password to protect the share link',
       });
     },
     share,
@@ -102,7 +103,7 @@ export async function register(cli: Argv) {
 
   cli.command<FsMkdirOptions>(
     'fs:mkdir <path>',
-    'create a director',
+    'create a directory',
     (y) => {
       y.option('parents', {
         alias: 'p',

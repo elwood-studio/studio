@@ -2,7 +2,7 @@ import { randomBytes } from 'crypto';
 import { EventEmitter } from 'events';
 
 import { v4 as randomUUID } from 'uuid';
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import FileSystem from 'fs-jetpack';
 import axios from 'axios';
 import type { FastifyInstance } from 'fastify';

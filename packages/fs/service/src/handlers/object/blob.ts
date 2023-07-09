@@ -1,12 +1,18 @@
 import { writeFile } from 'node:fs/promises';
 import { invariant } from '@elwood/common';
+import type { FileSystem } from '@elwood/types';
 
 import type { ObjectHandlerOptions } from '@/types.ts';
 import { createObject } from '@/libs/create-object.ts';
 import { authExecuteSql } from '@/libs/auth-execute-sql.ts';
 
+import { getObject, mapObjectModelToNode } from '@/libs/get-object.ts';
+
 export async function blob(options: ObjectHandlerOptions) {
   switch (options.req.method) {
+    case 'GET': {
+      return await read(options);
+    }
     case 'POST': {
       return await create(options);
     }
@@ -14,6 +20,26 @@ export async function blob(options: ObjectHandlerOptions) {
       options.res.status(405).send();
     }
   }
+}
+
+export async function read(options: ObjectHandlerOptions) {
+  const { path } = options.params;
+
+  const obj = await getObject({
+    path,
+    authSqlOptions: {
+      client: options.db,
+      token: options.authToken,
+    },
+  });
+
+  const result: FileSystem.BlobResult = {
+    node: mapObjectModelToNode(obj),
+    sidecarNodes: [],
+    breadcrumbs: [],
+  };
+
+  options.res.send(result);
 }
 
 export async function create(options: ObjectHandlerOptions): Promise<void> {

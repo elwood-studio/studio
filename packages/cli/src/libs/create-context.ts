@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import * as yaml from 'yaml';
 import * as toml from '@iarna/toml';
 import fs from 'fs-jetpack';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import { parse } from 'dotenv';
 import ora from 'ora';
 import { ElwoodSdk } from '@elwood/sdk';

@@ -1,4 +1,4 @@
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import * as FileSystem from 'fs-jetpack';
 
 import {

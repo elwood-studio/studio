@@ -167,6 +167,7 @@ export type FsUploadOptions = {
 
 export type FsSyncOptions = {
   source?: string;
+  destination?: string;
 };
 
 export type FsMkdirOptions = {

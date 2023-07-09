@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type { Arguments, Context, WorkflowReportOptions } from '../../types.ts';
 import { outputReport } from '../../libs/output.ts';

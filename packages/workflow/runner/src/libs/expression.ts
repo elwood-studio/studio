@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import { render as interpolate } from 'ejs';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import lodashGet from 'lodash.get';
 import * as mime from 'mime';
 

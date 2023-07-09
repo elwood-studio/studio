@@ -19,6 +19,7 @@ export type Node = {
   mime_type: string;
   is_remote: boolean;
   metadata: JsonObject;
+  state: string;
 };
 
 export type TreeResult = {

@@ -3,7 +3,7 @@ import { basename, dirname, extname, join } from 'path';
 import { existsAsync, readAsync, tmpDirAsync } from 'fs-jetpack';
 import { parse as parseYaml } from 'yaml';
 import fetch from 'isomorphic-fetch';
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 import type { Workflow } from '@elwood/workflow-types';
 

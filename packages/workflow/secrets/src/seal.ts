@@ -1,5 +1,5 @@
 import sodium from 'libsodium-wrappers';
-import invariant from 'ts-invariant';
+import { invariant } from '@elwood/common';
 
 export async function sealKey(
   value: Buffer,

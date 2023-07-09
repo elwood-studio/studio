@@ -1,4 +1,4 @@
-import { invariant } from 'ts-invariant';
+import { invariant } from '@elwood/common';
 import type { Arguments, FsListOptions } from '../../types.ts';
 import { outputTree } from '../../libs/output.ts';
 import { printErrorMessage, printMessage } from '../../libs/print-message.ts';

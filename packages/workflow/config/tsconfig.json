@@ -1,6 +1,7 @@
 {
   "extends": "tsconfig/node.json",
   "compilerOptions": {
+    "esModuleInterop": true,
     "rootDir": "./src",
     "outDir": "./lib",
     "paths": {
