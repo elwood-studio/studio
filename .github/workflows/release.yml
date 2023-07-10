@@ -146,13 +146,3 @@ jobs:
         env:
           NPM_CONFIG_PROVENANCE: true
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.ELWOOD_PA_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: 'elwood-studio',
-              repo: 'cli',
-              workflow_id: 'release.yml',
-              ref: 'master'
-            })

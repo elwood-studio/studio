@@ -4,7 +4,7 @@ import type { AppContext } from '../types.ts';
 
 type UpdateRunOptions = {
   job_id: string;
-  output: WorkflowRunnerRuntimeRunReport;
+  report: WorkflowRunnerRuntimeRunReport;
 };
 
 export async function updateRun(
@@ -12,15 +12,16 @@ export async function updateRun(
   options: UpdateRunOptions,
 ): Promise<void> {
   const { db } = context;
-  const { job_id, output } = options;
+  const { job_id, report } = options;
 
+  // merge in output and reset report to latest provided
   await db.executeSql(
     `
       UPDATE elwood.run 
       SET 
-        "output" = $2
+        "report" = $2
       WHERE 
         $1 IN("job_id")`,
-    [[job_id], output],
+    [[job_id], report],
   );
 }
