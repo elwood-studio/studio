@@ -1,6 +1,6 @@
 {
   "name": "@elwood/workflow-sdk",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
