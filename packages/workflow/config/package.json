@@ -1,6 +1,6 @@
 {
   "name": "@elwood/workflow-config",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",

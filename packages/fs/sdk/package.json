@@ -1,6 +1,6 @@
 {
   "name": "@elwood/fs-sdk",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "main": "./src/index.ts",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
