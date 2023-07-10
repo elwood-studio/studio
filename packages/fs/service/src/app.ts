@@ -6,6 +6,7 @@ import PgBoss from 'pg-boss';
 import { getEnv } from '@/libs/get-env.ts';
 import { loadConfigFile } from '@/libs/load-config-file.ts';
 import PgDatabase from '@/libs/db.ts';
+import { AbstractStorage } from './storage/abstract.ts';
 
 import tusPlugin from '@/handlers/tus.ts';
 import proxyPlugin from '@/handlers/proxy.ts';
@@ -13,19 +14,14 @@ import objectPlugin from '@/handlers/object/handlers.ts';
 import errorPlugin from '@/handlers/error.ts';
 import remotePlugin from '@/handlers/remote.ts';
 import registerCopyQueue from '@/queue/copy.ts';
-import { invariant } from '@elwood/common';
 
 // config stuff in one place
-const { dbUrl, externalHost, storageProvider } = getEnv();
+const { dbUrl, externalHost } = getEnv();
 
 export async function createApp(): Promise<fastify.FastifyInstance> {
   console.log('Creating app...');
 
-  invariant(
-    ['local', 's3'].includes(storageProvider),
-    'Only "local" and "s3" storage providers are supported',
-  );
-
+  const storageProvider = await AbstractStorage.createStorageProvider();
   const app = fastify({ logger: true });
   const db = new PgDatabase({
     connectionString: dbUrl,
@@ -61,7 +57,7 @@ export async function createApp(): Promise<fastify.FastifyInstance> {
   });
 
   // register our queues
-  await registerCopyQueue(boss, db);
+  await registerCopyQueue(boss, db, storageProvider);
 
   // swagger stuff, because we love docs
   app.register(swagger, {
@@ -81,6 +77,7 @@ export async function createApp(): Promise<fastify.FastifyInstance> {
       tags: [],
     },
   });
+
   app.register(swaggerUi, {
     routePrefix: '/docs',
     logo: {
@@ -105,6 +102,7 @@ export async function createApp(): Promise<fastify.FastifyInstance> {
   app.register(tusPlugin, {
     db,
     externalHost,
+    storageProvider,
   });
 
   app.register(remotePlugin, {

@@ -1,10 +1,10 @@
+import { JsonObject } from '@elwood/types';
 import {
   RunnerStatus,
   type WorkflowRunnerRuntimeRunReport,
 } from '@elwood/workflow-runner';
 
 import type { AppContext } from '../types.ts';
-import { JsonObject } from '@elwood/types';
 
 type CompleteRunOptions = {
   job_id: string;
@@ -16,28 +16,29 @@ type CompleteRunOptions = {
 export async function completeRun(
   context: AppContext,
   options: CompleteRunOptions,
-): Promise<void> {
-  const { db } = context;
-  const { job_id, report, completed_at } = options;
-  const output = getOutputFromReport(report);
-  let state = options.state;
+): Promise<JsonObject> {
+  try {
+    const { db } = context;
+    const { job_id, report, completed_at } = options;
+    const output = getOutputFromReport(report);
+    let state = options.state;
 
-  switch (report.status.value) {
-    case RunnerStatus.Error: {
-      state = 'failed';
-      break;
+    switch (report.status.value) {
+      case RunnerStatus.Error: {
+        state = 'failed';
+        break;
+      }
+      case RunnerStatus.Skipped: {
+        state = 'skipped';
+        break;
+      }
+      default: {
+        state = 'completed';
+      }
     }
-    case RunnerStatus.Skipped: {
-      state = 'skipped';
-      break;
-    }
-    default: {
-      state = 'completed';
-    }
-  }
 
-  await db.executeSql(
-    `
+    const result = await db.executeSql(
+      `
       UPDATE elwood.run 
       SET 
         "state" = $2, 
@@ -46,8 +47,20 @@ export async function completeRun(
         "completed_at" = $5 
       WHERE 
         $1 IN("job_id")`,
-    [[job_id], state, output, report, completed_at],
-  );
+      [[job_id], state, output, report, completed_at],
+    );
+
+    return {
+      updatedRuns: result.rowCount,
+    };
+  } catch (err) {
+    console.log('update result error', err);
+
+    return {
+      updatedRuns: 0,
+      error: (err as Error).message,
+    };
+  }
 }
 
 export function getOutputFromReport(

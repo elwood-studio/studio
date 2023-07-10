@@ -8,6 +8,7 @@ import type {
   FsMkdirOptions,
   FsShareOptions,
   FsUploadOptions,
+  FsStatOptions,
 } from '../../types.ts';
 
 import { copy } from './copy.ts';
@@ -16,6 +17,7 @@ import { mkdir } from './mkdir.ts';
 import { ls } from './ls.ts';
 import { share } from './share.ts';
 import { upload } from './upload.ts';
+import { stat } from './stat.ts';
 
 export async function register(cli: Argv) {
   cli.command<FsOptions>(
@@ -127,6 +129,15 @@ export async function register(cli: Argv) {
       });
     },
     ls,
+  );
+
+  cli.command<FsStatOptions>(
+    'fs:stat <path>',
+    'get file information',
+    () => {
+      return;
+    },
+    stat,
   );
 
   cli.hide('fs');

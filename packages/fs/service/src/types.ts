@@ -2,12 +2,19 @@ import type { Pool, QueryResult, QueryResultRow } from 'pg';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { JsonObject, Json } from '@elwood/types';
 import type PgBoss from 'pg-boss';
+import type { DataStore } from '@tus/server';
 
 declare module 'fastify' {
   interface FastifyInstance {
     db: Client;
     boss: PgBoss;
   }
+}
+
+export interface StorageProvider {
+  getFilepath(name: string): string;
+  getTusDatastore(): Promise<DataStore>;
+  getAbsoluteFilepath(name: string): string;
 }
 
 export type Config = {
