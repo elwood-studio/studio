@@ -51,7 +51,7 @@ export default async function register(context: AppContext): Promise<void> {
 
         updateRun(context, {
           job_id: job.id,
-          output: run.report,
+          report: run.report,
         }).finally(() => {
           lockUpdate = false;
         });
