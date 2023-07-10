@@ -93,7 +93,7 @@ export default async function register(context: AppContext): Promise<void> {
 
     const { request, state, response, completedOn } = job.data;
 
-    await completeRun(context, {
+    return await completeRun(context, {
       job_id: request.id,
       state,
       report: response,

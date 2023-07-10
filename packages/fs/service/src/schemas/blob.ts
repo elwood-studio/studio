@@ -1,5 +1,8 @@
-export const post = {
-  description: 'Create a blob from content or a remote file',
+import { FastifySchema } from 'fastify';
+import { JSONSchema } from 'json-schema-to-ts';
+
+export const post: FastifySchema = {
+  description: 'Create a new blob from a source or base64 content string',
   params: {
     type: 'object',
     properties: {
@@ -8,7 +11,7 @@ export const post = {
         description: 'Object path composed of object names or ids',
       },
     },
-  },
+  } as const satisfies JSONSchema,
   body: {
     type: 'object',
     properties: {
@@ -21,7 +24,7 @@ export const post = {
         description: 'Base64 content of the blob',
       },
     },
-  },
+  } as const satisfies JSONSchema,
   response: {
     200: {
       description: 'Successful response',
@@ -32,7 +35,7 @@ export const post = {
           description: 'Object id',
         },
       },
-    },
+    } as const satisfies JSONSchema,
   },
 };
 

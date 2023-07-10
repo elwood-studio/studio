@@ -184,3 +184,7 @@ export type FsShareOptions = {
   path?: string;
   password?: string;
 };
+
+export type FsStatOptions = {
+  path?: string;
+};

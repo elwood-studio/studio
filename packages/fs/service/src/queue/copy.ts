@@ -1,11 +1,9 @@
 import { basename } from 'node:path';
 import { invariant } from '@elwood/common';
 
-import type { PgBoss, Client } from '@/types.ts';
+import type { PgBoss, Client, StorageProvider } from '@/types.ts';
 import { fetchRclone } from '@/libs/fetch-rclone.ts';
 import { createStorageRemoteConfig } from '@/libs/rclone-remote.ts';
-import { createStorageFilepath } from '@/libs/storage-filepath.ts';
-import { getS3Env } from '@/libs/get-env.ts';
 
 type Data = {
   source: string;
@@ -19,22 +17,21 @@ type Output =
       message: string;
     };
 
-const { bucket } = getS3Env();
-
 export default async function register(
   boss: PgBoss,
   db: Client,
+  storageProvider: StorageProvider,
 ): Promise<void> {
   await boss.work<Data, Output>('fs:copy', async (job) => {
     console.log('fs:copy', job.data);
 
     try {
       const url = job.data.source;
-      const uploadId = createStorageFilepath(basename(url));
+      const uploadId = storageProvider.getAbsoluteFilepath(basename(url));
       const response = await fetchRclone('/operations/copyurl', {
         body: JSON.stringify({
           fs: createStorageRemoteConfig(),
-          remote: `${bucket}/${uploadId}`,
+          remote: uploadId,
           url,
           autoFilename: false,
         }),

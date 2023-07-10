@@ -11,12 +11,13 @@
     "rootDir": "./src",
     "baseUrl": ".",
     "outDir": "./dist",
+    "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"]
     },
     "typeRoots": []
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "scripts/*.ts", "scripts/docs.js"],
   "ignore": ["bin/*.ts", "dist/"],
   "references": []
 }
