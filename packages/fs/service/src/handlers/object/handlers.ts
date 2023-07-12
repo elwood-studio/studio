@@ -78,6 +78,7 @@ export default fp<ObjectOptions>(async (app, opts) => {
       method: 'GET',
       url: '/blob/*',
       handler: _blobHandler,
+      schema: schemas.blob.get,
     },
     {
       method: 'POST',
@@ -137,6 +138,14 @@ function normalizeRequestPath(raw: string): ObjectRequestPath {
       type: 'remote',
       id: pathParts[0].substring(1),
       path: path.length === 0 ? '/' : path,
+    };
+  }
+
+  if (pathParts[0].startsWith('id:')) {
+    return {
+      type: 'oid',
+      id: pathParts[0].substring(3),
+      path,
     };
   }
 

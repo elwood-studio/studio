@@ -1,8 +1,9 @@
 import type { Pool, QueryResult, QueryResultRow } from 'pg';
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest, FastifySchema } from 'fastify';
 import type { JsonObject, Json } from '@elwood/types';
 import type PgBoss from 'pg-boss';
 import type { DataStore } from '@tus/server';
+import type { JSONSchema } from 'json-schema-to-ts';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -96,3 +97,10 @@ export interface Client {
 
 export type { FastifyReply, FastifyRequest } from 'fastify';
 export type { default as PgBoss } from 'pg-boss';
+export type { JSONSchema, FromSchema } from 'json-schema-to-ts';
+
+export interface Schema extends FastifySchema {
+  body?: JSONSchema;
+  params?: JSONSchema;
+  querystring?: JSONSchema;
+}

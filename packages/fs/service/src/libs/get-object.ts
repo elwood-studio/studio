@@ -72,6 +72,6 @@ export function mapObjectModelToNode(obj: ObjectModel): FileSystem.Node {
     type: obj.type as FileSystem.NodeType,
     is_remote: false,
     metadata: obj.metadata ?? {},
-    state: obj.state,
+    state: obj.state as FileSystem.NodeState,
   };
 }

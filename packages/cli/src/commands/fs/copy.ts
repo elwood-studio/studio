@@ -1,5 +1,5 @@
-import { invariant } from '@elwood/common';
-import fs from 'fs-jetpack';
+import { invariant, FileSystemNodeState } from '@elwood/common';
+
 import ora from 'ora';
 
 import type { FsCopyOptions, Arguments } from '../../types.ts';
@@ -29,13 +29,43 @@ export async function copy(args: Arguments<FsCopyOptions>) {
     return;
   }
 
+  spin.text = 'Waiting for copy to complete...';
+
   let complete = false;
+  let loop = 0;
 
-  while (complete === false) {
-    const _ = await client.fileSystem.stat(r.id);
+  while (complete === false && loop < 20) {
+    const { node } = await client.fileSystem.stat(r.id);
 
-    complete = true;
+    switch (node.state) {
+      case FileSystemNodeState.Failed: {
+        complete = true;
+        spin.fail(`Failed to copy to ${destination}!`);
+        break;
+      }
+
+      case FileSystemNodeState.Ready: {
+        complete = true;
+        spin.succeed(`File copied to ${destination}!`);
+        break;
+      }
+
+      default: {
+        await sleep(1000 * 5);
+
+        complete = false;
+        loop++;
+      }
+    }
   }
 
-  spin.succeed(`File copied to ${destination}!`);
+  if (loop >= 20) {
+    spin.fail(`Unable to get status of copy to ${destination}!`);
+  }
+
+  spin.stop();
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

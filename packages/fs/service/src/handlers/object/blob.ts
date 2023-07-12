@@ -1,12 +1,13 @@
 import { writeFile } from 'node:fs/promises';
 import { invariant } from '@elwood/common';
-import type { FileSystem } from '@elwood/types';
+import type { ObjectModel, FileSystem } from '@elwood/types';
 
-import type { ObjectHandlerOptions } from '@/types.ts';
+import type { ObjectHandlerOptions, FromSchema } from '@/types.ts';
 import { createObject } from '@/libs/create-object.ts';
 import { authExecuteSql } from '@/libs/auth-execute-sql.ts';
 
 import { getObject, mapObjectModelToNode } from '@/libs/get-object.ts';
+import * as schemas from '@/schemas/index.ts';
 
 export async function blob(options: ObjectHandlerOptions) {
   switch (options.req.method) {
@@ -23,15 +24,40 @@ export async function blob(options: ObjectHandlerOptions) {
 }
 
 export async function read(options: ObjectHandlerOptions) {
-  const { path } = options.params;
+  const { type, id, path } = options.params;
+  let obj: ObjectModel | null = null;
 
-  const obj = await getObject({
-    path,
-    authSqlOptions: {
-      client: options.db,
-      token: options.authToken,
-    },
-  });
+  switch (type) {
+    case 'name': {
+      invariant(path, 'Path is required');
+
+      obj = await getObject({
+        path,
+        authSqlOptions: {
+          client: options.db,
+          token: options.authToken,
+        },
+      });
+      break;
+    }
+
+    case 'oid': {
+      invariant(id, 'Id is required');
+      obj = await getObject({
+        id,
+        authSqlOptions: {
+          client: options.db,
+          token: options.authToken,
+        },
+      });
+      break;
+    }
+    default: {
+      invariant(true, 'Either id or path must be provided');
+    }
+  }
+
+  invariant(obj, 'Object was not found');
 
   const result: FileSystem.BlobResult = {
     node: mapObjectModelToNode(obj),
@@ -51,13 +77,7 @@ export async function create(options: ObjectHandlerOptions): Promise<void> {
     content,
     mime_type,
     parents = true,
-  } = options.req.body as {
-    display_name?: string;
-    source?: string;
-    content?: string;
-    mime_type?: string;
-    parents?: boolean;
-  };
+  } = options.req.body as FromSchema<typeof schemas.blob.postBody>;
 
   invariant(source || content, 'source or content is required');
   invariant(
@@ -81,8 +101,6 @@ export async function create(options: ObjectHandlerOptions): Promise<void> {
   });
 
   invariant(obj, 'Object was not created');
-
-  console.log(obj);
 
   let jobId: string | null = null;
 

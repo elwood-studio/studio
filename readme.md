@@ -52,7 +52,7 @@ elwood start
 elwood fs:copy https://x.elwood.studio/p/bunny.mp4 /bunny.mp4
 
 # Create a workflow run to generate an MP3 of the bunny video
-elwood workflow:run @mp3.yml --input.src="/bunny.mp4" --input.dest="/bunny.mp3" --wait
+elwood workflow:run @mp3.yml --input.src="elwood://bunny.mp4" --input.dest="elwood://bunny.mp3" --wait
 
 # Download the MP3
 elwood fs:download /bunny.mp3

@@ -1,6 +1,13 @@
 import { JsonObject } from './scalar';
 
 export type NodeType = 'TREE' | 'BLOB' | 'LINK';
+export type NodeState =
+  | 'CREATING'
+  | 'PENDING'
+  | 'UPLOADED'
+  | 'PROCESSING'
+  | 'FAILED'
+  | 'READY';
 
 export type Breadcrumb = {
   id: string;
@@ -19,7 +26,7 @@ export type Node = {
   mime_type: string;
   is_remote: boolean;
   metadata: JsonObject;
-  state: string;
+  state: NodeState;
 };
 
 export type TreeResult = {
